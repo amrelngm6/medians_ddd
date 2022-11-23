@@ -361,7 +361,7 @@ class AuthService
 
 		$config = $this->fbConfig();
 
-        $import_account_data = array(
+        $data = array(
             'user_id' => $userId,
             'facebook_rx_config_id' => $config->id,
             'access_token' => $access_token,
