@@ -46,7 +46,7 @@ class FBUserInfoRepository
 	public function store($data) 
 	{
 
-		$check = FBPageInfo::where('user_id', $data['user_id'])
+		$check = FBUserInfo::where('user_id', $data['user_id'])
 		->where('facebook_rx_config_id', $data['facebook_rx_config_id'])
 		->where('fb_id', $data['fb_id'])
 		->first();
