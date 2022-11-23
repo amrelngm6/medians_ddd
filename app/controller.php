@@ -144,10 +144,10 @@ $app->match('facebook_login_back', function () use ($twig, $request, $app)
         
         $userData = UserRepository::store(['email'=>$user->email, 'access_token'=>$user->access_token, 'name'=>$user->name]);
 
-        $fbAuth->insertUserInfo($user, $userData->id);
+        $FBUserInfo = $fbAuth->insertUserInfo($user, $userData->id);
 
         foreach ($pages as $key => $value) {
-            $fbAuth->insertPageInfo($value, $userData->id);
+            $fbAuth->insertPageInfo($value, $userData->id, $FBUserInfo->id);
         }
     } catch (Exception $e) {
         return $e->getMessage();

@@ -323,7 +323,7 @@ class AuthService
 	/**
 	 * Create FB page 
 	 */
-	public function insertPageInfo($page, $user_id=0)
+	public function insertPageInfo($page, $user_id=0, $facebook_table_id=null)
 	{
 
 		$page_id = $page['id'];
@@ -396,7 +396,7 @@ class AuthService
         $access_token = $this->create_long_lived_access_token($access_token);
 
         $user["access_token_set"] = $access_token;
-        
+
         $user["access_token"] = $access_token;
 
         return $user;
