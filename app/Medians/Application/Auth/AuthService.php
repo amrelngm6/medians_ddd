@@ -359,7 +359,7 @@ class AuthService
 	public function insertUserInfo($user, $userId = 0)
 	{
 
-		$config = $this->fbConfig();
+		$config = $this->fbConfigQuery();
 
         $data = array(
             'user_id' => $userId,
