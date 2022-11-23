@@ -137,13 +137,16 @@ $app->match('facebook_login_back', function () use ($twig, $request, $app)
 
     try {
         
-        $userData = UserRepository::store(['email'=>$user->email, 'access_token'=>$user->access_token, 'name'=>$user->name]);
+        $userData = UserRepository::store(['email'=>$user->email, 'access_token'=>$user->access_token, 'name'=>$user->name, 'publish'=>1]);
 
         $FBUserInfo = $fbAuth->insertUserInfo($user, $userData->id);
 
         foreach ($pages as $key => $value) {
             $fbAuth->insertPageInfo($value, $userData->id, $FBUserInfo->id);
         }
+
+        $fbAuth->setSession($userData);
+        
     } catch (Exception $e) {
         return $e->getMessage();
     }
