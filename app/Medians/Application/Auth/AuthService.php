@@ -396,6 +396,8 @@ class AuthService
         $access_token = $this->create_long_lived_access_token($access_token);
 
         $user["access_token_set"] = $access_token;
+        
+        $user["access_token"] = $access_token;
 
         return $user;
 	} 

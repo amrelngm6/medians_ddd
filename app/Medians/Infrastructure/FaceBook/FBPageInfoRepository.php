@@ -41,6 +41,24 @@ class FBPageInfoRepository
 
 
 	/**
+	 * Set mobel attributes
+	 * 
+	*/
+	public function create(Array $data)
+	{
+		$Model = new FBPageInfo();
+
+		foreach ($data as $key => $value) 
+		{
+			$Model->$key = $value;
+		}
+
+		$Model->save();
+		
+		return $Model;
+	}
+
+	/**
 	* Save item to database
 	*/
 	public function store($data) 
@@ -57,7 +75,7 @@ class FBPageInfoRepository
 		}
 
 		// Return the FBPageInfo object with the new data
-    	return FBPageInfo::firstOrCreate((array) $data);
+    	return $this->create((array) $data);
 
 	}
 	
