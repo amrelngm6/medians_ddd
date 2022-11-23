@@ -43,9 +43,12 @@ class FBUserInfoRepository
 	 * Set mobel attributes
 	 * 
 	*/
-	public function create(Array $data)
+	public function create(Array $data, $Model = null)
 	{
-		$Model = new FBUserInfo();
+		if (!$Model)
+		{
+			$Model = new FBUserInfo();
+		}
 
 		foreach ($data as $key => $value) 
 		{
@@ -69,13 +72,10 @@ class FBUserInfoRepository
 		->where('fb_id', $data['fb_id'])
 		->first();
 
-		if ($check)
-		{
-			return $check->delete();
-		}
-
+		print_r($data);
+		
 		// Return the FBPageInfo object with the new data
-    	return $this->create((array) $data);
+    	return $this->create((array) $data, $check);
 	}
 	
 
