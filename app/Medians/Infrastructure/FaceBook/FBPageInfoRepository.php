@@ -46,10 +46,18 @@ class FBPageInfoRepository
 	public function store($data) 
 	{
 
-		$Model = new FBPageInfo();
-		
+		$check = FBPageInfo::where('user_id', $data['user_id'])
+		->where('facebook_rx_fb_user_info_id', $data['facebook_rx_fb_user_info_id'])
+		->where('page_id', $data['page_id'])
+		->first();
+
+		if ($check)
+		{
+			return $check->delete();
+		}
+
 		// Return the FBPageInfo object with the new data
-    	return $Model->firstOrCreate($data);
+    	return FBPageInfo::create($data);
 
 	}
 	

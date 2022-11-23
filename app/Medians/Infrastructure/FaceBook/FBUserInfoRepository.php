@@ -46,9 +46,18 @@ class FBUserInfoRepository
 	public function store($data) 
 	{
 
-		// Return the FBUserInfo object with the new data
-    	return FBUserInfo::firstOrCreate($data);
+		$check = FBPageInfo::where('user_id', $data['user_id'])
+		->where('facebook_rx_config_id', $data['facebook_rx_config_id'])
+		->where('fb_id', $data['fb_id'])
+		->first();
 
+		if ($check)
+		{
+			return $check->delete();
+		}
+
+		// Return the FBPageInfo object with the new data
+    	return FBUserInfo::insert($data);
 	}
 	
 
