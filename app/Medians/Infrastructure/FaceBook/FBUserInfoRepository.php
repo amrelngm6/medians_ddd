@@ -57,7 +57,7 @@ class FBUserInfoRepository
 		}
 
 		// Return the FBPageInfo object with the new data
-    	return FBUserInfo::create([$data]);
+    	return FBUserInfo::insert([$data]);
 	}
 	
 
