@@ -39,6 +39,24 @@ class FBUserInfoRepository
 		return  FBUserInfo::get();
 	}
 
+	/**
+	 * Set mobel attributes
+	 * 
+	*/
+	public function create(Array $data)
+	{
+		$Model = new FBPageInfo();
+
+		foreach ($data as $key => $value) 
+		{
+			$Model->$key = $value;
+		}
+
+		$Model->save();
+		
+		return $Model;
+	}
+
 
 	/**
 	* Save item to database
@@ -57,7 +75,7 @@ class FBUserInfoRepository
 		}
 
 		// Return the FBPageInfo object with the new data
-    	return FBUserInfo::firstOrCreate((array) $data);
+    	return $this->create((array) $data);
 	}
 	
 
