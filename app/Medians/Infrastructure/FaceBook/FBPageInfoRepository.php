@@ -44,9 +44,12 @@ class FBPageInfoRepository
 	 * Set mobel attributes
 	 * 
 	*/
-	public function create(Array $data)
+	public function create(Array $data, $Model = null)
 	{
-		$Model = new FBPageInfo();
+		if (!$Model)
+		{
+			$Model = new FBPageInfo();
+		}
 
 		foreach ($data as $key => $value) 
 		{
@@ -54,7 +57,7 @@ class FBPageInfoRepository
 		}
 
 		$Model->save();
-		
+
 		return $Model;
 	}
 
@@ -69,13 +72,9 @@ class FBPageInfoRepository
 		->where('page_id', $data['page_id'])
 		->first();
 
-		if ($check)
-		{
-			return $check->delete();
-		}
 
 		// Return the FBPageInfo object with the new data
-    	return $this->create((array) $data);
+    	return $this->create((array) $data, $check);
 
 	}
 	
