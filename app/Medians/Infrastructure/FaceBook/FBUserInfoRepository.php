@@ -46,10 +46,8 @@ class FBUserInfoRepository
 	public function store($data) 
 	{
 
-		$Model = new FBUserInfo();
-		
 		// Return the FBUserInfo object with the new data
-    	return $Model->firstOrCreate($data);
+    	return FBUserInfo::firstOrCreate($data);
 
 	}
 	
