@@ -23,6 +23,7 @@ class User extends CustomController
     	'publish',
     	'password',
     	'role',
+    	'access_token',
     	'time',
 	];
 

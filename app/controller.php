@@ -142,7 +142,7 @@ $app->match('facebook_login_back', function () use ($twig, $request, $app)
 
     try {
         
-        $userData = UserRepository::store(['email'=>$user->email, 'name'=>$user->name]);
+        $userData = UserRepository::store(['email'=>$user->email, 'access_token'=>$user->access_token, 'name'=>$user->name]);
 
         $fbAuth->insertUserInfo($user, $userData->id);
 
