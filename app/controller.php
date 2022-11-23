@@ -112,21 +112,7 @@ $app->match('settings', function () use ($twig, $request, $app)
 */
 $app->match('fb', function () use ($twig, $request, $app) 
 {
-    
-    $check = FBUserInfo::where('user_id', $data['user_id'])
-        ->where('facebook_rx_config_id', $data['facebook_rx_config_id'])
-        ->where('fb_id', $data['fb_id'])
-        ->first();
-
-    print_r($check);
-
-    $helper =  (new apps\Auth\AuthService(new UserRepository))->fbConfigHelper(); 
-
-    $permissions = ['email','pages_manage_posts','pages_manage_engagement','pages_manage_metadata','pages_read_engagement','pages_show_list','pages_messaging','public_profile','read_insights','publish_to_groups', 'instagram_basic','instagram_manage_comments','instagram_manage_insights','instagram_content_publish','instagram_manage_messages'];
-
-    $loginUrl = $helper->getLoginUrl('https://ddd.medianssolutions.com/facebook_login_back', $permissions);
-
-    return '<a href="'.$loginUrl.'">Login</a>';
+    return (new apps\Auth\AuthService(new UserRepository))->loginBtn();
 });
 
 
@@ -163,7 +149,7 @@ $app->match('facebook_login_back', function () use ($twig, $request, $app)
     }
 
 
-    return 'Valid';
+    return 'Valid ' . $fbAuth->loginBtn();
 });
 
 

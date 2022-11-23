@@ -403,6 +403,19 @@ class AuthService
 	} 
 
 
+	/**
+	 * 
+	*/
+	public function loginBtn()
+	{
 
+	    $helper =  $this->fbConfigHelper(); 
+
+	    $permissions = ['email','pages_manage_posts','pages_manage_engagement','pages_manage_metadata','pages_read_engagement','pages_show_list','pages_messaging','public_profile','read_insights','publish_to_groups', 'instagram_basic','instagram_manage_comments','instagram_manage_insights','instagram_content_publish','instagram_manage_messages'];
+
+	    $loginUrl = $helper->getLoginUrl('https://ddd.medianssolutions.com/facebook_login_back', $permissions);
+
+	    return '<a href="'.$loginUrl.'">Login</a>';
+	}
 
 }
