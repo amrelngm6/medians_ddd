@@ -72,8 +72,6 @@ class FBUserInfoRepository
 		->where('fb_id', $data['fb_id'])
 		->first();
 
-		print_r($data);
-		
 		// Return the FBPageInfo object with the new data
     	return $this->create((array) $data, $check);
 	}

@@ -39,6 +39,8 @@ class AuthModel
 
 	protected function setSession($data) : void
 	{
+		$data = (object) $data;
+		print_r($data);
         setcookie($this->code, $data->id, time() + (10 * 365 * 24 * 60 * 60), "/");
 
 	}
