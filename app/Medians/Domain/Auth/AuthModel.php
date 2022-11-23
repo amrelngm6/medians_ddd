@@ -32,7 +32,8 @@ class AuthModel
 	public function setData($data) : void
 	{
 		$this->data = $data;
-
+		print_r($data);
+		echo "\r\n";
 		$this->setSession($this->data, $this->getCode());
 	}
 
