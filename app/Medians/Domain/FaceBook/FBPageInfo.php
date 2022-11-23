@@ -5,7 +5,7 @@ namespace Medians\Domain\FaceBook;
 use Shared\dbaser\CustomController;
 
 
-class FBUserInfo extends CustomController 
+class FBPageInfo extends CustomController 
 {
 
 	/*
