@@ -363,7 +363,7 @@ class AuthService
 
         $data = array(
             'user_id' => $userId,
-            'facebook_rx_config_id' => $config->id,
+            'facebook_rx_config_id' => $config->api_id,
             'access_token' => $access_token,
             'name' => $user->name,
             'email' => isset($user->email) ? $user->email : $user->id,
