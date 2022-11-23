@@ -52,10 +52,8 @@ class UserRepository
 
 		$Model = new User();
 		
-		$Model->firstOrCreate( (array) $data);
-		
 		// Return the FBUserInfo object with the new data
-    	return $Model;
+    	return $Model->firstOrCreate( (array) $data);
 
 	}
 	
