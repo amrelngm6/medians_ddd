@@ -57,7 +57,7 @@ class FBPageInfoRepository
 		}
 
 		// Return the FBPageInfo object with the new data
-    	return FBPageInfo::create($data);
+    	return FBPageInfo::firstOrCreate((array) $data);
 
 	}
 	
