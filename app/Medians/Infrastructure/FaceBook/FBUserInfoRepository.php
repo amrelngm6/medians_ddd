@@ -45,7 +45,7 @@ class FBUserInfoRepository
 	*/
 	public function create(Array $data)
 	{
-		$Model = new FBPageInfo();
+		$Model = new FBUserInfo();
 
 		foreach ($data as $key => $value) 
 		{
