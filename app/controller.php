@@ -186,8 +186,9 @@ $app->match('facebook_login_back', function () use ($twig, $request, $app)
 */
 $app->match('fb/welcome_message/{msg}', function ($msg) use ($twig, $request, $app) 
 {
-    $config = (new apps\Auth\AuthService(new UserRepository))->set_welcome_message('1671122466499731', $msg);
     
+    $config = (new apps\Auth\AuthService(new UserRepository))->set_welcome_message('1671122466499731', $msg);
+
     return 'Updated';
 });
 
