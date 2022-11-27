@@ -38,9 +38,9 @@ $app->currency = 'EGP';
     
 
 
-CONST db_name = 'medians_ddd';
-CONST db_username = 'root';
-CONST db_password = 'root';
+CONST db_name = 'mediaons_ddd';
+CONST db_username = 'mediaons_root';
+CONST db_password = 'Medians@2020';
 
 $capsule = new Capsule;
 
