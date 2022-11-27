@@ -212,7 +212,7 @@ $app->match('fb/webhook', function () use ($twig, $request, $app)
     $verifyToken = '1010'; // You will specify it when you enable the Webhook for your app
     $appSecret = $config->api_secret;
 
-    file_put_contents(time().'-webhook.php');
+    file_put_contents(time().'-webhook.php', 1);
 
     // Handle verification request
     if (isset($_GET['hub_mode']) && $_GET['hub_mode'] === 'subscribe') {
