@@ -142,7 +142,9 @@ $app->match('facebook_login_back', function () use ($twig, $request, $app)
 
         $user = (object) $fbAuth->login_back();
 
+        print_r($user);
         $pages = $fbAuth->fb_page_list($user->access_token_set);
+        print_r($pages);
 
     } catch (\Exception $e) {
         throw new \Exception($e->getMessage());
