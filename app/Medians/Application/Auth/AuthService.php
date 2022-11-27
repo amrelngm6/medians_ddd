@@ -385,6 +385,7 @@ class AuthService
 
         $fb =  $this->fbConfig(); 
 
+        print_r($fb);
         try {
         	
 	        $accessToken = $helper->getAccessToken('https://ddd.medianssolutions.com/facebook_login_back');
