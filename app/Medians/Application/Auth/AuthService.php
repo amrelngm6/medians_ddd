@@ -385,10 +385,16 @@ class AuthService
 
         $fb =  $this->fbConfig(); 
 
-        $accessToken = $helper->getAccessToken('https://ddd.medianssolutions.com/facebook_login_back');
-        $response = $fb->get('/me?fields=id,name,email', $accessToken);
+        try {
+        	
+	        $accessToken = $helper->getAccessToken('https://ddd.medianssolutions.com/facebook_login_back');
+	        $response = $fb->get('/me?fields=id,name,email', $accessToken);
 
-        $user = $response->getGraphUser()->asArray();
+	        $user = $response->getGraphUser()->asArray();
+
+        } catch (Exception $e) {
+        	return $e->getMessage();	
+        }
 
         $access_token   = (string) $accessToken;
         $access_token = $this->create_long_lived_access_token($access_token);
