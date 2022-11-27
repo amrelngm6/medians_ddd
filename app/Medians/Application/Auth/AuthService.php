@@ -385,13 +385,15 @@ class AuthService
 
         $fb =  $this->fbConfig(); 
 
-        print_r($fb);
         try {
         	
 	        $accessToken = $helper->getAccessToken('https://ddd.medianssolutions.com/facebook_login_back');
 	        $response = $fb->get('/me?fields=id,name,email', $accessToken);
 
+	        print_r($response);
+
 	        $user = $response->getGraphUser()->asArray();
+	        print_r($user);
 
         } catch (Exception $e) {
         	return $e->getMessage();	
