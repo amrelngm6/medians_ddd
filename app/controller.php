@@ -87,6 +87,32 @@ $app->match('', function () use ($twig, $app)
     ]);
 });
 
+/*
+// Return list of device 
+*/
+$app->match('/dashboard', function () use ($twig, $app) 
+{
+
+    return  $twig->render('views/admin/dashboard/index.html.twig', [
+        'title' => 'Home page ',
+        'app' => $app,
+        'formAction' => $app->CONF['url'],
+    ]);
+});
+
+
+/*
+// Return list of device 
+*/
+$app->match('/{page}', function ($page) use ($twig, $app) 
+{
+
+    return  $twig->render('views/front/pages/page.html.twig', [
+        'title' => 'Medians',
+        'app' => $app
+    ]);
+});
+
 
 
 /**

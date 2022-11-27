@@ -9,7 +9,7 @@
 function getMenuList()
 {
 	$data = array(
-		array('title'=>'Dashboard', 'link'=>''),
+		array('title'=>'Dashboard', 'link'=>'dashboard'),
 		array('title'=>'Devices', 'link'=>'/devices'),
 		array('title'=>'Orders', 'link'=>'/orders'),
 		array('title'=>'Products', 'link'=>'/products'),

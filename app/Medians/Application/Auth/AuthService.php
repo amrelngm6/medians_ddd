@@ -60,10 +60,8 @@ class AuthService
 	public function loginPage($request, $app, $twig)
 	{
 
-		if (isset($app->auth->id))
-		{
-        	header("Location: /");
-		}
+
+		if (isset($app->auth->id)) { return $app->redirect('/'); }
 
 	    return  $twig->render('views/admin/forms/login.html.twig', [
 	        'title' => 'Login page ',

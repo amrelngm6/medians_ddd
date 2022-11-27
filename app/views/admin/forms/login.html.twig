@@ -1,3 +1,4 @@
+{% if  app.auth.id == null  %}
 {% include 'views/admin/includes/header.html.twig' %}
 <div id="app">
     <login-dashboard 
@@ -6,11 +7,10 @@
     ></login-dashboard>
 </div>
 
-{% if  app.auth.id == null  %}
 
 <meta name="google-signin-client_id" content="860172983359-l76kt9v0ds0sahf15q6cv31qu4pj8g5q.apps.googleusercontent.com">
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 
-{% endif %}
 
 {% include 'views/admin/includes/footer.html.twig' %}
+{% endif %}
