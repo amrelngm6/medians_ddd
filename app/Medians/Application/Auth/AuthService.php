@@ -473,11 +473,14 @@ class AuthService
 	}
 
 
-	public function set_welcome_message($post_access_token='',$welcome_message='')
+	public function set_welcome_message($page_id='',$welcome_message='')
 	{
+	    
+	    $page = (new Repo\FaceBook\FBRepository)->getByPageId($page_id);
+
 		if($welcome_message=='') return false;
 	
-		$url = "https://graph.facebook.com/v4.0/me/messenger_profile?access_token={$post_access_token}";
+		$url = "https://graph.facebook.com/v4.0/me/messenger_profile?access_token={$page->page_access_token}";
 		$get_started_data=array
 		(
 			'greeting'=>array(0=>array("locale"=>"default","text"=>$welcome_message))
