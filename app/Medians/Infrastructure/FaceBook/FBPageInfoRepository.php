@@ -18,10 +18,10 @@ class FBPageInfoRepository
 	// Find item by `id` 
 	*/
 	public function getByPageId($page_id) : ?FB
-	{
+	{ 
 		return FBPageInfo::where('page_id', $page_id)->first();
 	}
-	
+
 	/*
 	// Find item by `id` 
 	*/
