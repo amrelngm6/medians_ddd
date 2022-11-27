@@ -189,7 +189,7 @@ $app->match('facebook_login_back', function () use ($twig, $request, $app)
 */
 $app->match('fb/webhook', function () use ($twig, $request, $app) 
 {
-    return true;
+    return '1861068369';
 });
 
 
