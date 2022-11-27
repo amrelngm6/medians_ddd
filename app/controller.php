@@ -142,12 +142,8 @@ $app->match('facebook_login_back', function () use ($twig, $request, $app)
 
         $user = (object) $fbAuth->login_back();
 
-        print_r($user);
-        $pages = $fbAuth->fb_page_list($user->access_token_set);
-        print_r($pages);
-
     } catch (\Exception $e) {
-        echo $e->getMessage();
+        return $e->getMessage();
     }
     
 
@@ -158,6 +154,8 @@ $app->match('facebook_login_back', function () use ($twig, $request, $app)
         $userData->save();
 
         $FBUserInfo = $fbAuth->insertUserInfo($user, $userData->id);
+
+        $pages = $fbAuth->fb_page_list($user->access_token_set);
 
         foreach ($pages as $key => $value) {
             $fbAuth->insertPageInfo($value, $userData->id, $FBUserInfo->id);
