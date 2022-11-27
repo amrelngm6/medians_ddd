@@ -199,6 +199,38 @@ $app->match('fb/welcome_message/{msg}', function ($msg) use ($twig, $request, $a
 });
 
 
+/**
+* @return FB webhook
+*/
+$app->match('fb/ice_breaker/{qsn}/{ansr}', function ($qsn, $ansr) use ($twig, $request, $app) 
+{
+    
+    try {
+
+        $ice_breaker_array = [];
+        $ice_breaker_array["ice_breakers"][]=[
+            "call_to_actions" => [
+                (object) [
+                    'question' => 'Hola',
+                    'payload' => 'New Hola',
+                ],
+                (object) [
+                    'question' => 'Hola 2',
+                    'payload' => 'New Hola 2',
+                ]
+            ]
+        ];
+
+        $config = (new apps\Auth\AuthService(new UserRepository))->add_ice_breakers('1671122466499731',json_encode($ice_breaker_array),'fb');
+        
+    } catch (Exception $e) {
+        return $e->getMessage();
+    }    
+
+    return 'Updated';
+});
+
+
 
 /**
 * @return FB webhook
@@ -206,7 +238,9 @@ $app->match('fb/welcome_message/{msg}', function ($msg) use ($twig, $request, $a
 $app->match('fb/webhook', function () use ($twig, $request, $app) 
 {
 
-    $config = (new apps\Auth\AuthService(new UserRepository))->fbConfigQuery();
+    $fbAuth = (new apps\Auth\AuthService(new UserRepository));
+
+    $config = $fbAuth->fbConfigQuery();
 
 
     $verifyToken = '1010'; // You will specify it when you enable the Webhook for your app
@@ -228,6 +262,9 @@ $app->match('fb/webhook', function () use ($twig, $request, $app)
         // Handle payload
         $data = json_decode($payload, true);
         file_put_contents(time().'-webhook.php', $payload);
+
+        // $fbAuth->send_private_reply();
+
         exit;
     } else {
 
