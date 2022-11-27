@@ -136,10 +136,9 @@ $app->match('fb', function () use ($twig, $request, $app)
 */
 $app->match('facebook_login_back', function () use ($twig, $request, $app) 
 {
-    try {
+    $fbAuth = (new apps\Auth\AuthService(new UserRepository));
         
-        $fbAuth = (new apps\Auth\AuthService(new UserRepository));
-        print_r($fbAuth);
+    try {
 
         $user = (object) $fbAuth->login_back();
 
@@ -148,7 +147,7 @@ $app->match('facebook_login_back', function () use ($twig, $request, $app)
         print_r($pages);
 
     } catch (\Exception $e) {
-        throw new \Exception($e->getMessage());
+        echo $e->getMessage();
     }
     
 
