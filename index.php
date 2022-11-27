@@ -84,7 +84,7 @@ $twig->addFilter(new \Twig\TwigFilter('html_entity_decode', 'html_entity_decode'
 
 $app->auth = (new apps\Auth\AuthService( new UserRepository() ))->checkSession();
 
-$app->providerSession = (isset($app->auth->providers) && json_decode($app->auth->providers)[0]) ? json_decode($app->auth->providers)[0] : null;
+$app->providerSession = (isset($app->auth->providers) && isset(json_decode($app->auth->providers)[0])) ? json_decode($app->auth->providers)[0] : null;
 
 // Set Settings options
 $app->Settings = (new apps\Settings\SettingsController)->getAll();
