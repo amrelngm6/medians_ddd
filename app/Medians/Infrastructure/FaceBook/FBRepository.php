@@ -14,13 +14,6 @@ class FBRepository
 	{
 	}
 
-	/*
-	// Find item by `id` 
-	*/
-	public function getByPageId($page_id) : ?FB
-	{
-		return FB::where('page_id', $page_id)->first();
-	}
 
 	/*
 	// Find item by `id` 
