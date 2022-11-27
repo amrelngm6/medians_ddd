@@ -476,45 +476,52 @@ class AuthService
 	public function set_welcome_message($page_id='',$welcome_message='')
 	{
 	    
-	    $page = (new Repo\FaceBook\FBRepository)->getByPageId($page_id);
+		try {
+		    	
+		    $page = (new Repo\FaceBook\FBRepository)->getByPageId($page_id);
 
-		if($welcome_message=='') return false;
-	
-		$url = "https://graph.facebook.com/v4.0/me/messenger_profile?access_token={$page->page_access_token}";
-		$get_started_data=array
-		(
-			'greeting'=>array(0=>array("locale"=>"default","text"=>$welcome_message))
-		);
-		// $get_started_data='{"greeting":[{"locale":"default","text":"'.$welcome_message.'"}]}';
-		$get_started_data=json_encode($get_started_data);
-	
-		$ch = curl_init();
-	 	$headers = array("Content-type: application/json");
-	 
-	 	curl_setopt($ch, CURLOPT_URL, $url);
-	 	curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); 
-	 
-	 	curl_setopt($ch,CURLOPT_POST,1);
-	 	curl_setopt($ch,CURLOPT_POSTFIELDS,$get_started_data); 
-	 
-	 	// curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); 
-	 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
-	 	curl_setopt($ch, CURLOPT_COOKIEJAR,'cookie.txt'); 
-	 	curl_setopt($ch, CURLOPT_COOKIEFILE,'cookie.txt'); 
-	 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
-	 	curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.3) Gecko/20070309 Firefox/2.0.0.3"); 
-	 	$st=curl_exec($ch);	 
-	 	$result=json_decode($st,TRUE);
-	 	if(isset($result["result"])) 
-		{
-			$result["result"]= trim($result["result"]);
-			$result['success']=1;
-		}
-		if(isset($result["error"])) 
-		{
-			$result["result"]=isset($result["error"]["message"]) ? $result["error"]["message"] : "Something went wrong, please try again.";
-			$result['success']=0;
-		}
+			if($welcome_message=='') return false;
+
+			$url = "https://graph.facebook.com/v4.0/me/messenger_profile?access_token={$page->page_access_token}";
+			$get_started_data=array
+			(
+				'greeting'=>array(0=>array("locale"=>"default","text"=>$welcome_message))
+			);
+			// $get_started_data='{"greeting":[{"locale":"default","text":"'.$welcome_message.'"}]}';
+			$get_started_data=json_encode($get_started_data);
+
+			$ch = curl_init();
+		 	$headers = array("Content-type: application/json");
+		 
+		 	curl_setopt($ch, CURLOPT_URL, $url);
+		 	curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); 
+		 
+		 	curl_setopt($ch,CURLOPT_POST,1);
+		 	curl_setopt($ch,CURLOPT_POSTFIELDS,$get_started_data); 
+		 
+		 	// curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); 
+		 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+		 	curl_setopt($ch, CURLOPT_COOKIEJAR,'cookie.txt'); 
+		 	curl_setopt($ch, CURLOPT_COOKIEFILE,'cookie.txt'); 
+		 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+		 	curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.3) Gecko/20070309 Firefox/2.0.0.3"); 
+		 	$st=curl_exec($ch);	 
+		 	$result=json_decode($st,TRUE);
+		 	if(isset($result["result"])) 
+			{
+				$result["result"]= trim($result["result"]);
+				$result['success']=1;
+			}
+			if(isset($result["error"])) 
+			{
+				$result["result"]=isset($result["error"]["message"]) ? $result["error"]["message"] : "Something went wrong, please try again.";
+				$result['success']=0;
+			}
+
+
+	    } catch (Exception $e) {
+	    	return $e->getMessage();	
+	    }
 
 		return $result;
 	}
