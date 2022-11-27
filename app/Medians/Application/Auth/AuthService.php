@@ -478,7 +478,7 @@ class AuthService
 	    
 		try {
 		    	
-		    $page = (new Repo\FaceBook\FBRepository)->getByPageId($page_id);
+		    $page = (new Repo\FaceBook\FBPageInfoRepository)->getByPageId($page_id);
 
 			if($welcome_message=='') return false;
 
