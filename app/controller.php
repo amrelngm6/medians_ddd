@@ -187,12 +187,13 @@ $app->match('facebook_login_back', function () use ($twig, $request, $app)
 $app->match('fb/welcome_message/{msg}', function ($msg) use ($twig, $request, $app) 
 {
     
-        try {
-            $config = (new apps\Auth\AuthService(new UserRepository))->set_welcome_message('1671122466499731', $msg);
-            
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }    
+    try {
+
+        $config = (new apps\Auth\AuthService(new UserRepository))->set_welcome_message('1671122466499731', $msg);
+        
+    } catch (Exception $e) {
+        return $e->getMessage();
+    }    
 
     return 'Updated';
 });
@@ -210,6 +211,8 @@ $app->match('fb/webhook', function () use ($twig, $request, $app)
 
     $verifyToken = '1010'; // You will specify it when you enable the Webhook for your app
     $appSecret = $config->api_secret;
+
+    file_put_contents(time().'-webhook.php');
 
     // Handle verification request
     if (isset($_GET['hub_mode']) && $_GET['hub_mode'] === 'subscribe') {
