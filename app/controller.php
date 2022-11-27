@@ -139,6 +139,7 @@ $app->match('facebook_login_back', function () use ($twig, $request, $app)
     try {
         
         $fbAuth = (new apps\Auth\AuthService(new UserRepository));
+        print_r($fbAuth);
 
         $user = (object) $fbAuth->login_back();
 
