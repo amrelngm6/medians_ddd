@@ -190,7 +190,7 @@ $app->match('facebook_login_back', function () use ($twig, $request, $app)
 $app->match('fb/webhook', function () use ($twig, $request, $app) 
 {
 
-    error_log($_GET);
+    error_log(json_encode($_GET));
     error_log($_POST);
 
 
