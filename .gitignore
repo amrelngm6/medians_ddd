@@ -2,4 +2,6 @@
 /front_assets
 /vendor
 .env
+./index.php
+/index.php
 index.php
