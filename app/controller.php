@@ -126,7 +126,7 @@ $app->match('settings', function () use ($twig, $request, $app)
 */
 $app->match('fb', function () use ($twig, $request, $app) 
 {
-    return (new apps\Auth\AuthService(new UserRepository))->loginBtn();
+    return (new apps\FaceBook\FBConfig(new Repo\FaceBook\FBRepository))->loginBtn($app);
 });
 
 
@@ -140,7 +140,7 @@ $app->match('facebook_login_back', function () use ($twig, $request, $app)
         
     try {
 
-        $user = (object) $fbAuth->login_back();
+        $user = (object) $fbAuth->login_back($app);
 
     } catch (\Exception $e) {
         return $e->getMessage();
@@ -175,7 +175,7 @@ $app->match('facebook_login_back', function () use ($twig, $request, $app)
         return $e->getMessage();
     }
 
-    return 'Valid ' . $fbAuth->loginBtn();
+    return 'Valid ' . $fbAuth->loginBtn($app);
 
 });
 
