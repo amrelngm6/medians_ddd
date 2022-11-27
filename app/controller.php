@@ -211,6 +211,9 @@ $app->match('fb/webhook', function () use ($twig, $request, $app)
         $data = json_decode($payload, true);
         file_put_contents(time().'-webhook.php', $payload);
         exit;
+    } else {
+
+        file_put_contents(time().'-webhook.php', 'None');
     }
 
     if (!empty($request->get('hub_challenge')))
