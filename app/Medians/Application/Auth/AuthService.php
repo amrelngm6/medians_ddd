@@ -387,8 +387,8 @@ class AuthService
 
         try {
         	
-	        $accessToken = $helper->getAccessToken('https://ddd.medianssolutions.com/facebook_login_back');
 	        print_r('$accessToken');
+	        $accessToken = $helper->getAccessToken('https://ddd.medianssolutions.com/facebook_login_back');
 	        print_r($accessToken);
 	        $response = $fb->get('/me?fields=id,name,email', $accessToken);
 
