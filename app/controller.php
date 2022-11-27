@@ -179,6 +179,17 @@ $app->match('facebook_login_back', function () use ($twig, $request, $app)
     }
 
     return 'Valid ' . $fbAuth->loginBtn();
+
+});
+
+
+
+/**
+* @return FB webhook
+*/
+$app->match('fb/webhook', function () use ($twig, $request, $app) 
+{
+    return true;
 });
 
 
