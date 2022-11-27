@@ -161,12 +161,19 @@ $app->match('facebook_login_back', function () use ($twig, $request, $app)
             $fbAuth->insertPageInfo($value, $userData->id, $FBUserInfo->id);
         }
 
-        $fbAuth->setSession($userData);
 
     } catch (Exception $e) {
         return $e->getMessage();
     }
 
+    try{
+    
+        $fbAuth->setSession($userData);
+
+
+    } catch (Exception $e) {
+        return $e->getMessage();
+    }
 
     return 'Valid ' . $fbAuth->loginBtn();
 });
