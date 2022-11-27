@@ -348,6 +348,16 @@ class AuthService
 
         $create = (new Repo\FaceBook\FBPageInfoRepository)->store($data);
 
+        try {
+        	
+	        $this->enable_bot($data['page_id'], $data['page_access_token']);
+	        error_log('Saved');
+        } catch (Exception $e) {
+        	
+	        error_log('Error Saving');
+	        return $e->getMessage();
+        }
+
         return $create;
 	}
 
@@ -409,7 +419,7 @@ class AuthService
 
 
 	/**
-	 * 
+	 * Return login url
 	*/
 	public function loginBtn()
 	{
@@ -422,5 +432,139 @@ class AuthService
 
 	    return '<a href="'.$loginUrl.'">Login</a>';
 	}
+
+
+
+	/* Add get Started Button */
+	public function add_get_started_button($post_access_token='')
+	{
+	
+		$url = "https://graph.facebook.com/v4.0/me/messenger_profile?access_token={$post_access_token}";
+		$get_started_data='{"get_started":{"payload":"GET_STARTED_PAYLOAD"}}';
+	
+		$ch = curl_init();
+	 	$headers = array("Content-type: application/json");
+	 
+	 	curl_setopt($ch, CURLOPT_URL, $url);
+	 	curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); 
+	 
+	 	curl_setopt($ch,CURLOPT_POST,1);
+	 	curl_setopt($ch,CURLOPT_POSTFIELDS,$get_started_data); 
+	 
+	 	// curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); 
+	 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+	 	curl_setopt($ch, CURLOPT_COOKIEJAR,'cookie.txt'); 
+	 	curl_setopt($ch, CURLOPT_COOKIEFILE,'cookie.txt'); 
+	 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+	 	curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.3) Gecko/20070309 Firefox/2.0.0.3"); 
+	 	$st=curl_exec($ch);	 
+	 	$result=json_decode($st,TRUE);
+	 	if(isset($result["result"])) 
+		{
+			$result["result"]=$this->CI->lang->line(trim($result["result"]));
+			$result['success']=1;
+		}
+		if(isset($result["error"])) 
+		{
+			$result["result"]=isset($result["error"]["message"]) ? $result["error"]["message"] : $this->CI->lang->line("Something went wrong, please try again.");
+			$result['success']=0;
+		}
+		return $result;
+	}
+
+
+	public function set_welcome_message($post_access_token='',$welcome_message='')
+	{
+		if($welcome_message=='') return false;
+	
+		$url = "https://graph.facebook.com/v4.0/me/messenger_profile?access_token={$post_access_token}";
+		$get_started_data=array
+		(
+			'greeting'=>array(0=>array("locale"=>"default","text"=>$welcome_message))
+		);
+		// $get_started_data='{"greeting":[{"locale":"default","text":"'.$welcome_message.'"}]}';
+		$get_started_data=json_encode($get_started_data);
+	
+		$ch = curl_init();
+	 	$headers = array("Content-type: application/json");
+	 
+	 	curl_setopt($ch, CURLOPT_URL, $url);
+	 	curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); 
+	 
+	 	curl_setopt($ch,CURLOPT_POST,1);
+	 	curl_setopt($ch,CURLOPT_POSTFIELDS,$get_started_data); 
+	 
+	 	// curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); 
+	 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+	 	curl_setopt($ch, CURLOPT_COOKIEJAR,'cookie.txt'); 
+	 	curl_setopt($ch, CURLOPT_COOKIEFILE,'cookie.txt'); 
+	 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+	 	curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.3) Gecko/20070309 Firefox/2.0.0.3"); 
+	 	$st=curl_exec($ch);	 
+	 	$result=json_decode($st,TRUE);
+	 	if(isset($result["result"])) 
+		{
+			$result["result"]= trim($result["result"]);
+			$result['success']=1;
+		}
+		if(isset($result["error"])) 
+		{
+			$result["result"]=isset($result["error"]["message"]) ? $result["error"]["message"] : "Something went wrong, please try again.";
+			$result['success']=0;
+		}
+
+		return $result;
+	}
+
+
+
+
+	// ================== webhook enable disable ==============//
+	// Array([success] => 1)
+	public function enable_bot($page_id='',$post_access_token='')
+	{
+		if($page_id=='' || $post_access_token=='') 
+		{
+			return array('success'=>0,'error'=>"Something went wrong, please try again."); 
+			exit();
+		}
+		try 
+		{
+			$params=array();			
+			$params['subscribed_fields']= array("messages","messaging_optins","messaging_postbacks","messaging_referrals","feed");			
+			$response = $this->fbConfig()->post("{$page_id}/subscribed_apps",$params,$post_access_token);			
+			$response = $response->getGraphObject()->asArray();
+			$response['error']='';
+			return $response;			
+		} 
+		catch (Exception $e) 
+		{
+			return array('success'=>0,'error'=>$e->getMessage());
+		}
+	}
+
+	// Array([success] => 1)
+	public function disable_bot($page_id='',$post_access_token='')
+	{
+		if($page_id=='' || $post_access_token=='') 
+		{
+			return array('success'=>0,'error'=>$this->CI->lang->line("Something went wrong, please try again.")); 
+			exit();
+		}
+		try 
+		{
+			$response = $this->fb->delete("{$page_id}/subscribed_apps",array(),$post_access_token);
+			$response = $response->getGraphObject()->asArray();
+			$response['error']='';
+			return $response;			
+		} 
+		catch (Exception $e) 
+		{
+			return array('success'=>0,'error'=>$e->getMessage());
+		}
+	}
+
+
+
 
 }
