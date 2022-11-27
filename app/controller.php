@@ -189,9 +189,13 @@ $app->match('facebook_login_back', function () use ($twig, $request, $app)
 */
 $app->match('fb/webhook', function () use ($twig, $request, $app) 
 {
+    if (!empty($request->get('hub_challenge')))
+    {
+        return $request->get('hub_challenge');
+    }
+        
     error_log(json_encode($_GET));
     error_log(json_decode($_POST));
-    return $request->get('hub_challenge');
 });
 
 
