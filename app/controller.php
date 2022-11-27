@@ -101,18 +101,6 @@ $app->match('/dashboard', function () use ($twig, $app)
 });
 
 
-/*
-// Return list of device 
-*/
-$app->match('/{page}', function ($page) use ($twig, $app) 
-{
-
-    return  $twig->render('views/front/pages/page.html.twig', [
-        'title' => 'Medians',
-        'app' => $app
-    ]);
-});
-
 
 
 /**
@@ -196,6 +184,18 @@ $app->match('logout', function () use ($twig, $request, $app)
     return $app->redirect('./');
 });
 
+
+/*
+// Return list of device 
+*/
+$app->match('/{page}', function ($page) use ($twig, $app) 
+{
+
+    return  $twig->render('views/front/pages/page.html.twig', [
+        'title' => 'Medians',
+        'app' => $app
+    ]);
+});
 
 
 
