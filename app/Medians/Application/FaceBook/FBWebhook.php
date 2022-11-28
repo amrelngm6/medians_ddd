@@ -21,9 +21,24 @@ class FBWebhook
 	function __construct($repo)
 	{
 
+		$this->repo = $repo;
+
 		$this->config = new FBConfig($repo);
 
 	}
+
+	/**
+	 * FB Pages list
+	 * 
+	*/
+	public function fb_pages_list($app)
+	{
+
+		$list = (new Repo\FaceBook\FBPageInfoRepository())->getByUserId($app->auth->id);
+
+		print_r($list);
+	}
+
 
 
 	/**

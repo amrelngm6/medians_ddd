@@ -147,7 +147,6 @@ $app->match('fb/welcome_message/{msg}', function ($msg) use ($twig, $request, $a
     } catch (Exception $e) {
         return $e->getMessage();
     }    
-
 });
 
 
@@ -161,13 +160,20 @@ $app->match('fb/ice_breaker/{qsn}/{ansr}', function ($qsn, $ansr) use ($twig, $r
 });
 
 
-
 /**
 * @return FB webhook
 */
 $app->match('fb/webhook', function () use ($twig, $request, $app) 
 {
     return (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->webhook_init();
+});
+
+/**
+* @return FB webhook
+*/
+$app->match('fb/pages_list', function () use ($twig, $request, $app) 
+{
+    return (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->fb_pages_list($app);
 });
 
 

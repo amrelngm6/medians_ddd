@@ -35,9 +35,9 @@ class FBPageInfoRepository
 	/*
 	// Find item by `id` 
 	*/
-	public function getByCode($code) : ?FBPageInfo
+	public function getByUserId($user_id) : ?FBPageInfo
 	{
-		return FBPageInfo::where('code', $code)->first();
+		return FBPageInfo::where('user_id', $user_id)->get();
 	}
 
 	/*
