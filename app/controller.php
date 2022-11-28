@@ -126,7 +126,7 @@ $app->match('settings', function () use ($twig, $request, $app)
 */
 $app->match('fb', function () use ($twig, $request, $app) 
 {
-    return (new apps\FaceBook\FBConfig(new Repo\FaceBook\FBRepository))->loginBtn($app);
+    return (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->loginBtn($app);
 });
 
 
@@ -136,7 +136,7 @@ $app->match('fb', function () use ($twig, $request, $app)
 */
 $app->match('facebook_login_back', function () use ($twig, $request, $app) 
 {
-    $fbAuth = (new apps\Auth\AuthService(new UserRepository));
+    $fbAuth = (new apps\FaceBook\FBWebhook(new UserRepository));
         
     try {
 
@@ -189,13 +189,14 @@ $app->match('fb/welcome_message/{msg}', function ($msg) use ($twig, $request, $a
     
     try {
 
-        $config = (new apps\Auth\AuthService(new UserRepository))->set_welcome_message('1671122466499731', $msg);
+        (new apps\FaceBook\FBWebhook(new UserRepository))->set_welcome_message('1671122466499731', $msg);
+    
+        return 'Updated';
         
     } catch (Exception $e) {
         return $e->getMessage();
     }    
 
-    return 'Updated';
 });
 
 
@@ -221,7 +222,7 @@ $app->match('fb/ice_breaker/{qsn}/{ansr}', function ($qsn, $ansr) use ($twig, $r
             ]
         ];
 
-        $config = (new apps\Auth\AuthService(new UserRepository))->add_ice_breakers('1671122466499731',json_encode($ice_breaker_array),'fb');
+        $config = (new apps\FaceBook\FBWebhook(new UserRepository))->add_ice_breakers('1671122466499731',json_encode($ice_breaker_array),'fb');
         
     } catch (Exception $e) {
         return $e->getMessage();
@@ -238,44 +239,8 @@ $app->match('fb/ice_breaker/{qsn}/{ansr}', function ($qsn, $ansr) use ($twig, $r
 $app->match('fb/webhook', function () use ($twig, $request, $app) 
 {
 
-    $fbAuth = (new apps\Auth\AuthService(new UserRepository));
+    return (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->webhook_init();
 
-    $config = $fbAuth->fbConfigQuery();
-
-
-    $verifyToken = '1010'; // You will specify it when you enable the Webhook for your app
-    $appSecret = $config->api_secret;
-
-    file_put_contents(time().'-webhook.php', 1);
-
-    // Handle verification request
-    if (isset($_GET['hub_mode']) && $_GET['hub_mode'] === 'subscribe') {
-        if ($_GET['hub_verify_token'] === $verifyToken) {
-            echo $_GET['hub_challenge'];
-            exit;
-        }
-    }
-
-    // Validate the integrity and payload and it's origin
-    $payload = file_get_contents('php://input');
-    if (isset($_SERVER['HTTP_X_HUB_SIGNATURE']) && hash_equals(explode('=', $_SERVER['HTTP_X_HUB_SIGNATURE'])[1], hash_hmac('sha1', $payload, $appSecret))) {
-        // Handle payload
-        $data = json_decode($payload, true);
-        file_put_contents(time().'-webhook.php', $payload);
-
-        // $fbAuth->send_private_reply();
-
-        exit;
-    } else {
-
-        $data = json_decode($payload, true);
-        file_put_contents(time().'-webhook.php', $payload);
-    }
-
-    if (!empty($request->get('hub_challenge')))
-    {
-        return $request->get('hub_challenge');
-    }
 });
 
 
