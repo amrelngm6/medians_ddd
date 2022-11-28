@@ -173,12 +173,7 @@ $app->match('fb/webhook', function () use ($twig, $request, $app)
 */
 $app->match('fb/pages_list', function () use ($twig, $request, $app) 
 {
-    if (isset($app->auth))
-    {
-        $app->auth = $app->auth->with('fb_pages')->with('fb_user')->find($app->auth->id);
-    }
-
-    return (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->fb_pages_list($app);
+    return (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->fb_pages_list($request, $app, $twig);
 });
 
 

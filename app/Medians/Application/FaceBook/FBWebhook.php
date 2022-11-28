@@ -27,16 +27,26 @@ class FBWebhook
 
 	}
 
+
+
 	/**
 	 * FB Pages list
 	 * 
 	*/
-	public function fb_pages_list($app)
+	public function fb_pages_list($request, $app, $twig)
 	{
+
+	    if (isset($app->auth))
+	    {
+	        $app->auth = $app->auth->with('fb_pages')->with('fb_user')->find($app->auth->id);
+	    }
 
 		$list = (new Repo\FaceBook\FBPageInfoRepository())->getByUserId($app->auth->id);
 
-		print_r($list);
+	    return  $twig->render('views/admin/fb/pages.html.twig', [
+	        'title' => 'Login page ',
+	        'app' => $app,
+	    ]);
 	}
 
 
