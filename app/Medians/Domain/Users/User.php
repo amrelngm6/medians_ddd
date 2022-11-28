@@ -6,6 +6,8 @@ use Shared\dbaser\CustomController;
 
 use Medians\Domain\Providers\Provider;
 use Medians\Domain\Providers\ProviderUsers;
+use Medians\Domain\FaceBook\FBPageInfo;
+use Medians\Domain\FaceBook\FBUserInfo;
 
 class User extends CustomController
 {
@@ -71,6 +73,13 @@ class User extends CustomController
 	{
 		return $this->HasManyThrough(
 			Provider::class, ProviderUsers::class, 'userId', 'id', 'id', 'providerId'
+		);
+	}
+
+	public function fb_pages()
+	{
+		return $this->HasMany(
+			FBPageInfo::class,  'user_id', 'id'
 		);
 	}
 
