@@ -10,14 +10,13 @@ function getMenuList()
 {
 	$data = array(
 		array('title'=>'Dashboard', 'link'=>'dashboard'),
-		array('title'=>'Devices', 'link'=>'/devices'),
-		array('title'=>'Orders', 'link'=>'/orders'),
-		array('title'=>'Products', 'link'=>'/products'),
-		array('title'=>'Stock', 'link'=>'/stock'),
-		array('title'=>'Devices management', 'link'=>'/devices_manage'),
-		array('title'=>'Devices types', 'link'=>'/device_types'),
-		array('title'=>'Settings', 'link'=>'/settings'),
-		array('title'=>'Logout', 'link'=>'/logout'),
+		array('title'=>'Social', 'link'=>'', 'sub'=>
+			[
+				array('title'=>'FB Pages list', 'link'=>'fb/pages_list')
+			]
+		),
+		array('title'=>'Settings', 'link'=>'settings'),
+		array('title'=>'Logout', 'link'=>'logout'),
 	);
 
 	return $data;

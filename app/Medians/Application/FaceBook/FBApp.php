@@ -50,6 +50,26 @@ class FBApp
 	}
 
 
+	/**
+	 * FB Pages list
+	 * 
+	*/
+	public function fb_page($request, $app, $twig)
+	{
+
+	    if (isset($app->auth))
+	    {
+	        $app->auth = $app->auth->with('fb_pages')->with('fb_user')->find($app->auth->id);
+	    }
+
+	    return  $twig->render('views/admin/fb/pages.html.twig', [
+	        'title' => 'Facebook pages list',
+	        'app' => $app,
+	        'fb_page' => (new Repo\FaceBook\FBPageInfoRepository())->getByPageId($request->get('id')),
+	    ]);
+	}
+
+
 
 	/**
 	 * FB Login back actions 
