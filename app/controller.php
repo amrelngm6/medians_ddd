@@ -173,7 +173,12 @@ $app->match('fb/webhook', function () use ($twig, $request, $app)
 */
 $app->match('fb/pages_list', function () use ($twig, $request, $app) 
 {
-    return (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->fb_pages_list($request, $app, $twig);
+
+    try {
+        return (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->fb_pages_list($request, $app, $twig);
+    } catch (Exception $e) {
+        return $e->getMessage();
+    }   
 });
 
 
