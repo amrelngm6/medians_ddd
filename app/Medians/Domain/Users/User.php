@@ -83,4 +83,11 @@ class User extends CustomController
 		);
 	}
 
+	public function fb_user()
+	{
+		return $this->HasOne(
+			FBUserInfo::class,  'user_id', 'id'
+		);
+	}
+
 }
