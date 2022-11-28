@@ -4,6 +4,7 @@ namespace Medians\Application\FaceBook;
 
 
 use Medians\Infrastructure as Repo;
+use Medians\Infrastructure\Users\UserRepository;
 
 
 
