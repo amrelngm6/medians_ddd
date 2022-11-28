@@ -2,7 +2,7 @@
 
 namespace Medians\Infrastructure\FaceBook;
 
-use Medians\Domain\FaceBook\FBPageInfoRepository;
+use Medians\Domain\FaceBook\FBPageInfo;
 
 class FBPageInfoRepository 
 {
