@@ -11,6 +11,8 @@ use Medians\Domain\Customers\CustomerModel;
 
 use Medians\Domain\Auth\AuthModel;
 
+use Medians\Application\FaceBook\FBApp;
+
 use Medians\Infrastructure as Repo;
 
 
@@ -66,6 +68,7 @@ class AuthService
 	    return  $twig->render('views/admin/forms/login.html.twig', [
 	        'title' => 'Login page ',
 	        'app' => $app,
+	        'facebook_login_url' => (new FBApp(new Repo\FaceBook\FBRepository))->loginBtn($app),
 	        'formAction' => '/',
 	    ]);
 	}
