@@ -1,7 +1,7 @@
 {% include 'views/front/includes/header.html.twig' %}
 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4">
 
-	{% for app.auth.fb_pages in page %}
+	{% for page in app.auth.fb_pages %}
 
     <div class="card">
         <div class="flex flex-col items-center p-4 text-center sm:p-5">
