@@ -129,70 +129,21 @@ $app->match('fb', function () use ($twig, $request, $app)
     return (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->loginBtn($app);
 });
 
-
-
 /**
 * @return FB login back
 */
 $app->match('facebook_login_back', function () use ($twig, $request, $app) 
 {
-    $fbAuth = (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository));
-        
-    try {
-
-        $user = (object) $fbAuth->login_back($app);
-
-    } catch (\Exception $e) {
-        return $e->getMessage();
-    }
-    
-
-    try {
-        
-        $userData = UserRepository::store(['email'=>$user->email, 'name'=>$user->name, 'publish'=>1]);
-        $userData->access_token = $user->access_token_set;
-        $userData->save();
-
-        $FBUserInfo = $fbAuth->insertUserInfo($user, $userData->id);
-
-        $pages = $fbAuth->fb_page_list($user->access_token_set);
-
-        foreach ($pages as $key => $value) {
-            $fbAuth->insertPageInfo($value, $userData->id, $FBUserInfo->id);
-        }
-
-
-    } catch (Exception $e) {
-        return $e->getMessage();
-    }
-
-    try{
-    
-        (new apps\Auth\AuthService(new UserRepository))->setSession($userData);
-
-
-    } catch (Exception $e) {
-        return $e->getMessage();
-    }
-
-    return 'Valid ' . $fbAuth->loginBtn($app);
-
+    return (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->fb_login_back($app);
 });
-
-
 
 /**
 * @return FB webhook
 */
 $app->match('fb/welcome_message/{msg}', function ($msg) use ($twig, $request, $app) 
 {
-    
     try {
-
-        (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->set_welcome_message('1671122466499731', $msg);
-    
-        return 'Updated';
-        
+        return (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->set_welcome_message('1671122466499731', $msg);
     } catch (Exception $e) {
         return $e->getMessage();
     }    
@@ -205,30 +156,8 @@ $app->match('fb/welcome_message/{msg}', function ($msg) use ($twig, $request, $a
 */
 $app->match('fb/ice_breaker/{qsn}/{ansr}', function ($qsn, $ansr) use ($twig, $request, $app) 
 {
+    return    (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->ice_breaker('1671122466499731');
     
-    try {
-
-        $ice_breaker_array = [];
-        $ice_breaker_array["ice_breakers"][]=[
-            "call_to_actions" => [
-                (object) [
-                    'question' => 'Hola',
-                    'payload' => 'New Hola',
-                ],
-                (object) [
-                    'question' => 'Hola 2',
-                    'payload' => 'New Hola 2',
-                ]
-            ]
-        ];
-
-        $config = (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->add_ice_breakers('1671122466499731',json_encode($ice_breaker_array),'fb');
-        
-    } catch (Exception $e) {
-        return $e->getMessage();
-    }    
-
-    return 'Updated';
 });
 
 
@@ -238,9 +167,7 @@ $app->match('fb/ice_breaker/{qsn}/{ansr}', function ($qsn, $ansr) use ($twig, $r
 */
 $app->match('fb/webhook', function () use ($twig, $request, $app) 
 {
-
     return (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->webhook_init();
-
 });
 
 

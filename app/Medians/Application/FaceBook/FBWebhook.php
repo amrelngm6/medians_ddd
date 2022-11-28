@@ -27,6 +27,56 @@ class FBWebhook
 
 
 	/**
+	 * FB Login back actions 
+	 * 
+	*/
+	public function fb_login_back($app)
+	{
+
+	    try {
+
+	        $user = (object) $this->login_back($app);
+
+	    } catch (\Exception $e) {
+	        return $e->getMessage();
+	    }
+	    
+
+	    try {
+	        
+	        $userData = UserRepository::store(['email'=>$user->email, 'name'=>$user->name, 'publish'=>1]);
+	        $userData->access_token = $user->access_token_set;
+	        $userData->save();
+
+	        $FBUserInfo = $this->insertUserInfo($user, $userData->id);
+
+	        $pages = $this->fb_page_list($user->access_token_set);
+
+	        foreach ($pages as $key => $value) {
+	            $this->insertPageInfo($value, $userData->id, $FBUserInfo->id);
+	        }
+
+	    } catch (Exception $e) {
+	        return $e->getMessage();
+	    }
+
+
+	    try{
+	    
+	        (new apps\Auth\AuthService(new UserRepository))->setSession($userData);
+
+
+	    } catch (Exception $e) {
+	        return $e->getMessage();
+	    }
+
+
+	    return $this->loginBtn($app);
+	}
+
+
+
+	/**
 	 * Handle webhook request
 	 * 
 	*/
@@ -53,8 +103,6 @@ class FBWebhook
 	        // Handle payload
 	        $data = json_decode($payload, true);
 	        file_put_contents(time().'-webhook.php', $payload);
-
-	        // $fbAuth->send_private_reply();
 
 	        exit;
 	    } else {
@@ -209,6 +257,42 @@ class FBWebhook
 	}	
 
 
+
+	public function ice_breaker($page_id)
+	{
+
+	    try {
+
+	        $ice_breaker_array = [];
+	        $ice_breaker_array["ice_breakers"][]=[
+	            "call_to_actions" => [
+	                (object) [
+	                    'question' => 'Hola',
+	                    'payload' => 'New Hola',
+	                ],
+	                (object) [
+	                    'question' => 'Hola 2',
+	                    'payload' => 'New Hola 2',
+	                ]
+	            ]
+	        ];
+
+	        return $this->add_ice_breakers($page_id,json_encode($ice_breaker_array),'fb');
+	        
+	    } catch (Exception $e) {
+	        return $e->getMessage();
+	    }    
+
+	    return 'Updated';
+
+	}
+
+
+
+
+
+
+
 	/**
 	 * Login Back FB Func
 	 */
@@ -341,6 +425,8 @@ class FBWebhook
 				$result["result"]=isset($result["error"]["message"]) ? $result["error"]["message"] : "Something went wrong, please try again.";
 				$result['success']=0;
 			}
+
+	        return 'Updated';
 
 
 	    } catch (Exception $e) {
