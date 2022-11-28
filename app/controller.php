@@ -168,7 +168,7 @@ $app->match('facebook_login_back', function () use ($twig, $request, $app)
 
     try{
     
-        $fbAuth->setSession($userData);
+        (new apps\Auth\AuthService(new UserRepository))->setSession($userData);
 
 
     } catch (Exception $e) {
