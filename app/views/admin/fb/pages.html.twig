@@ -5,16 +5,15 @@
 		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4">
 
 			{% for page in app.auth.fb_pages %}
-
 		    <div class="card bg-white">
 		        <div class="flex flex-col items-center p-4 text-center sm:p-5">
 		            <div class="avatar h-20 w-20">
 		                <img class="rounded-full w-20" src="{{page.page_profile}}" alt="avatar">
 		            </div>
-		            <h3 class="pt-3 text-lg font-medium text-slate-700 dark:text-navy-100">
+		            <h3 class="pt-3 text-normal font-medium text-slate-700 dark:text-navy-100">
 		                {{page.page_name}}
 		            </h3>
-		            <p class="text-xs+">{{page.username}}</p>
+		            <p class="text-xs+">{{page.username ? page.username : page.page_id}}</p>
 		        </div>
 		        <div class="flex divide-x divide-slate-150 border-t border-slate-150 dark:divide-navy-500 dark:border-navy-500">
 		            <a target="_blank" href="https://facebook.com/{{ page.username ? page.username : page.page_id }}" class="text-center pt-2 w-full rounded-none blocj rounded-bl-lg font-medium text-slate-700 hover:bg-slate-300/20 active:bg-slate-300/25 dark:text-navy-100 dark:hover:bg-navy-300/20 dark:active:bg-navy-300/25">

@@ -126,7 +126,7 @@ $app->match('settings', function () use ($twig, $request, $app)
 */
 $app->match('fb', function () use ($twig, $request, $app) 
 {
-    return (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->loginBtn($app);
+    return (new apps\FaceBook\FBApp(new Repo\FaceBook\FBRepository))->loginBtn($app);
 });
 
 /**
@@ -134,7 +134,7 @@ $app->match('fb', function () use ($twig, $request, $app)
 */
 $app->match('facebook_login_back', function () use ($twig, $request, $app) 
 {
-    return (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->fb_login_back($app);
+    return (new apps\FaceBook\FBApp(new Repo\FaceBook\FBRepository))->fb_login_back($app);
 });
 
 /**
@@ -143,7 +143,7 @@ $app->match('facebook_login_back', function () use ($twig, $request, $app)
 $app->match('fb/welcome_message/{msg}', function ($msg) use ($twig, $request, $app) 
 {
     try {
-        return (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->set_welcome_message('1671122466499731', $msg);
+        return (new apps\FaceBook\FBApp(new Repo\FaceBook\FBRepository))->set_welcome_message('1671122466499731', $msg);
     } catch (Exception $e) {
         return $e->getMessage();
     }    
@@ -155,7 +155,7 @@ $app->match('fb/welcome_message/{msg}', function ($msg) use ($twig, $request, $a
 */
 $app->match('fb/ice_breaker/{qsn}/{ansr}', function ($qsn, $ansr) use ($twig, $request, $app) 
 {
-    return    (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->ice_breaker('1671122466499731');
+    return    (new apps\FaceBook\FBApp(new Repo\FaceBook\FBRepository))->ice_breaker('1671122466499731');
     
 });
 
@@ -175,7 +175,7 @@ $app->match('fb/pages_list', function () use ($twig, $request, $app)
 {
 
     try {
-        return (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->fb_pages_list($request, $app, $twig);
+        return (new apps\FaceBook\FBApp(new Repo\FaceBook\FBRepository))->fb_pages_list($request, $app, $twig);
     } catch (Exception $e) {
         return $e->getMessage();
     }   
