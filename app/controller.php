@@ -136,7 +136,7 @@ $app->match('fb', function () use ($twig, $request, $app)
 */
 $app->match('facebook_login_back', function () use ($twig, $request, $app) 
 {
-    $fbAuth = (new apps\FaceBook\FBWebhook(new FBRepository));
+    $fbAuth = (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository));
         
     try {
 
@@ -189,7 +189,7 @@ $app->match('fb/welcome_message/{msg}', function ($msg) use ($twig, $request, $a
     
     try {
 
-        (new apps\FaceBook\FBWebhook(new FBRepository))->set_welcome_message('1671122466499731', $msg);
+        (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->set_welcome_message('1671122466499731', $msg);
     
         return 'Updated';
         
@@ -222,7 +222,7 @@ $app->match('fb/ice_breaker/{qsn}/{ansr}', function ($qsn, $ansr) use ($twig, $r
             ]
         ];
 
-        $config = (new apps\FaceBook\FBWebhook(new FBRepository))->add_ice_breakers('1671122466499731',json_encode($ice_breaker_array),'fb');
+        $config = (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->add_ice_breakers('1671122466499731',json_encode($ice_breaker_array),'fb');
         
     } catch (Exception $e) {
         return $e->getMessage();
