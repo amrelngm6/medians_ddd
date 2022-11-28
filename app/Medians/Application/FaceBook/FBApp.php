@@ -540,4 +540,112 @@ class FBApp
  		return $result;
 	}
 
+
+
+	public function fb_page_chat($page_id, $request, $app, $twig)
+	{
+		
+		$page = (new Repo\FaceBook\FBPageInfoRepository())->getByPageId($page_id);
+
+		$list = $this->get_all_conversation_page($page->page_access_token, $page->page_id,100,100);
+
+		print_r($list);
+	}
+
+
+
+	/**
+	 * Gett all page convesations
+	 * 
+	*/
+	public function get_all_conversation_page($post_access_token,$page_id,$auto_sync_limit=0,$scan_limit='',$folder='',$platform='fb')
+	{
+
+		$message_info=array();
+		$i=0;
+
+		$real_limit=$scan_limit;
+		if($scan_limit!='') //per page scan grabs 499 lead in real
+		{
+			$how_many_page=$scan_limit/500;
+			$real_limit=$scan_limit-$how_many_page;
+		}
+
+		//	$url = "https://graph.facebook.com/{$page_id}/conversations?access_token={$post_access_token}&limit=200&fields=participants,message_count,unread_count,senders,is_subscribed,snippet,id";	
+
+		$url = "https://graph.facebook.com/{$page_id}/conversations?access_token={$post_access_token}&limit=500&fields=participants,PSID,user_id,id,updated_time";
+		$url .= $platform=='fb' ? ",message_count,unread_count,is_subscribed,snippet,link&folder={$folder}" : "&platform=instagram";
+
+		do
+		{
+			$results = $this->run_curl_for_fb($url);
+			$results=json_decode($results,true);
+
+			if(isset($results['error'])){
+				$message_info['error']=1;
+				$message_info['error_msg']= isset($results['error']['message']) ? $results['error']['message'] : json_encode($results);
+				return $message_info; 
+			}
+
+
+			if(isset($results['data']))
+			{
+				print_r($results);
+
+				foreach($results['data'] as $thread_info)
+				{
+					foreach($thread_info['participants']['data'] as $participant_info){
+						$user_id= $participant_info['id'];
+						if($user_id!=$page_id){
+							if($platform=="ig")
+								$message_info[$i]['name']=$participant_info['username'];
+							else $message_info[$i]['name']=$participant_info['name'];
+							$message_info[$i]['id']=$participant_info['id'];
+						}
+					}
+					$message_info[$i]['is_subscribed'] = isset($thread_info['is_subscribed'])?$thread_info['is_subscribed']:0;
+					$message_info[$i]['thead_id'] = $thread_info['id'];
+					$message_info[$i]['message_count'] = isset($thread_info['message_count']) ? $thread_info['message_count']:0;
+					$message_info[$i]['unread_count'] = isset($thread_info['unread_count']) ? $thread_info['unread_count']:0;
+					$message_info[$i]['snippet'] = isset($thread_info['snippet']) ? $thread_info['snippet']:"";
+					$message_info[$i]['updated_time'] = isset($thread_info['updated_time']) ? $thread_info['updated_time']:"";
+					$message_info[$i]['link'] = isset($thread_info['link']) ? $thread_info['link']:"";
+					// $message_info[$i]['business_link'] = 'https://business.facebook.com/latest/inbox/all?asset_id='.$thread_info['link']:"";
+// 1671122466499731&selected_item_id=100006408965512
+
+					$i++;
+				}
+			}
+
+			$url= isset($results['paging']['next']) ? $results['paging']['next']: "" ;
+			if($scan_limit!='' && $real_limit<=$i) break;
+			if($auto_sync_limit!=0) break;
+
+		}
+		while($url!='');
+		return $message_info;
+	}
+	
+
+	/**
+	 * CURL request for FB
+	 * 
+	*/	
+	public function run_curl_for_fb($url)
+	{
+		$headers = array("Content-type: application/json"); 
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		// curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);  
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);  
+		curl_setopt($ch, CURLOPT_COOKIEJAR,'cookie.txt');  
+		curl_setopt($ch, CURLOPT_COOKIEFILE,'cookie.txt');  
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);  
+		curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.3) Gecko/20070309 Firefox/2.0.0.3"); 
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+		$results=curl_exec($ch); 	   
+		return  $results;   
+	}
+
 }

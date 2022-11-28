@@ -16,12 +16,13 @@
 		            <p class="text-xs+">{{page.username ? page.username : page.page_id}}</p>
 		        </div>
 		        <div class="flex divide-x divide-slate-150 border-t border-slate-150 dark:divide-navy-500 dark:border-navy-500">
-		            <a target="_blank" href="https://facebook.com/{{ page.username ? page.username : page.page_id }}" class="text-center pt-2 w-full rounded-none blocj rounded-bl-lg font-medium text-slate-700 hover:bg-slate-300/20 active:bg-slate-300/25 dark:text-navy-100 dark:hover:bg-navy-300/20 dark:active:bg-navy-300/25">
+		            <a target="_blank" href="https://facebook.com/{{ page.username ? page.username : page.page_id }}" class="text-center py-2 w-full rounded-none blocj rounded-bl-lg font-medium text-slate-700 hover:bg-slate-300/20 active:bg-slate-300/25 dark:text-navy-100 dark:hover:bg-navy-300/20 dark:active:bg-navy-300/25">
 		                Profile
 		            </a>
-		            <button class="btn h-11 w-full rounded-none rounded-br-lg font-medium text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:text-accent-light dark:hover:bg-accent-light/20 dark:focus:bg-accent-light/20 dark:active:bg-accent-light/25">
-		                Chat
-		            </button>
+
+		            <a href="/fb/page_chat/{{page.page_id}}" class="py-2 text-center w-full rounded-none rounded-br-lg font-medium text-primary hover:bg-primary/20 focus:bg-primary/20 active:bg-primary/25 dark:text-accent-light dark:hover:bg-accent-light/20 dark:focus:bg-accent-light/20 dark:active:bg-accent-light/25">
+		                Settings
+		            </a>
 		        </div>
 		    </div>
 			{% endfor %}

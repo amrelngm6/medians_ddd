@@ -181,6 +181,19 @@ $app->match('fb/pages_list', function () use ($twig, $request, $app)
     }   
 });
 
+/**
+* @return FB webhook
+*/
+$app->match('fb/page_chat/{page_id}', function ($page_id) use ($twig, $request, $app) 
+{
+
+    try {
+        return (new apps\FaceBook\FBApp(new Repo\FaceBook\FBRepository))->fb_page_chat($page_id, $request, $app, $twig);
+    } catch (Exception $e) {
+        return $e->getMessage();
+    }   
+});
+
 
 
 

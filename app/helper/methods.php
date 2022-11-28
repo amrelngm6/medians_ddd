@@ -12,7 +12,7 @@ function getMenuList()
 		array('title'=>'Dashboard', 'link'=>'dashboard'),
 		array('title'=>'Social', 'link'=>'', 'sub'=>
 			[
-				array('title'=>'FB Pages list', 'link'=>'fb/pages_list')
+				array('title'=>'FB Pages list', 'link'=>'fb/pages_list'),
 			]
 		),
 		array('title'=>'Settings', 'link'=>'settings'),
