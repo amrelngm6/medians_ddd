@@ -44,7 +44,7 @@ class FBWebhook
 		$list = (new Repo\FaceBook\FBPageInfoRepository())->getByUserId($app->auth->id);
 
 	    return  $twig->render('views/admin/fb/pages.html.twig', [
-	        'title' => 'Login page ',
+	        'title' => 'Facebook pages list',
 	        'app' => $app,
 	    ]);
 	}
