@@ -64,7 +64,9 @@ class Configuration
 
 		$fullUrl  = $http."://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" ;
 
-		$this->url = $http."://$_SERVER[HTTP_HOST]". dirname($_SERVER['SCRIPT_NAME']).'/';
+		$dir = (dirname($_SERVER['SCRIPT_NAME']) && dirname($_SERVER['SCRIPT_NAME']) != '/') ? (dirname($_SERVER['SCRIPT_NAME']).'/') : '/';
+
+		$this->url = $http."://$_SERVER[HTTP_HOST]". $dir;
 	}
 
 
