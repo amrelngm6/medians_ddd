@@ -2,7 +2,7 @@
 
 namespace Medians\Infrastructure\FaceBook;
 
-use Medians\Domain\FaceBook\FBPageInfo;
+use Medians\Domain\FaceBook\FBPageInfoRepository;
 
 class FBPageInfoRepository 
 {
@@ -35,7 +35,7 @@ class FBPageInfoRepository
 	/*
 	// Find item by `id` 
 	*/
-	public function getByUserId($user_id) : ?FBPageInfo
+	public function getByUserId($user_id) 
 	{
 		return FBPageInfo::where('user_id', $user_id)->get();
 	}
