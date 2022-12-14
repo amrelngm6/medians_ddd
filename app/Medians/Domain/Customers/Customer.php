@@ -18,7 +18,7 @@ class Customer extends CustomController
 		'fullname',
 		'email',
 		'providerId',
-		'publish',
+		'active',
 	];
 
 	public $timestamps = false;

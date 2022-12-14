@@ -10,11 +10,16 @@ function getMenuList()
 {
 	$data = array(
 		array('title'=>'Dashboard', 'link'=>'dashboard'),
-		array('title'=>'Social', 'link'=>'', 'sub'=>
+		array('title'=>'Properties', 'link'=>'', 'sub'=>
 			[
-				array('title'=>'FB Pages list', 'link'=>'fb/pages_list'),
+				array('title'=>'Properties list', 'link'=>'properties'),
 			]
 		),
+        // array('title'=>'Social', 'link'=>'', 'sub'=>
+        //     [
+        //         array('title'=>'FB Pages list', 'link'=>'fb/pages_list'),
+        //     ]
+        // ),
 		array('title'=>'Settings', 'link'=>'settings'),
 		array('title'=>'Logout', 'link'=>'logout'),
 	);

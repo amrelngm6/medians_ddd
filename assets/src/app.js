@@ -18,6 +18,7 @@ Vue.use(VueSimpleAlert);
 Vue.component('demo', () => import('./demo.vue'));
 Vue.component('login-dashboard', () => import('./login-dashboard.vue'));
 Vue.component('side-menu', () => import('./side-menu.vue'));
+Vue.component('forms', () => import('./forms.vue'));
 
 const VueApp = new Vue(
 {

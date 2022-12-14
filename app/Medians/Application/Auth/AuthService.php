@@ -68,7 +68,7 @@ class AuthService
 	    return  $twig->render('views/admin/forms/login.html.twig', [
 	        'title' => 'Login page ',
 	        'app' => $app,
-	        'facebook_login_url' => (new FBApp(new Repo\FaceBook\FBRepository))->loginBtn($app),
+	        // 'facebook_login_url' => (new FBApp(new Repo\FaceBook\FBRepository))->loginBtn($app),
 	        'formAction' => '/',
 	    ]);
 	}
@@ -113,7 +113,7 @@ class AuthService
 			throw new \Exception("User credentials not valid", 1);
 		}
 
-		if (empty($checkLogin->publish))
+		if (empty($checkLogin->active))
 		{
 			throw new \Exception("User account is not active", 1);
 			
@@ -211,7 +211,7 @@ class AuthService
 	}
 
 
-	public function encrypt($value) : String 
+	public static function encrypt($value) : String 
 	{
 		return sha1(md5($value));
 

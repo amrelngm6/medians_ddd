@@ -17,7 +17,7 @@ class UserRepository
 	public function find($customerId)
 	{
 
-		return User::with('providers')->find($customerId);
+		return User::find($customerId);
 
 	}
 

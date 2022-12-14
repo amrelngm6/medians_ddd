@@ -44,6 +44,14 @@ $app->post('', function () use ($twig, $app, $request)
     try {
         switch ($request->get('type')) 
         {
+            case 'Property.create':
+                $returnData =  (new apps\Properties\PropertyController())->store($request, $app); 
+                break;
+
+            case 'Property.update':
+                $returnData =  (new apps\Properties\PropertyController())->update($request, $app); 
+                break;
+
             case 'userLogin':
                     
                     $returnData =  (new apps\Auth\AuthService( new AdminRepository() ))->userLogin($request, $app); 
@@ -60,7 +68,7 @@ $app->post('', function () use ($twig, $app, $request)
 
                 print_r($_POST);
 
-                breadk;
+                break;
 
         }
 
@@ -107,14 +115,19 @@ $app->match('/dashboard', function () use ($twig, $app)
  * @return  Login page in case if not authorized 
 */
 $app->match('login', function () use ($request, $app, $twig) 
-{
+{   
+    try {
+        
     return (new apps\Auth\AuthService(new UserRepository))->loginPage($request, $app, $twig); 
+    } catch (Exception $e) {
+        return $e->getMessage();
+    }
 });
 
 /**
 * @return Settings page
 */
-$app->match('settings', function () use ($twig, $request, $app) 
+$app->match('settings', function () use ($request, $app, $twig) 
 {
     return (new apps\Settings\SettingsController)->index($request, $app, $twig); 
 });
@@ -122,78 +135,27 @@ $app->match('settings', function () use ($twig, $request, $app)
 
 
 /**
-* @return FB page
+* @return properties
 */
-$app->match('fb', function () use ($twig, $request, $app) 
-{
-    return (new apps\FaceBook\FBApp(new Repo\FaceBook\FBRepository))->loginBtn($app);
-});
-
-/**
-* @return FB login back
-*/
-$app->match('facebook_login_back', function () use ($twig, $request, $app) 
-{
-    return (new apps\FaceBook\FBApp(new Repo\FaceBook\FBRepository))->fb_login_back($app);
-});
-
-/**
-* @return FB webhook
-*/
-$app->match('fb/welcome_message/{msg}', function ($msg) use ($twig, $request, $app) 
-{
+$app->match('/properties/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
     try {
-        return (new apps\FaceBook\FBApp(new Repo\FaceBook\FBRepository))->set_welcome_message('1671122466499731', $msg);
+        
+        if ($action == 'create')
+        {
+            return (new apps\Properties\PropertyController(new Repo\Properties\PropertyRepository))->create($request, $app, $twig);
+        }
+
+        if ($action == 'edit')
+        {
+            return (new apps\Properties\PropertyController(new Repo\Properties\PropertyRepository))->edit($id, $request, $app, $twig);
+        }
+
+        return (new apps\Properties\PropertyController(new Repo\Properties\PropertyRepository))->index($request, $app, $twig);
+
     } catch (Exception $e) {
         return $e->getMessage();
-    }    
+    }
 });
-
-
-/**
-* @return FB webhook
-*/
-$app->match('fb/ice_breaker/{qsn}/{ansr}', function ($qsn, $ansr) use ($twig, $request, $app) 
-{
-    return    (new apps\FaceBook\FBApp(new Repo\FaceBook\FBRepository))->ice_breaker('1671122466499731');
-    
-});
-
-
-/**
-* @return FB webhook
-*/
-$app->match('fb/webhook', function () use ($twig, $request, $app) 
-{
-    return (new apps\FaceBook\FBWebhook(new Repo\FaceBook\FBRepository))->webhook_init();
-});
-
-/**
-* @return FB webhook
-*/
-$app->match('fb/pages_list', function () use ($twig, $request, $app) 
-{
-
-    try {
-        return (new apps\FaceBook\FBApp(new Repo\FaceBook\FBRepository))->fb_pages_list($request, $app, $twig);
-    } catch (Exception $e) {
-        return $e->getMessage();
-    }   
-});
-
-/**
-* @return FB webhook
-*/
-$app->match('fb/page_chat/{page_id}', function ($page_id) use ($twig, $request, $app) 
-{
-
-    try {
-        return (new apps\FaceBook\FBApp(new Repo\FaceBook\FBRepository))->fb_page_chat($page_id, $request, $app, $twig);
-    } catch (Exception $e) {
-        return $e->getMessage();
-    }   
-});
-
 
 
 

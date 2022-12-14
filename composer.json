@@ -9,6 +9,7 @@
         "symfony/http-client": "^5.3",
         "symfony/serializer": "^5.3",
         "spatie/async": "^1.5",
-        "chillerlan/php-qrcode": "^3.4"
+        "chillerlan/php-qrcode": "^3.4",
+        "tebazil/db-seeder": "^1.0"
     }
 }
