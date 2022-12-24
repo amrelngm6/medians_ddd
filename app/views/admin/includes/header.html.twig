@@ -45,6 +45,9 @@
 }
 
     </style>
+    <script type="text/javascript">
+        var site_url = '{{app.CONF.url}}';
+    </script>
     <script type="text/javascript" src="{{app.CONF.url}}assets/js/jquery-3.5.1.min.js"></script>
 </head>
 
@@ -134,4 +137,4 @@
                         </div>
                     </div>
                 </div>
-                <div class="w-full flex pb-20" style="height: 100vh">
+                <div class="w-full flex pb-20" style="height: 100vh; z-index: 9999;">

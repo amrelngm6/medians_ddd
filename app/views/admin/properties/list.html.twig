@@ -1,6 +1,6 @@
 {% include 'views/admin/includes/header.html.twig' %}
 <div class=" w-full overflow-y-auto h-full">
-    <div class="crms-title flex bg-white mb-6">
+    <div class="crms-title flex bg-white mb-6 gap gap-6">
         <div class="w-full">
             <h3 class="gap gap-6 flex page-title m-0">
                 <span class="page-title-icon bg-gradient-primary text-white me-2">
@@ -15,6 +15,7 @@
                 <li class="breadcrumb-item active">{{title}}</li>
             </ul>
         </div>
+        <a href="{{app.CONF.url}}properties/create" class="w-28 px-3 py-2 text-center rounded-lg bg-gradient-primary text-white">Add new </a>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -34,8 +35,8 @@
                                     <th>Owner</th>
                                     <th>Title</th>
                                     <th>Type</th>
-                                    <th>Status</th>
                                     <th>Agent</th>
+                                    <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -59,8 +60,8 @@
                                     <td>
                                         {{item.type}}
                                     </td>
+                                    <td>{{item.agent_info.name}}</td>
                                     <td>{{item.status}}</td>
-                                    <td>{{item.agent}}</td>
                                     <td>
                                         <a href="/properties/edit/{{item.id}}" class="font-bold"> Edit</a>
                                     </td>

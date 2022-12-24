@@ -576,3 +576,8 @@ body .main-sidebar.activate.show .player-img img
   }
 
 }
+
+.swal2-container.swal2-shown
+{
+  z-index: 9999;
+}

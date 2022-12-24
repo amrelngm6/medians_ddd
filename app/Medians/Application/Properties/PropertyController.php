@@ -2,7 +2,7 @@
 
 namespace Medians\Application\Properties;
 
-use Medians\Infrastructure\Properties as Repo;
+use Medians\Infrastructure as Repo;
 
 
 class PropertyController
@@ -18,7 +18,9 @@ class PropertyController
 	function __construct()
 	{
 	
-		$this->repo = new Repo\PropertyRepository();
+		$this->repo = new Repo\Properties\PropertyRepository();
+
+		$this->AgentRepo = new Repo\Users\AgentRepository();
 
 	}
 
@@ -29,7 +31,7 @@ class PropertyController
 	public function index($request, $app, $twig)
 	{
 		return $twig->render('views/admin/properties/list.html.twig', [
-			'items' =>  $this->repo->getModel()->get(),
+			'items' =>  $this->repo->getModel()->with('Agent')->get(),
 	        'title' => 'Properties',
 	        'app' => $app,
 	    ]);
@@ -44,6 +46,7 @@ class PropertyController
 		return $twig->render('views/admin/properties/create.html.twig', [
 	        'title' => 'Properties',
 	        'Model' => $this->repo->getModel(),
+	        'agents' => $this->AgentRepo->getModel()->get(),
 	        'app' => $app,
 	    ]);
 	} 
@@ -57,6 +60,7 @@ class PropertyController
 		return $twig->render('views/admin/properties/create.html.twig', [
 	        'title' => 'Properties',
 	        'Model' => $this->repo->find($id),
+	        'agents' => $this->AgentRepo->getModel()->get(),
 	        'app' => $app,
 	    ]);
 	} 

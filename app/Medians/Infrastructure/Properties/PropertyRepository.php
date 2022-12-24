@@ -5,6 +5,7 @@ namespace Medians\Infrastructure\Properties;
 use Medians\Domain\Properties\Property;
 use Medians\Domain\Properties\SelectedOptions;
 use Medians\Domain\Properties\LocationsInfo;
+use Medians\Domain\Properties\Files;
 
 class PropertyRepository 
 {
@@ -24,7 +25,7 @@ class PropertyRepository
 	public static  function get()
 	{
 
-		return Property::with('Owner', 'SelectedOption', 'Location')->get();
+		return Property::with('Owner', 'SelectedOption', 'Location', 'Files')->get();
 
 	}
 
@@ -32,7 +33,7 @@ class PropertyRepository
 	public static  function find($id)
 	{
 
-		return Property::with('Owner', 'SelectedOption', 'Location')->find($id);
+		return Property::with('Owner', 'SelectedOption', 'Location', 'Files')->find($id);
 
 	}
 
@@ -65,22 +66,59 @@ class PropertyRepository
 	{
 
 		SelectedOptions::where('model_type', Property::class)->where('category', $category)->where('model_id', $id)->delete();
-
-		foreach ($data as $key => $value)
+		if ($data)
 		{
-			$fields = [
-				'model_type' => Property::class,
-				'model_id' => $id,
-				'code' => $key,
-				'value' => $value,
-				'category' => $category
-			];
 
-			$Model = SelectedOptions::create($fields);
-			$Model->update($fields);
-		}
+			foreach ($data as $key => $value)
+			{
+				$fields = [
+					'model_type' => Property::class,
+					'model_id' => $id,
+					'code' => $key,
+					'value' => $value,
+					'category' => $category
+				];
+
+				$Model = SelectedOptions::create($fields);
+				$Model->update($fields);
+			}
 	
-		return $Model;		
+			return $Model;		
+		}
+
+	}
+
+
+
+	/**
+	* Save item to database
+	*/
+	public static function storeFiles($data, $id) 
+	{
+
+		Files::where('model_type', Property::class)->where('model_id', $id)->delete();
+	
+		if ($data)
+		{
+			foreach ($data as $key => $value)
+			{
+				if (isset($value->file_name))
+				{
+					$fields = [
+						'model_type' => Property::class,
+						'model_id' => $id,
+						'file_name' => $value->file_name,
+						'filetype' => Files::getFileType($value->file_name),
+						'user_id' => 0,
+						'description' => null,
+					];
+
+					$Model = Files::create($fields)->update($fields);
+				}
+			}
+	
+			return $Model;		
+		}
 
 	}
 
@@ -118,6 +156,13 @@ class PropertyRepository
     	// Store faces data 
     	PropertyRepository::storeOptions( (array) $data['faces'], $Object->id, 'faces');
 
+    	// Store spaces data 
+    	PropertyRepository::storeOptions( (array) $data['spaces'], $Object->id, 'spaces');
+
+    	// Store files
+    	PropertyRepository::storeFiles( (array) $data['files'], $Object->id, 'files');
+
+
     	return $Object;
 
 	}
@@ -144,6 +189,12 @@ class PropertyRepository
 
     	// Store faces data 
     	PropertyRepository::storeOptions( (array) $data['faces'], $Object->id, 'faces');
+
+    	// Store spaces data 
+    	PropertyRepository::storeOptions( (array) $data['spaces'], $Object->id, 'spaces');
+
+    	// Store files 
+    	PropertyRepository::storeFiles( (array) $data['files'], $Object->id, 'files');
 
     	return $Object; 
 

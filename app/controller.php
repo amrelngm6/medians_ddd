@@ -36,10 +36,25 @@ $app->request = $request;
 /*
 // Return list of device 
 */
+$app->post('/media-library-api/{type?}', function ($type) use ($twig, $app, $request) 
+{ 
+    switch ($type) {
+        case 'delete':
+            return (new apps\Media\MediaController())->delete($request, $app, $twig);
+            break;
+        
+        default:
+            return (new apps\Media\MediaController())->upload($request, $app, $twig);
+            break;
+    }
+
+});
+
+/*
+// Return list of device 
+*/
 $app->post('', function () use ($twig, $app, $request) 
 { 
-
-    $params = $request->get('params');
 
     try {
         switch ($request->get('type')) 
@@ -151,6 +166,32 @@ $app->match('/properties/{action?}/{id?}', function ($action, $id) use ($request
         }
 
         return (new apps\Properties\PropertyController(new Repo\Properties\PropertyRepository))->index($request, $app, $twig);
+
+    } catch (Exception $e) {
+        return $e->getMessage();
+    }
+});
+
+
+/**
+* @return properties
+*/
+$app->match('/media-library-api/{type?}', function ($type) use ($request, $app, $twig)  {
+
+    try {
+    
+        $filter_type = $request->get('type');
+        
+        if ($type == 'media')
+        {
+            return (new apps\Media\MediaController())->media($filter_type, $request, $app, $twig);
+        }
+
+        if ($type == 'file')
+        {
+            return true;
+            return (new apps\Media\MediaController())->media($filter_type, $request, $app, $twig);
+        }
 
     } catch (Exception $e) {
         return $e->getMessage();

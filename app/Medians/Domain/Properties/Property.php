@@ -6,6 +6,8 @@ use Shared\dbaser\CustomController;
 
 use Medians\Domain\ModelOptions;
 
+use Medians\Domain\Users\Agent;
+
 class Property extends CustomController 
 {
 
@@ -16,6 +18,7 @@ class Property extends CustomController
 
 
 	protected $fillable = [
+		'code',
 		'name',
 		'description',
 		'type',
@@ -34,8 +37,9 @@ class Property extends CustomController
 
 
 	public $appends = [
-		'selected_options_list', 'status_list', 'availability_list', 'divisions_fields', 'faces_fields', 'location_fields', 'areas_fields', 
-		'types', 'request_types', 'divisions', 'areas', 'faces'];
+		'agent_info',	
+		'selected_options_list', 'status_list', 'availability_list', 'divisions_fields', 'faces_fields', 'location_fields', 'areas_fields','spaces_fields', 
+		'types', 'request_types', 'divisions', 'areas', 'faces', 'spaces'];
 
 	function __construct()
 	{
@@ -54,10 +58,11 @@ class Property extends CustomController
 	}
 
 
-	public function SelectedOption()
+	public function getLocationFieldsAttribute()
 	{
-		return $this->MorphMany(ModelOptions\SelectedOption::class, 'model');
+		return (new ModelOptions\LocationInfo)->getFields();
 	}
+
 
 	public function getSelectedOptionsListAttribute()
 	{
@@ -66,72 +71,65 @@ class Property extends CustomController
 
 	public function getDivisionsAttribute()
 	{
-		return array_column((array) json_decode($this->SelectedOption), 'value', 'code');
+		return $this->renderOptions('divisions');
 	}
 
 	public function getAreasAttribute()
 	{
-		return array_column((array) json_decode($this->SelectedOption), 'value', 'code');
+		return $this->renderOptions('areas');
 	}
 
 	public function getFacesAttribute()
 	{
-		return array_column((array) json_decode($this->SelectedOption), 'value', 'code');
+		return $this->renderOptions('faces');
 	}
 
-
-	public function Owner()
+	public function getSpacesAttribute()
 	{
-		return $this->HasOne(\Medians\Domain\Users\User::class, 'id', 'owner_id');
-	}
-
-	public function Location()
-	{
-		return $this->MorphOne(ModelOptions\LocationInfo::class, 'model');
+		return $this->renderOptions('spaces');
 	}
 
 
-	public function getLocationFieldsAttribute()
-	{
-		return (new ModelOptions\LocationInfo)->getFields();
-	}
 
-
+	/**
+	 * Load options dropdown lists
+ 	*/ 
 	public function getTypesAttribute()
 	{
-		return array_column(Options::where('model', Property::class)->where('category', 'type')->get()->toArray(), 'title', 'code');
+		return $this->renderFields('type');
 	}
 
 	public function getAvailabilityListAttribute()
 	{
-		return array_column(Options::where('model', Property::class)->where('category', 'availability')->get()->toArray(), 'title', 'code');
+		return $this->renderFields('availability');
 	}
 
 	public function getStatusListAttribute()
 	{
-		return array_column(Options::where('model', Property::class)->where('category', 'status')->get()->toArray(), 'title', 'code');
+		return $this->renderFields('status');
 	}
 
 	public function getRequestTypesAttribute()
 	{
-		return array_column(Options::where('model', Property::class)->where('category', 'request_type')->get()->toArray(), 'title', 'code');
+		return $this->renderFields('request_type');
 	}
 
 
+ 
 	/** 
 	 * Load Divisions as custom fields
 	 */ 
 	public function getDivisionsFieldsAttribute()
 	{
-		return array_column(Options::where('model', Property::class)->where('category', 'divisions')->get()->toArray(), 'title', 'code');
+		return $this->renderFields('divisions');
 	}
 
 	/** 
-	 * Load Faces as custom fields
+	 * Load Areas as custom fields
 	 */ 
 	public function getAreasFieldsAttribute()
 	{
-		return array_column(Options::where('model', Property::class)->where('category', 'areas')->get()->toArray(), 'title', 'code');
+		return $this->renderFields('areas');
 	}
 
 	/** 
@@ -139,7 +137,97 @@ class Property extends CustomController
 	 */ 
 	public function getFacesFieldsAttribute()
 	{
-		return array_column(Options::where('model', Property::class)->where('category', 'faces')->get()->toArray(), 'title', 'code');
+		return $this->renderFields('faces');
 	}
 
+	/** 
+	 * Load Spaces as custom fields
+	 */ 
+	public function getSpacesFieldsAttribute()
+	{
+		return $this->renderFields('spaces');
+	}
+
+
+
+	/** 
+	 * Load Agent info
+	 */ 
+	public function getAgentInfoAttribute()
+	{
+		return $this->Agent;
+	}
+
+
+
+
+	/**
+	 * Relations
+	 */
+	public function Owner()
+	{
+		return $this->HasOne(Agent::class, 'id', 'owner_id');
+	}
+
+	/**
+	 * Set relation with Agent
+	*/ 
+	public function Agent()
+	{
+		return $this->HasOne(Agent::class, 'id', 'agent_id');
+	}
+
+
+	/**
+	 * Set relation with Location info
+	*/ 
+	public function Location()
+	{
+		return $this->MorphOne(ModelOptions\LocationInfo::class, 'model');
+	}
+
+	/**
+	 * Set relation with Files
+	*/ 
+	public function Files()
+	{
+		return $this->MorphMany(Files::class, 'model');
+	}
+
+
+	/**
+	 * Set Relation with SelectedOption 
+	 */
+	public function SelectedOption()
+	{
+		return $this->MorphMany(ModelOptions\SelectedOption::class, 'model');
+	} 
+
+	public function loadAgents()
+	{
+		return User::where('')->get();
+	}
+
+
+	/** 
+	 * Render options values
+	 */ 
+	public function renderOptions($category)
+	{
+		return (object) array_column(
+				array_map(function($q) use ($category) {
+					if ($q->category == $category) { return $q; }
+				}, (array) json_decode($this->SelectedOption))
+			, 'value', 'code');
+
+	}
+
+
+	/** 
+	 * Render options values
+	 */ 
+	public function renderFields($category)
+	{
+		return array_column(Options::where('model', Property::class)->where('category', $category)->get()->toArray(), 'title', 'code');
+	}
 }

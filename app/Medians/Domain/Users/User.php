@@ -20,21 +20,21 @@ class User extends CustomController
 
 
 	protected $fillable = [
-    	'name',
+    	'firstname',
+    	'lastname',
     	'email',
-    	'publish',
     	'password',
+    	'phone',
+    	'profile_image',
     	'role',
-    	'access_token',
-    	'time',
+    	'active',
 	];
 
-	public $timestamps = false;
+	public $appends = ['name'];
 
-
-	public function name() : String
+	public function getNameAttribute() : String
 	{
-		return $this->name;
+		return $this->firstname.' '.$this->lastname;
 	}
 
 
