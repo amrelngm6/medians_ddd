@@ -173,6 +173,31 @@ $app->match('/properties/{action?}/{id?}', function ($action, $id) use ($request
 });
 
 
+
+/**
+* @return Leads
+*/
+$app->match('/leads/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
+    try {
+        
+        if ($action == 'create')
+        {
+            return (new apps\Leads\LeadsController(new Repo\Properties\PropertyRepository))->create($request, $app, $twig);
+        }
+
+        if ($action == 'edit')
+        {
+            return (new apps\Properties\PropertyController(new Repo\Properties\PropertyRepository))->edit($id, $request, $app, $twig);
+        }
+
+        return (new apps\Leads\LeadController(new Repo\Leads\LeadRepository))->index($request, $app, $twig);
+
+    } catch (Exception $e) {
+        return $e->getMessage();
+    }
+});
+
+
 /**
 * @return properties
 */

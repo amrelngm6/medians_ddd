@@ -298,8 +298,6 @@
 
             select(file) {
 
-                console.log('select');
-                console.log(file);
                 this.$parent.$parent.filterFiles().addFile();
             
                 this.$emit('select', file);
@@ -457,7 +455,6 @@
 
                 return axios.post(this.url("/media-library-api/upload"), uploaderForm)
                         .then(response => {
-                            console.log(response);
                             if(typeof response.data.message != 'undefined') {
                                 this.$toasted.show(response.data.message, {
                                     type: "success",
@@ -467,7 +464,6 @@
                             }
                         })
                         .catch(error => {
-                            console.log(error);
                             if(typeof error.response.data.message != 'undefined') {
                                 this.$toasted.show(error.response.data.message, {
                                     type: "error",
