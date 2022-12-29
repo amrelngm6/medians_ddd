@@ -62,5 +62,18 @@ class LeadRepository
     	return $Object;
     }
     	
+    /**
+     * Update Lead
+     */
+    public function update($data)
+    {
 
+		$Object = Lead::find($data['id']);
+		
+		// Return the FBUserInfo object with the new data
+    	$Object->update( (array) $data);
+
+    	return $Object;
+
+    } 
 }

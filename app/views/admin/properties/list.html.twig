@@ -36,6 +36,7 @@
                                     <th>Title</th>
                                     <th>Type</th>
                                     <th>Agent</th>
+                                    <th>Offer type</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -61,9 +62,12 @@
                                         {{item.type}}
                                     </td>
                                     <td>{{item.agent_info.name}}</td>
+                                    <td>{{item.request_type}}</td>
                                     <td>{{item.status}}</td>
                                     <td>
+                                        {% if item.can('edit_contct', app) %}
                                         <a href="/properties/edit/{{item.id}}" class="font-bold"> Edit</a>
+                                        {% endif %}
                                     </td>
                                 </tr>
                                 {% endfor %}

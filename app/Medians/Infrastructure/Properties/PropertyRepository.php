@@ -25,7 +25,18 @@ class PropertyRepository
 	public static  function get()
 	{
 
-		return Property::with('Owner', 'SelectedOption', 'Location', 'Files')->get();
+		return Property::with('Owner', 'SelectedOption', 'Location', 'Files', 'Agent')->get();
+
+	}
+
+	public static  function getItems($request_type, $limit = 10)
+	{
+		 return Property::where('request_type', $request_type)
+            ->where('web', '1')
+            ->with('Location', 'SelectedOption', 'Agent', 'Files', 'Owner')
+            ->limit($limit)
+            ->get();
+
 
 	}
 
@@ -33,7 +44,7 @@ class PropertyRepository
 	public static  function find($id)
 	{
 
-		return Property::with('Owner', 'SelectedOption', 'Location', 'Files')->find($id);
+		return Property::with('Owner', 'SelectedOption', 'Location', 'Files', 'Agent')->find($id);
 
 	}
 

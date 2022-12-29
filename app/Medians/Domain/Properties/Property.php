@@ -30,7 +30,8 @@ class Property extends CustomController
 		'addedfrom',
 		'owner_id',
 		'agent_id',
-		'active'
+		'active',
+		'web',
 	];
 
 	public $timestamps = false;
@@ -43,6 +44,13 @@ class Property extends CustomController
 
 	function __construct()
 	{
+		
+	}
+
+
+	public function photo()
+	{
+		return isset($this->Files[0]->file_name) ? $this->Files[0]->file_name : '/uploads/img/default.jpg';
 	}
 
 
@@ -230,4 +238,37 @@ class Property extends CustomController
 	{
 		return array_column(Options::where('model', Property::class)->where('category', $category)->get()->toArray(), 'title', 'code');
 	}
+
+
+	/**
+	 * Related items
+	 */
+	public function related()
+	{
+
+		return Property::where('request_type', $this->request_type)
+		->whereNotIn('id', [$this->id])
+		->with('Owner', 'SelectedOption', 'Location', 'Files', 'Agent')
+		->get();
+
+	}
+ 
+	/**
+	 * Latest items
+	 */
+	public function latest()
+	{
+
+		return Property::where('request_type', $this->request_type)
+		->whereNotIn('id', [$this->id])
+		->with('Owner', 'SelectedOption', 'Location', 'Files', 'Agent')
+		->orderBy('id', 'Desc')
+		->get();
+
+	}
+ 	
+ 	public function url()
+ 	{
+ 		return '/property/'.$this->id;
+ 	}
 }

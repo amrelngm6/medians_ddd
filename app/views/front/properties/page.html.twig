@@ -1,0 +1,372 @@
+{% include 'views/front/includes/header.html.twig' %}
+<!--=====================================-->
+<!--=   Breadcrumb     Start            =-->
+<!--=====================================-->
+<div class="breadcrumb-wrap " style="padding-top: 120px;">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item">
+                    <a href="/property?request_type={{property.request_type}}">Properties for {{property.request_type}}</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    {{property.name}}
+                </li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!--=====================================-->
+<!--=   Single Listing     Start        =-->
+<!--=====================================-->
+<section class="single-listing-wrap1">
+    <div class="container">
+        <div class="single-property">
+            <div class="content-wrapper">
+                <div class="property-heading">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-12">
+                            <div class="single-list-cate">
+                                <div class="item-categoery">For Rent</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12">
+                            <div class="single-list-price">${{property.cost}}</div>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-lg-8 col-md-12">
+                            <div class="single-verified-area">
+                                <div class="item-title">
+                                    <h3>
+                                        <a href="javascript:;">{{property.name}}</a>
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="single-item-address">
+                                <ul>
+                                    <li>
+                                        <i class="fas fa-map-marker-alt"></i>{{property.Location.address}} {{property.Location.city}}
+                                    </li>
+                                    <li><i class="fas fa-clock"></i>7 months ago /</li>
+                                    <li><i class="fas fa-eye"></i>Views: 1,230</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-12">
+                            <div class="side-button">
+                                <ul>
+                                    <li>
+                                        <a href="with-sidebar2.html" class="side-btn"><i class="flaticon-share"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="with-sidebar2.html" class="side-btn"><i class="flaticon-heart"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="with-sidebar2.html" class="side-btn"><i class="flaticon-left-and-right-arrows"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="with-sidebar2.html" class="side-btn"><i class="flaticon-printer"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="featured-thumb-slider-area wow fadeInUp" data-wow-delay=".4s">
+                            <div class="feature-box3 swiper-container">
+                                <div class="swiper-wrapper">
+                                    {% for file in property.Files %}
+                                    <div class="swiper-slide">
+                                        <div class="feature-img1 zoom-image-hover">
+                                            <img src="{{file.file_name}}" alt="feature" width="798" height="420" />
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="featured-thum-slider2 swiper-container">
+                                <div class="swiper-wrapper">
+                                    {% for file in property.Files %}
+                                    <div class="swiper-slide">
+                                        <div class="item-img">
+                                            <img src="{{file.file_name}}" alt="feature" width="154" height="100" />
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="single-listing-box1">
+                            <div class="overview-area">
+                                <h3 class="item-title">Overview</h3>
+                                <div class="gallery-icon-box">
+                                    <div class="item-icon-box">
+                                        <div class="item-icon">
+                                            <i class="flaticon-comment"></i>
+                                        </div>
+                                        <ul class="item-number">
+                                            <li>ID No :</li>
+                                            <li class="deep-clr">{{property.id}}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="item-icon-box">
+                                        <div class="item-icon">
+                                            <i class="flaticon-home"></i>
+                                        </div>
+                                        <ul class="item-number">
+                                            <li>Type :</li>
+                                            <li class="deep-clr">{{property.type}}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="item-icon-box">
+                                        <div class="item-icon">
+                                            <i class="flaticon-bed"></i>
+                                        </div>
+                                        <ul class="item-number">
+                                            <li>Rooms :</li>
+                                            <li class="deep-clr">{{property.Divisions.rooms}}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="item-icon-box">
+                                        <div class="item-icon">
+                                            <i class="flaticon-home"></i>
+                                        </div>
+                                        <ul class="item-number">
+                                            <li>Area :</li>
+                                            <li class="deep-clr">1050 sqft</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="overview-area listing-area">
+                                <h3 class="item-title">About This Listing</h3>
+                                <div>
+                                    {{property.desc}}
+                                </div>
+                            </div>
+                            <div class="overview-area single-details-box table-responsive">
+                                <h3 class="item-title">Details</h3>
+                                <table class="table-box1">
+                                    <tr>
+                                        <td class="item-bold">Id No</td>
+                                        <td>{{property.id}}</td>
+                                        <td class="item-bold">Price</td>
+                                        <td>${{property.cost}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="item-bold">Property Type</td>
+                                        <td>{{property.type}}</td>
+                                        <td class="item-bold">Rooms</td>
+                                        <td>{{property.Divisions.rooms}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="item-bold">Property Status</td>
+                                        <td>For {{property.request_type}}</td>
+                                        <td class="item-bold">Bath Rooms</td>
+                                        <td>{{property.Divisions.bathrooms}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="overview-area map-box">
+                                <h3 class="item-title">Map Location</h3>
+                                <div class="item-map">
+                                    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d14604.942936504207!2d3s1.42287424999999!3d29.774618500000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sbd!4v1640231732625!5m2!1sen!2sbd" width="731" height="349" style="border: 0" allowfullscreen="" loading="lazy"></iframe>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-4 widget-break-lg sidebar-widget">
+                        <div class="widget widget-contact-box">
+                            <h3 class="widget-subtitle">Contact Agent</h3>
+                            <div class="media d-flex">
+                                <div class="flex-shrink-0">
+                                    <div class="item-logo">
+                                        <img src="{{property.Agent.photo()}}" alt="logo" width="100" height="100" />
+                                    </div>
+                                </div>
+                                <div class="media-body flex-grow-1 ms-3">
+                                    <h4 class="item-title">{{property.Agent.name}}</h4>
+                                    <div class="item-phn">
+                                        <span class="phonenum hidden">{{property.Agent.phone}}  - </span><a onclick="$('.phonenum').toggleClass('hidden');" href="javascript:;"><span>( Show Phone )</span></a>
+                                    </div>
+                                    <div class="item-mail">
+                                        <span class="mail hidden">{{property.Agent.email}}  - </span><a onclick="$('.mail').toggleClass('hidden');" href="javascript:;"><span>( Show Email )</span></a>
+                                    </div>
+                                    <div class="item-rating">
+                                        <ul>
+                                            <li><i class="fas fa-star"></i></li>
+                                            <li><i class="fas fa-star"></i></li>
+                                            <li><i class="fas fa-star"></i></li>
+                                            <li><i class="fas fa-star"></i></li>
+                                            <li><i class="fas fa-star"></i></li>
+                                            <li class="rating-count">(Reviews 15)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="wid-contact-button">
+                                <li>
+                                    <a href="contact.html"><i class="fas fa-comment"></i>Quick Chat</a>
+                                </li>
+                                <li>
+                                    <a href="contact.html"><i class="fas fa-share-alt"></i>Share</a>
+                                </li>
+                            </ul>
+                            <form class="contact-box rt-contact-form">
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <input type="text" class="form-control" name="fname" placeholder="Your Full Name" data-error="First Name is required" required />
+                                    </div>
+                                    <div class="form-group col-lg-12">
+                                        <input type="text" class="form-control" name="phone" placeholder="Phone" data-error="Phone is required" required />
+                                    </div>
+                                    <div class="form-group col-lg-12">
+                                        <input type="text" class="form-control" name="phone" placeholder="E-mail" data-error="Phone is required" required />
+                                    </div>
+                                    <div class="form-group col-lg-12">
+                                        <textarea name="comment" id="message" class="form-text" placeholder="Message" cols="30" rows="4" data-error="Message Name is required" required></textarea>
+                                    </div>
+                                    <div class="form-group col-lg-12">
+                                        <div class="advanced-button">
+                                            <button type="submit" class="item-btn">
+                                                Send Message <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-response"></div>
+                            </form>
+                        </div>
+                        <div class="widget widget-listing-box1">
+                            <h3 class="widget-subtitle">Related Listing</h3>
+                            {% for item in property.related %}
+                            <div class="widget-listing">
+                                <div class="item-img">
+                                    <a href="{{app.CONF.url}}property/{{item.id}}"><img src="{{item.photo()}}" alt="widget" width="120" height="102" /></a>
+                                </div>
+                                <div class="item-content">
+                                    <h5 class="item-title">
+                                        <a href="javascript:;">{{item.name}}</a>
+                                    </h5>
+                                    <div class="location-area">
+                                        <i class="flaticon-maps-and-flags"></i>{{item.Location.city}}
+                                    </div>
+                                    <div class="item-price">${{item.cost}}<span>/mo</span></div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--=====================================-->
+<!--=   Property     Start              =-->
+<!--=====================================-->
+<section class="property-wrap1">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-7 col-sm-7">
+                <div class="item-heading-left">
+                    <span class="section-subtitle">Our PROPERTIES</span>
+                    <h2 class="section-title">Latest Properties</h2>
+                    <div class="bg-title-wrap" style="display: block">
+                        <span class="background-title solid">Properties</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-5 col-sm-5">
+                <div class="heading-button">
+                    <a href="javascript:;" class="heading-btn item-btn2">All Properties</a>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            {% for item in property.latest %}
+
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <div class="property-box2 wow animated fadeInUp" data-wow-delay=".3s">
+                    <div class="item-img">
+                        <a href="javascript:;"><img src="/uploads/img/blog4.jpg" alt="blog" width="510" height="340"></a>
+                        <div class="item-category-box1">
+                            <div class="item-category">For {{item.request_type}}</div>
+                        </div>
+                        <div class="rent-price">
+                            <div class="item-price">${{item.cost}}<span><i>/</i>mo</span></div>
+                        </div>
+                        <div class="react-icon">
+                            <ul>
+                                <li>
+                                    <a href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="top" title="Favourites">
+                                        <i class="flaticon-heart"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="top" title="Compare">
+                                        <i class="flaticon-left-and-right-arrows"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="item-category10"><a href="javascript:;">{{item.type}}</a></div>
+                    <div class="item-content">
+                        <div class="verified-area">
+                            <h3 class="item-title"><a href="javascript:;">{{item.name}}</a></h3>
+                        </div>
+                        <div class="location-area"><i class="flaticon-maps-and-flags"></i>{{item.Location.address}}, {{item.Location.city}}</div>
+                        <div class="item-categoery3">
+                            <ul>
+                                <li><i class="flaticon-bed"></i>Rooms: {{item.Divisions.rooms}}</li>
+                                <li><i class="flaticon-shower"></i>Baths: {{item.Divisions.bathrooms}}</li>
+                                <li><i class="flaticon-two-overlapping-square"></i>{{item.Spaces.net_space}} Sqft</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<!--=====================================-->
+<!--=   Newsletter     Start            =-->
+<!--=====================================-->
+<section class="newsletter-wrap1">
+    <div class="shape-img1">
+        <img src="img/shape13.png" alt="figure" width="356" height="130" />
+    </div>
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-5">
+                <div class="newsletter-layout1">
+                    <div class="item-heading">
+                        <h2 class="item-title">Sign up for newsletter</h2>
+                        <h3 class="item-subtitle">Get latest news and update</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="newsletter-form">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Enter e-mail addess" />
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button">
+                                Subscribe
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% include 'views/front/includes/footer.html.twig' %}

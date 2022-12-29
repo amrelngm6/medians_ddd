@@ -20,6 +20,8 @@ class LeadController
 	
 		$this->repo = new Repo\Leads\LeadRepository();
 
+		$this->LeadSourcesrepo = new Repo\Leads\LeadSourcesRepository();
+
 		$this->AgentRepo = new Repo\Users\AgentRepository();
 
 	}
@@ -31,8 +33,8 @@ class LeadController
 	public function index($request, $app, $twig)
 	{
 		return $twig->render('views/admin/leads/list.html.twig', [
-			'items' =>  $this->repo->getModel()->with('Agent')->get(),
-	        'title' => 'Properties',
+			'items' =>  $this->repo->getModel()->with('Agent', 'source')->get(),
+	        'title' => 'Leads',
 	        'app' => $app,
 	    ]);
 	} 
@@ -43,10 +45,12 @@ class LeadController
 	 */
 	public function create($request, $app, $twig)
 	{
-		return $twig->render('views/admin/properties/create.html.twig', [
-	        'title' => 'Properties',
+		return $twig->render('views/admin/leads/create.html.twig', [
+	        'title' => 'Leads',
 	        'Model' => $this->repo->getModel(),
 	        'agents' => $this->AgentRepo->getModel()->get(),
+	        'sources' => $this->LeadSourcesrepo->getModel()->get(),
+	        'stages' => $this->repo->getModel()->LoadStages(),
 	        'app' => $app,
 	    ]);
 	} 
@@ -57,10 +61,12 @@ class LeadController
 	 */
 	public function edit($id, $request, $app, $twig)
 	{
-		return $twig->render('views/admin/properties/create.html.twig', [
-	        'title' => 'Properties',
+		return $twig->render('views/admin/leads/create.html.twig', [
+	        'title' => 'Leads',
 	        'Model' => $this->repo->find($id),
 	        'agents' => $this->AgentRepo->getModel()->get(),
+	        'sources' => $this->LeadSourcesrepo->getModel()->get(),
+	        'stages' => $this->repo->getModel()->LoadStages(),
 	        'app' => $app,
 	    ]);
 	} 
@@ -89,7 +95,7 @@ class LeadController
 	public function store($request, $app) 
 	{
 
-		$params = json_decode($request->get('params')['property']);
+		$params = json_decode($request->get('params')['lead']);
 
 		try {
 
@@ -110,7 +116,7 @@ class LeadController
 	public function update($request, $app) 
 	{
 
-		$params = json_decode($request->get('params')['property']);
+		$params = json_decode($request->get('params')['lead']);
 
 		try {
 

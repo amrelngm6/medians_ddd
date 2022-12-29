@@ -1,0 +1,59 @@
+        
+    <!--=====================================-->
+    <!--=   Property     Start              =-->
+    <!--=====================================-->
+
+        <section class="property-wrap-6">
+            <div class="container">
+                <div class="item-heading-center mb-20">
+                    <span class="section-subtitle">Latest Listings</span>
+                    <h2 class="section-title">Featured Property For Sale</h2>
+                    <div class="bg-title-wrap" style="display: block;">
+                        <span class="background-title solid">Properties</span>
+                    </div>
+                </div>
+                <div class="row">
+                    {% for item in sale_properties %}
+
+                    <div class="col-xl-6 col-lg-9 mx-auto">
+                        <div class="property-box2 property-box5 wow animated fadeInUp" data-wow-delay=".6s">
+                            <div class="item-img">
+                                <a href="{{app.CONF.url}}property/{{item.id}}"><img src="{{item.photo()}}" alt="blog" width="220" height="170"></a>
+
+                                <div class="react-icon">
+                                    <ul>
+                                        <li>
+                                            <a href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                title="Favourites">
+                                                <i class="flaticon-heart"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                title="Compare">
+                                                <i class="flaticon-left-and-right-arrows"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="item-content item-content-property">
+                                <div class="verified-area">
+                                    <h3 class="item-title"><a href="{{app.CONF.url}}property/{{item.id}}">{{item.name}}</a></h3>
+                                </div>
+                                <div class="location-area"><i class="flaticon-maps-and-flags"></i>{{item.Location.city}}</div>
+                                <div class="item-categoery5">
+                                    <ul>
+                                        <li><i class="flaticon-bed"></i><span>Rooms: {{item.divisions.rooms}}</span></li>
+                                        <li><i class="flaticon-shower"></i><span>Baths: {{item.divisions.bathrooms}}</span></li>
+                                        <li><i class="flaticon-two-overlapping-square"></i><span>{{item.spaces.net_space}} Sqft</span></li>
+                                    </ul>
+                                </div>
+                                <div class="item-price">${{item.cost}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+       </section>

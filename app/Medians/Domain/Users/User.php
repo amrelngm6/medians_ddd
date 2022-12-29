@@ -38,6 +38,16 @@ class User extends CustomController
 	}
 
 
+	public function photo() : String
+	{
+		return !empty($this->profile_image) ? $this->profile_image : '/uploads/images/default_profile.jpg';
+	}
+
+	public function name() : String
+	{
+		return $this->firstname.' '.$this->lastname;
+	}
+
 	public function email() : String
 	{
 		return $this->email;

@@ -18,7 +18,7 @@
                 <li class="breadcrumb-item active">{{title}}</li>
             </ul>
         </div>
-        <a href="{{app.CONF.url}}properties/create" class="w-28 px-3 py-2 text-center rounded-lg bg-gradient-primary text-white">Add new </a>
+        <a href="{{app.CONF.url}}leads/create" class="w-28 px-3 py-2 text-center rounded-lg bg-gradient-primary text-white">Add new </a>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -55,17 +55,17 @@
                                     <td>
                                         {{item.id}}
                                     </td>
-                                    <td><a href="/leads/edit/{{item.id}}">{{item.name}}</a> </td>
+                                    <td><a href="/leads/edit/{{item.id}}">{{item.name()}}</a> </td>
                                     <td>
                                         {{item.source.name}}
                                     </td>
+                                    <td>{{item.phone}}</td>
+                                    <td>{{item.email}}</td>
+                                    <td class="text-center"><span class="mx-auto block w-2 h-2 rounded-full {% if item.status %} bg-green-600 {% else %} bg-red-600 {% endif %}"></span></td>
                                     <td>
-                                        <a href="/leads/edit/{{item.id}}" data-bs-toggle="modal" data-bs-target="#leads-details">{{item.owner.name}}</a>
-                                    </td>
-                                    <td>{{item.agent_info.name}}</td>
-                                    <td>{{item.status}}</td>
-                                    <td>
-                                        <a href="/properties/edit/{{item.id}}" class="font-bold"> Edit</a>
+                                        {% if item.can('edit_contct', app) %}
+                                        <a href="/leads/edit/{{item.id}}" class="font-bold"> Edit</a>
+                                        {% endif %}
                                     </td>
                                 </tr>
                                 {% endfor %}

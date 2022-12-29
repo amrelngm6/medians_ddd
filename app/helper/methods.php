@@ -13,13 +13,29 @@ function getMenuList()
 		array('title'=>'Properties', 'link'=>'', 'sub'=>
 			[
 				array('title'=>'Properties list', 'link'=>'properties'),
+                array('title'=>'Create Property', 'link'=>'properties/create'),
+                array('title'=>'Rent items', 'link'=>'properties?request_type=rent'),
+                array('title'=>'Sale items', 'link'=>'properties?request_type=sale'),
 			]
 		),
-        // array('title'=>'Social', 'link'=>'', 'sub'=>
-        //     [
-        //         array('title'=>'FB Pages list', 'link'=>'fb/pages_list'),
-        //     ]
-        // ),
+        array('title'=>'Leads', 'link'=>'', 'sub'=>
+            [
+                array('title'=>'Leads ', 'link'=>'leads/index'),
+                array('title'=>'Create lead', 'link'=>'leads/create'),
+            ]
+        ),
+        array('title'=>'Contacts', 'link'=>'', 'sub'=>
+            [
+                array('title'=>'Contacts', 'link'=>'contacts/index'),
+                array('title'=>'Create contact', 'link'=>'contacts/create'),
+            ]
+        ),
+        array('title'=>'Organizations', 'link'=>'', 'sub'=>
+            [
+                array('title'=>'Organizations', 'link'=>'organizations/index'),
+                array('title'=>'Create organization', 'link'=>'organizations/create'),
+            ]
+        ),
 		array('title'=>'Settings', 'link'=>'settings'),
 		array('title'=>'Logout', 'link'=>'logout'),
 	);

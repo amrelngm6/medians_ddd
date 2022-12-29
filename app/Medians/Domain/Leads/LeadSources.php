@@ -25,21 +25,6 @@ class LeadSources extends CustomController
 
 
 
-	function __construct()
-	{
-
-	}
-
-
-
-	/**
-	 * Set relation with Agent
-	*/ 
-	public function Agent()
-	{
-		return $this->HasOne(Domain\Agents\Agent::class, 'id', 'agent_id');
-	}
-
 
 
 }

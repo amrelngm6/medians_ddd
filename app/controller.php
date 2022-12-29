@@ -67,6 +67,30 @@ $app->post('', function () use ($twig, $app, $request)
                 $returnData =  (new apps\Properties\PropertyController())->update($request, $app); 
                 break;
 
+            case 'Lead.create':
+                $returnData =  (new apps\Leads\LeadController())->store($request, $app); 
+                break;
+
+            case 'Lead.update':
+                $returnData =  (new apps\Leads\LeadController())->update($request, $app); 
+                break;
+
+            case 'Contact.create':
+                $returnData =  (new apps\Contacts\ContactController())->store($request, $app); 
+                break;
+
+            case 'Contact.update':
+                $returnData =  (new apps\Contacts\ContactController())->update($request, $app); 
+                break;
+
+            case 'Organization.create':
+                $returnData =  (new apps\Organizations\OrganizationController())->store($request, $app); 
+                break;
+
+            case 'Organization.update':
+                $returnData =  (new apps\Organizations\OrganizationController())->update($request, $app); 
+                break;
+
             case 'userLogin':
                     
                     $returnData =  (new apps\Auth\AuthService( new AdminRepository() ))->userLogin($request, $app); 
@@ -102,27 +126,55 @@ $app->post('', function () use ($twig, $app, $request)
 */
 $app->match('', function () use ($twig, $app) 
 {
+    try {
 
-    return  $twig->render('views/front/home.html.twig', [
-        'title' => 'Home page ',
-        'app' => $app,
-        'formAction' => $app->CONF['url'],
-    ]);
+        return  $twig->render('views/front/home.html.twig', [
+            'title' => 'Home page ',
+            'app' => $app,
+            'rent_properties' => (new Repo\Properties\PropertyRepository)->getItems('rent'),
+            'sale_properties' => (new Repo\Properties\PropertyRepository)->getItems('sale'),
+            'formAction' => $app->CONF['url'],
+        ]);
+    } catch (Exception $e) {
+        return $e->getMessage();
+    } 
 });
+
 
 /*
 // Return list of device 
 */
-$app->match('/dashboard', function () use ($twig, $app) 
+$app->match('property/{id?}', function ($id) use ($twig, $app, $request) 
 {
+    try {
 
-    return  $twig->render('views/admin/dashboard/index.html.twig', [
-        'title' => 'Home page ',
-        'app' => $app,
-        'formAction' => $app->CONF['url'],
-    ]);
+        if ($id)
+        {
+            return  $twig->render('views/front/properties/page.html.twig', [
+                'title' => 'Property page ',
+                'app' => $app,
+                'property' => (new Repo\Properties\PropertyRepository)->find($id),
+                'formAction' => $app->CONF['url'],
+            ]);
+
+        } else {
+
+            $type = $request->get('request_type');
+
+            return  $twig->render('views/front/properties/list.html.twig', [
+                'title' => 'Property list ',
+                'app' => $app,
+                'propertyModel' => (new Repo\Properties\PropertyRepository)->getModel(),
+                'properties' => (new Repo\Properties\PropertyRepository)->getItems($type),
+                'formAction' => $app->CONF['url'],
+            ]);
+
+        }
+
+    } catch (Exception $e) {
+        return $e->getMessage();
+    } 
 });
-
 
 
 
@@ -133,91 +185,7 @@ $app->match('login', function () use ($request, $app, $twig)
 {   
     try {
         
-    return (new apps\Auth\AuthService(new UserRepository))->loginPage($request, $app, $twig); 
-    } catch (Exception $e) {
-        return $e->getMessage();
-    }
-});
-
-/**
-* @return Settings page
-*/
-$app->match('settings', function () use ($request, $app, $twig) 
-{
-    return (new apps\Settings\SettingsController)->index($request, $app, $twig); 
-});
-
-
-
-/**
-* @return properties
-*/
-$app->match('/properties/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
-    try {
-        
-        if ($action == 'create')
-        {
-            return (new apps\Properties\PropertyController(new Repo\Properties\PropertyRepository))->create($request, $app, $twig);
-        }
-
-        if ($action == 'edit')
-        {
-            return (new apps\Properties\PropertyController(new Repo\Properties\PropertyRepository))->edit($id, $request, $app, $twig);
-        }
-
-        return (new apps\Properties\PropertyController(new Repo\Properties\PropertyRepository))->index($request, $app, $twig);
-
-    } catch (Exception $e) {
-        return $e->getMessage();
-    }
-});
-
-
-
-/**
-* @return Leads
-*/
-$app->match('/leads/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
-    try {
-        
-        if ($action == 'create')
-        {
-            return (new apps\Leads\LeadsController(new Repo\Properties\PropertyRepository))->create($request, $app, $twig);
-        }
-
-        if ($action == 'edit')
-        {
-            return (new apps\Properties\PropertyController(new Repo\Properties\PropertyRepository))->edit($id, $request, $app, $twig);
-        }
-
-        return (new apps\Leads\LeadController(new Repo\Leads\LeadRepository))->index($request, $app, $twig);
-
-    } catch (Exception $e) {
-        return $e->getMessage();
-    }
-});
-
-
-/**
-* @return properties
-*/
-$app->match('/media-library-api/{type?}', function ($type) use ($request, $app, $twig)  {
-
-    try {
-    
-        $filter_type = $request->get('type');
-        
-        if ($type == 'media')
-        {
-            return (new apps\Media\MediaController())->media($filter_type, $request, $app, $twig);
-        }
-
-        if ($type == 'file')
-        {
-            return true;
-            return (new apps\Media\MediaController())->media($filter_type, $request, $app, $twig);
-        }
-
+        return (new apps\Auth\AuthService(new UserRepository))->loginPage($request, $app, $twig); 
     } catch (Exception $e) {
         return $e->getMessage();
     }
@@ -226,14 +194,168 @@ $app->match('/media-library-api/{type?}', function ($type) use ($request, $app, 
 
 
 
-// Logout and remoce cookies and session
-$app->match('logout', function () use ($twig, $request, $app) 
+if (isset($app->auth->id))
 {
 
-    (new apps\Auth\AuthService(new UserRepository))->unsetSession();
+    /*
+    // Return list of device 
+    */
+    $app->match('/dashboard', function () use ($twig, $app) 
+    {
 
-    return $app->redirect('./');
-});
+        return  $twig->render('views/admin/dashboard/index.html.twig', [
+            'title' => 'Home page ',
+            'app' => $app,
+            'formAction' => $app->CONF['url'],
+        ]);
+    });
+
+    /**
+    * @return Settings page
+    */
+    $app->match('settings', function () use ($request, $app, $twig) 
+    {
+        return (new apps\Settings\SettingsController)->index($request, $app, $twig); 
+    });
+
+
+
+    /**
+    * @return properties
+    */
+    $app->match('/properties/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
+        try {
+            
+            if ($action == 'create')
+            {
+                return (new apps\Properties\PropertyController(new Repo\Properties\PropertyRepository))->create($request, $app, $twig);
+            }
+
+            if ($action == 'edit')
+            {
+                return (new apps\Properties\PropertyController(new Repo\Properties\PropertyRepository))->edit($id, $request, $app, $twig);
+            }
+
+            return (new apps\Properties\PropertyController(new Repo\Properties\PropertyRepository))->index($request, $app, $twig);
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    });
+
+
+
+    /**
+    * @return Organizations
+    */
+    $app->match('/organizations/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
+        try {
+            
+            if ($action == 'create')
+            {
+                return (new apps\Organizations\OrganizationController(new Repo\Organizations\OrganizationRepository))->create($request, $app, $twig);
+            }
+
+            if ($action == 'edit')
+            {
+                return (new apps\Organizations\OrganizationController(new Repo\Organizations\OrganizationRepository))->edit($id, $request, $app, $twig);
+            }
+
+            return (new apps\Organizations\OrganizationController(new Repo\Organizations\OrganizationRepository))->index($request, $app, $twig);
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    });
+
+
+
+    /**
+    * @return Leads
+    */
+    $app->match('/leads/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
+        try {
+            
+            if ($action == 'create')
+            {
+                return (new apps\Leads\LeadController)->create($request, $app, $twig);
+            }
+
+            if ($action == 'edit')
+            {
+                return (new apps\Leads\LeadController)->edit($id, $request, $app, $twig);
+            }
+
+            return (new apps\Leads\LeadController)->index($request, $app, $twig);
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    });
+
+
+    /**
+    * @return Contacts
+    */
+    $app->match('/contacts/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
+        try {
+            
+            if ($action == 'create')
+            {
+                return (new apps\Contacts\ContactController)->create($request, $app, $twig);
+            }
+
+            if ($action == 'edit')
+            {
+                return (new apps\Contacts\ContactController)->edit($id, $request, $app, $twig);
+            }
+
+            return (new apps\Contacts\ContactController)->index($request, $app, $twig);
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    });
+
+
+    /**
+    * @return Media items
+    */
+    $app->match('/media-library-api/{type?}', function ($type) use ($request, $app, $twig)  {
+
+        try {
+        
+            $filter_type = $request->get('type');
+            
+            if ($type == 'media')
+            {
+                return (new apps\Media\MediaController())->media($filter_type, $request, $app, $twig);
+            }
+
+            if ($type == 'file')
+            {
+                return true;
+                return (new apps\Media\MediaController())->media($filter_type, $request, $app, $twig);
+            }
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    });
+
+
+
+
+    // Logout and remoce cookies and session
+    $app->match('logout', function () use ($twig, $request, $app) 
+    {
+
+        (new apps\Auth\AuthService(new UserRepository))->unsetSession();
+
+        return $app->redirect('./');
+    });
+
+}
 
 
 /*
