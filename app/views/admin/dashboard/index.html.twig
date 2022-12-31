@@ -1,287 +1,74 @@
-{% if  app.auth.id > 0  %}
-
+{% if app.auth.id > 0 %}
 {% include 'views/admin/includes/header.html.twig' %}
-<div id="app">
-
+<div class="w-full">
+    <h4 class="py-2">Latest properties</h4>
+    <hr />
+    <div class="card mb-0 w-full">
+        <div class="card-body w-full">
+            <div class="col-md-12">
+                <div class="table-responsive w-full">
+                    <table class="w-full table table-striped table-nowrap custom-table mb-0 datatable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <label class="container-checkbox">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </th>
+                                <th class="w-10">ID</th>
+                                <th>Owner</th>
+                                <th>Title</th>
+                                <th>Type</th>
+                                <th>Agent</th>
+                                <th>Offer type</th>
+                                <th>Web view</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in properties %}
+                            <tr class="text-center">
+                                <td class="checkBox">
+                                    <label class="container-checkbox">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    {{item.id}}
+                                </td>
+                                <td>
+                                    <a href="/properties/edit/{{item.id}}"><span class="person-circle-a person-circle">A</span></a>
+                                    <a href="/properties/edit/{{item.id}}" data-bs-toggle="modal" data-bs-target="#leads-details">{{item.owner.name}}</a>
+                                </td>
+                                <td><a href="/properties/edit/{{item.id}}">{{item.name}}</a> </td>
+                                <td>
+                                    {{item.type}}
+                                </td>
+                                <td>{{item.agent_info.name}}</td>
+                                <td>{{item.request_type}}</td>
+                                <td class="text-center">
+                                    <div class="status-toggle mx-auto">
+                                        <input id="status_{{item.id}}" {% if item.web %} @click="changeStatus('0', 'Property', {{item.id}})" checked {% else %} @click="changeStatus(1, 'Property', {{item.id}})" {% endif %} class="check" type="checkbox">
+                                        <label for="status_{{item.id}}" class="checktoggle checkbox-bg mx-auto">checkbox</label>
+                                    </div>
+                                </td>
+                                <td>
+                                    {% if item.can('edit_contct', app) %}
+                                    <a href="/properties/edit/{{item.id}}" class="font-bold"> Edit</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-<div class=" flex w-full">
-    <div class="col-span-12 lg:col-span-4">
-            
-            <div class="mt-3">
-              <p>
-                <span class="text-3xl text-slate-700 dark:text-navy-100">9.7</span>
-                <span class="text-xs text-green-600">+2.1%</span>
-              </p>
-              <p class="text-xs+">Performance score</p>
-            </div>
-            <div class="mt-4 flex h-2 space-x-1">
-              <div class="w-5/12 rounded-full bg-blue-600 dark:bg-accent" x-tooltip.primary="'Exellent'"></div>
-              <div class="w-2/12 rounded-full bg-green-600" x-tooltip.success="'Very Good'"></div>
-              <div class="w-2/12 rounded-full bg-cyan-400" x-tooltip.info="'Good'"></div>
-
-              <div class="w-2/12 rounded-full bg-yellow-400" x-tooltip.warning="'Poor'"></div>
-              <div class="w-1/12 rounded-full bg-red-400" x-tooltip.error="'Very Poor'"></div>
-            </div>
-
-            <div class="is-scrollbar-hidden mt-4 min-w-full overflow-x-auto">
-              <table class="w-full font-inter">
-                <tbody>
-                  <tr>
-                    <td class="whitespace-nowrap py-2">
-                      <div class="flex items-center space-x-2">
-                        <div class="h-3.5 w-3.5 rounded-full border-2 border-blue-600 dark:border-accent"></div>
-                        <p class="font-medium tracking-wide text-slate-700 dark:text-navy-100">
-                          Exellent
-                        </p>
-                      </div>
-                    </td>
-                    <td class="whitespace-nowrap py-2 text-right">
-                      <p class="font-medium text-slate-700 dark:text-navy-100">
-                        1 029
-                      </p>
-                    </td>
-                    <td class="whitespace-nowrap py-2 text-right">42%</td>
-                  </tr>
-                  <tr>
-                    <td class="whitespace-nowrap py-2">
-                      <div class="flex items-center space-x-2">
-                        <div class="h-3.5 w-3.5 rounded-full border-2 border-green-600"></div>
-                        <p class="font-medium tracking-wide text-slate-700 dark:text-navy-100">
-                          Very Good
-                        </p>
-                      </div>
-                    </td>
-                    <td class="whitespace-nowrap py-2 text-right">
-                      <p class="font-medium text-slate-700 dark:text-navy-100">
-                        426
-                      </p>
-                    </td>
-                    <td class="whitespace-nowrap py-2 text-right">18%</td>
-                  </tr>
-                  <tr>
-                    <td class="whitespace-nowrap py-2">
-                      <div class="flex items-center space-x-2">
-                        <div class="h-3.5 w-3.5 rounded-full border-2 border-cyan-400"></div>
-                        <p class="font-medium tracking-wide text-slate-700 dark:text-navy-100">
-                          Good
-                        </p>
-                      </div>
-                    </td>
-                    <td class="whitespace-nowrap py-2 text-right">
-                      <p class="font-medium text-slate-700 dark:text-navy-100">
-                        326
-                      </p>
-                    </td>
-                    <td class="whitespace-nowrap py-2 text-right">14%</td>
-                  </tr>
-                  <tr>
-                    <td class="whitespace-nowrap py-2">
-                      <div class="flex items-center space-x-2">
-                        <div class="h-3.5 w-3.5 rounded-full border-2 border-yellow-400"></div>
-                        <p class="font-medium tracking-wide text-slate-700 dark:text-navy-100">
-                          Poor
-                        </p>
-                      </div>
-                    </td>
-                    <td class="whitespace-nowrap py-2 text-right">
-                      <p class="font-medium text-slate-700 dark:text-navy-100">
-                        395
-                      </p>
-                    </td>
-                    <td class="whitespace-nowrap py-2 text-right">17%</td>
-                  </tr>
-                  <tr>
-                    <td class="whitespace-nowrap py-2">
-                      <div class="flex items-center space-x-2">
-                        <div class="h-3.5 w-3.5 rounded-full border-2 border-red-400"></div>
-                        <p class="font-medium tracking-wide text-slate-700 dark:text-navy-100">
-                          Very Poor
-                        </p>
-                      </div>
-                    </td>
-                    <td class="whitespace-nowrap py-2 text-right">
-                      <p class="font-medium text-slate-700 dark:text-navy-100">
-                        129
-                      </p>
-                    </td>
-                    <td class="whitespace-nowrap py-2 text-right">9%</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-        <div class="card col-span-12 lg:col-span-8 ">
-            <div class="flex items-center justify-between py-3 px-4">
-              <h2 class="font-medium tracking-wide text-slate-700 dark:text-navy-100">
-                Projects Status
-              </h2>
-              <div x-data="usePopper({placement:'bottom-end',offset:4})" @click.outside="if(isShowPopper) isShowPopper = false" class="inline-flex">
-                <button x-ref="popperRef" @click="isShowPopper = !isShowPopper" class="btn h-8 w-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
-                  </svg>
-                </button>
-
-                <div x-ref="popperRoot" class="popper-root" :class="isShowPopper &amp;&amp; 'show'" style="position: fixed; inset: 0px 0px auto auto; margin: 0px; transform: translate(-468px, 222px);" data-popper-placement="bottom-end">
-                  <div class="popper-box rounded-md border border-slate-150 bg-white py-1.5 font-inter dark:border-navy-500 dark:bg-navy-700">
-                    <ul>
-                      <li>
-                        <a href="#" class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Action</a>
-                      </li>
-                      <li>
-                        <a href="#" class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Another Action</a>
-                      </li>
-                      <li>
-                        <a href="#" class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Something else</a>
-                      </li>
-                    </ul>
-                    <div class="my-1 h-px bg-slate-150 dark:bg-navy-500"></div>
-                    <ul>
-                      <li>
-                        <a href="#" class="flex h-8 items-center px-3 pr-8 font-medium tracking-wide outline-none transition-all hover:bg-slate-100 hover:text-slate-800 focus:bg-slate-100 focus:text-slate-800 dark:hover:bg-navy-600 dark:hover:text-navy-100 dark:focus:bg-navy-600 dark:focus:text-navy-100">Separated Link</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="grid grid-cols-1 gap-y-4 pb-3 sm:grid-cols-3">
-              <div class="flex flex-col justify-between border-4 border-transparent border-l-cyan-400 px-4">
-                <div>
-                  <p class="text-base font-medium text-slate-600 dark:text-navy-100">
-                    Web Design
-                  </p>
-                  <p class="text-xs text-slate-400 dark:text-navy-300">
-                    Design Learn Management System
-                  </p>
-                  <div class="badge mt-2 bg-cyan-400/10 text-cyan-400 dark:bg-cyan-400/15">
-                    UI/UX Design
-                  </div>
-                </div>
-                <div>
-                  <div class="mt-8">
-                    <p class="font-inter">
-                      <span class="text-2xl font-medium text-slate-600 dark:text-navy-100">%55.</span><span class="text-xs">23</span>
-                    </p>
-                    <p class="mt-1 text-xs">June 08, 2021</p>
-                  </div>
-                  <div class="mt-8 flex items-center justify-between space-x-2">
-                    <div class="flex -space-x-3">
-                      <div class="avatar h-8 w-8 hover:z-10">
-                        <img class="rounded-full ring ring-white dark:ring-navy-700" src="images/avatar/avatar-16.jpg" alt="avatar">
-                      </div>
-                      <div class="avatar h-8 w-8 hover:z-10">
-                        <div class="is-initial rounded-full bg-cyan-400 text-xs+ uppercase text-white ring ring-white dark:ring-navy-700">
-                          jd
-                        </div>
-                      </div>
-                      <div class="avatar h-8 w-8 hover:z-10">
-                        <img class="rounded-full ring ring-white dark:ring-navy-700" src="images/avatar/avatar-20.jpg" alt="avatar">
-                      </div>
-                    </div>
-                    <button class="btn h-8 w-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div class="flex flex-col justify-between border-4 border-transparent border-l-secondary px-4">
-                <div>
-                  <p class="text-base font-medium text-slate-600 dark:text-navy-100">
-                    Mobile App
-                  </p>
-                  <p class="text-xs text-slate-400 dark:text-navy-300">
-                    Ecommerce Application
-                  </p>
-                  <div class="badge mt-2 bg-secondary/10 text-secondary dark:bg-secondary-light/15 dark:text-secondary-light">
-                    Ecommerce
-                  </div>
-                </div>
-                <div>
-                  <div class="mt-8">
-                    <p class="font-inter">
-                      <span class="text-2xl font-medium text-slate-600 dark:text-navy-100">%14.</span><span class="text-xs">84</span>
-                    </p>
-                    <p class="mt-1 text-xs">May 01, 2021</p>
-                  </div>
-                  <div class="mt-8 flex items-center justify-between space-x-2">
-                    <div class="flex -space-x-3">
-                      <div class="avatar h-8 w-8 hover:z-10">
-                        <img class="rounded-full ring ring-white dark:ring-navy-700" src="images/avatar/avatar-16.jpg" alt="avatar">
-                      </div>
-                      <div class="avatar h-8 w-8 hover:z-10">
-                        <div class="is-initial rounded-full bg-green-600 text-xs+ uppercase text-white ring ring-white dark:ring-navy-700">
-                          uh
-                        </div>
-                      </div>
-                      <div class="avatar h-8 w-8 hover:z-10">
-                        <img class="rounded-full ring ring-white dark:ring-navy-700" src="images/avatar/avatar-14.jpg" alt="avatar">
-                      </div>
-                    </div>
-                    <button class="btn h-8 w-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div class="flex flex-col justify-between border-4 border-transparent border-l-yellow-400 px-4">
-                <div>
-                  <p class="text-base font-medium text-slate-600 dark:text-navy-100">
-                    Design System
-                  </p>
-                  <p class="text-xs text-slate-400 dark:text-navy-300">
-                    Create LMS design system on figma
-                  </p>
-                  <div class="mt-2 flex space-x-1.5">
-                    <div class="badge bg-yellow-400/10 text-yellow-400 dark:bg-yellow-400/15">
-                      LMS
-                    </div>
-                    <div class="badge bg-yellow-400/10 text-yellow-400 dark:bg-yellow-400/15">
-                      Figma
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <div class="mt-8">
-                    <p class="font-inter">
-                      <span class="text-2xl font-medium text-slate-600 dark:text-navy-100">%87.</span><span class="text-xs">40</span>
-                    </p>
-                    <p class="mt-1 text-xs">September 16, 2021</p>
-                  </div>
-                  <div class="mt-8 flex items-center justify-between space-x-2">
-                    <div class="flex -space-x-3">
-                      <div class="avatar h-8 w-8 hover:z-10">
-                        <img class="rounded-full ring ring-white dark:ring-navy-700" src="images/avatar/avatar-11.jpg" alt="avatar">
-                      </div>
-                      <div class="avatar h-8 w-8 hover:z-10">
-                        <div class="is-initial rounded-full bg-red-400 text-xs+ uppercase text-white ring ring-white dark:ring-navy-700">
-                          pm
-                        </div>
-                      </div>
-                      <div class="avatar h-8 w-8 hover:z-10">
-                        <img class="rounded-full ring ring-white dark:ring-navy-700" src="images/avatar/avatar-10.jpg" alt="avatar">
-                      </div>
-                    </div>
-                    <button class="btn h-8 w-8 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-</div>
-
 {% include 'views/admin/includes/footer.html.twig' %}
+{% else %}
+{% include 'views/admin/forms/login.html.twig' %}
 {% endif %}
