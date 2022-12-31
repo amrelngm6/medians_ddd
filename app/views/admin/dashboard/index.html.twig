@@ -1,6 +1,6 @@
 {% if app.auth.id > 0 %}
 {% include 'views/admin/includes/header.html.twig' %}
-<div class="w-full ">
+<div class="w-full overflow-y-auto" >
     <div class="mb-6">
         <div class="row pt-2">
             <div class="col-md-4">
@@ -8,7 +8,7 @@
                     <div class="card-body">
                         <img src="/uploads/img/circle.png" class="card-img-absolute" alt="circle-image">
                         <h4 class="font-weight-normal mb-3">Properties</h4>
-                        <span>{{properties_count}}</span>
+                        <span class="text-2xl">{{properties_count}}</span>
                     </div>
                 </div>
             </div>
@@ -17,7 +17,7 @@
                     <div class="card-body">
                         <img src="/uploads/img/circle.png" class="card-img-absolute" alt="circle-image">
                         <h4 class="font-weight-normal mb-3">Leads</h4>
-                        <span>{{leads_count}}</span>
+                        <span class="text-2xl">{{leads_count}}</span>
                     </div>
                 </div>
             </div>
@@ -25,8 +25,8 @@
                 <div class="card bg-gradient-success card-img-holder text-white h-100">
                     <div class="card-body">
                         <img src="/uploads/img/circle.png" class="card-img-absolute" alt="circle-image">
-                        <h4 class="font-weight-normal mb-3">Projects</h4>
-                        <span>1</span>
+                        <h4 class="font-weight-normal mb-3">Tasks</h4>
+                        <span class="text-2xl">{{tasks_count}}</span>
                     </div>
                 </div>
             </div>
