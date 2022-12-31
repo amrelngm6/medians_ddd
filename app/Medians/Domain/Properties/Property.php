@@ -8,6 +8,8 @@ use Medians\Domain\ModelOptions;
 
 use Medians\Domain\Users\Agent;
 
+use Medians\Domain\Tasks\Task;
+
 class Property extends CustomController 
 {
 
@@ -211,6 +213,14 @@ class Property extends CustomController
 		return $this->MorphMany(ModelOptions\SelectedOption::class, 'model');
 	} 
 
+	/**
+	 * Set Relation with Tasks 
+	 */
+	public function Tasks()
+	{
+		return $this->MorphMany(Task::class, 'model');
+	} 
+
 	public function loadAgents()
 	{
 		return User::where('')->get();
@@ -256,14 +266,18 @@ class Property extends CustomController
 	/**
 	 * Latest items
 	 */
-	public function latest()
+	public function latest($limit = 10)
 	{
 
-		return Property::where('request_type', $this->request_type)
-		->whereNotIn('id', [$this->id])
-		->with('Owner', 'SelectedOption', 'Location', 'Files', 'Agent')
+		$return = Property::with('Owner', 'SelectedOption', 'Location', 'Files', 'Agent')
 		->orderBy('id', 'Desc')
-		->get();
+		->limit($limit);
+
+		if ($this->request_type)
+		{
+			$return = $return->whereNotIn('id', [$this->id])->where('request_type', $this->request_type);
+		}
+		return $return->get();
 
 	}
  	

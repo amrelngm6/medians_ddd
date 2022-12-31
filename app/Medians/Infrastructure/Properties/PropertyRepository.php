@@ -22,11 +22,9 @@ class PropertyRepository
 		return new Property();
 	}
 
-	public static  function get()
+	public static  function get($limit = 100)
 	{
-
-		return Property::with('Owner', 'SelectedOption', 'Location', 'Files', 'Agent')->get();
-
+		return Property::with('Tasks', 'Owner', 'SelectedOption', 'Location', 'Files', 'Agent')->limit($limit)->get();
 	}
 
 	public static  function getItems($request_type, $limit = 10)
@@ -44,10 +42,94 @@ class PropertyRepository
 	public static  function find($id)
 	{
 
-		return Property::with('Owner', 'SelectedOption', 'Location', 'Files', 'Agent')->find($id);
+		return Property::with('Tasks', 'Owner', 'SelectedOption', 'Location', 'Files', 'Agent')->find($id);
 
 	}
 
+
+	public static function findItems($request)
+	{
+		$check = Property::where('web', 1)->with('Location', 'SelectedOption', 'Agent', 'Files', 'Owner');
+
+		if ($request->get('agent_id')) {
+			$check = $check->where('agent_id', $request->get('agent_id'));
+		}
+
+		if ($request->get('type')) {
+			$check = $check->where('type', $request->get('type'));
+		}
+
+		if ($request->get('name')) {
+			$check = $check->where('name', 'LIKE', '%'.$request->get('name').'%');
+		}
+
+		if ($request->get('city')) {
+			$check = $check->whereHas('Location',function($q) use ($request){
+				$q->where('city', $request->get('city'));
+			});
+		}
+
+		if ($request->get('bathrooms')) {
+			$check = $check->whereHas('SelectedOption',function($q) use ($request){
+				$q->where('code', 'bathrooms')->where('value', '>=',$request->get('bathrooms'));
+			});
+		}
+
+		if ($request->get('rooms')) {
+			$check = $check->whereHas('SelectedOption',function($q) use ($request){
+				$q->where('code', 'rooms')->where('value', '>=',$request->get('rooms'));
+			});
+		}
+
+		if ($request->get('request_type')) {
+			$check = $check->where('request_type', $request->get('request_type'));
+		}
+
+		return $check->get();
+
+	}
+
+	public static function filterItems($request)
+	{
+		$check = Property::with('Location', 'SelectedOption', 'Agent', 'Files', 'Owner');
+
+		if ($request->get('agent_id')) {
+			$check = $check->where('agent_id', $request->get('agent_id'));
+		}
+
+		if ($request->get('type')) {
+			$check = $check->where('type', $request->get('type'));
+		}
+
+		if ($request->get('name')) {
+			$check = $check->where('name', 'LIKE', '%'.$request->get('name').'%');
+		}
+
+		if ($request->get('city')) {
+			$check = $check->whereHas('Location',function($q) use ($request){
+				$q->where('city', $request->get('city'));
+			});
+		}
+
+		if ($request->get('bathrooms')) {
+			$check = $check->whereHas('SelectedOption',function($q) use ($request){
+				$q->where('code', 'bathrooms')->where('value', '>=',$request->get('bathrooms'));
+			});
+		}
+
+		if ($request->get('rooms')) {
+			$check = $check->whereHas('SelectedOption',function($q) use ($request){
+				$q->where('code', 'rooms')->where('value', '>=',$request->get('rooms'));
+			});
+		}
+
+		if ($request->get('request_type')) {
+			$check = $check->where('request_type', $request->get('request_type'));
+		}
+
+		return $check->get();
+
+	}
 
 
 	/**

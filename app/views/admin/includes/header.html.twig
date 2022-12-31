@@ -5,6 +5,7 @@
     <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>{{app.Settings.sitename}}</title>
     <link rel="stylesheet" type="text/css" href="{{app.CONF.url}}assets/tailwind.min.css">
+    <link rel="stylesheet" type="text/css" href="{{app.CONF.url}}assets/dist/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{{app.CONF.url}}assets/bootstrap-grid.min.css">
     <link rel="stylesheet" type="text/css" href="{{app.CONF.url}}assets/style.css">
     <link rel="stylesheet" type="text/css" href="{{app.CONF.url}}assets/alertify/alertify.min.css">
@@ -55,7 +56,7 @@
     <div class=" ">
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
         <!-- component -->
-        <nav id="header" class="flex  w-full z-30   bg-white shadow-lg border-b border-gray-300 ">
+        <nav id="header" class="flex  w-full bg-white shadow-lg border-b border-gray-300 relative" style="z-index:99999">
             <div class="w-full flex items-center justify-between mt-0 px-6 py-0">
                 <div class=" md:flex md:items-center md:w-auto w-full order-3 md:order-1" id="menu">
                     <div class="inline-flex">
@@ -68,54 +69,64 @@
                     <div class="inline-flex">
                         <ul class="md:flex items-center justify-center text-base text-gray-400  md:pt-0">
                             <li>
-                                <a href="#!" class="ToggleItem" data-toggle-target="#side-navbar" data-toggle-class="openmenu">Mednu</a>
+                                <a href="#!" class="ToggleItem" data-toggle-target="#side-navbar" data-toggle-class="openmenu">{{app.Settings.sitename}}</a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="page-title-box">
-                <div class="top-nav-search">
-                    <a href="javascript:void(0);" class="responsive-search">
-                        <i class="fa fa-search"></i>
-                    </a>
-                    <form action="search.html">
-                        <input class="form-control" type="text" placeholder="Search here">
-                        <button class="btn" type="submit"><i class="fa fa-search"></i></button>
-                    </form>
-                </div>
-            </div>
             <a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa fa-bars"></i></a>
-            <ul class="nav user-menu w-auto flex">
-                <li class="nav-item dropdown has-arrow flag-nav">
-                    <a class="nav-link dropdown-toggle flex " data-bs-toggle="dropdown" href="#" role="button">
-                        <img src="assets/img/flags/us.png" alt="" height="20"> <span>English</span>
-                    </a>
-                </li>
-                <li class="nav-item dropdown">
+            <ul class="nav user-menu w-96 flex">
+                <li class="nav-item dropdown w-20">
                     <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                         <i class="fa fa-bell-o"></i> <span class="badge rounded-pill">3</span>
                     </a>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown w-20">
                     <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
                         <i class="fa fa-comment-o"></i> <span class="badge rounded-pill">8</span>
                     </a>
                 </li>
-                <li class="nav-item dropdown has-arrow main-drop">
-                    <a href="#" class="flex dropdown-toggle nav-link" data-bs-toggle="dropdown">
-                        <span class="user-img"><img src="assets/img/profiles/avatar-21.jpg" alt="">
-                            <span class="status online"></span></span>
-                        <span>Admin</span>
+                <li class="nav-item  has-arrow main-drop w-full relative">
+                    <a href="#" class="flex w-full gap gap-2" onclick="$('.dropped1').toggleClass('hidden')">
+                        <span class="user-img mt-3 ">
+                            <img src="{{app.auth.photo()}}" alt="">
+                            <span class="status online absolute top-0 right-0"></span>
+                        </span>
+                        <span>{{app.auth.name}}</span>
                     </a>
+                    <ul class="py-4 px-2 w-full bg-white absolute top-14 left-0 hidden dropped1" style="z-index: 9999;">
+                        <li><a href="/logout">Logout </a>
+                    </ul>
                 </li>
             </ul>
             <div class="dropdown mobile-user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
             </div>
         </nav>
-        <div class="flex w-full items-start justify-between" id="app">
+
+        <div class="w-full " id="app">
+
+    
+            <div class="relative modal right fade w-full h-full top-0 " id="modal-details" style="position:fixed; background: rgba(0, 0, 0, .4);" v-if="showModal" >
+                <div class="modal-dialog bg-white" role="document">
+                    <span style="left:-25px"  @click="viewModal('project-details', 0)" class="cursor-pointer absolute  text-gray-800 float-right text-lg" ><i class="fa fa-close"></i></span>
+
+                    <div class="modal-content p-2">
+                        <user_modal
+                        v-if="activeModal == 'user'" 
+                        ref="user">
+                        </user_modal>                
+
+                        <lead_modal
+                        v-if="activeModal == 'lead'" 
+                        ref="lead">
+                        </lead_modal>                
+                    </div>
+                </div>
+            </div>
             <div class="gap gap-6 h-screen flex w-full overflow-hidden py-4 pb-10 ">
+                {% if app.auth.id %}    
                 <div class="sidebar" id="sidebar">
                     <div class="sidebar-inner slimscroll">
                         <div id="sidebar-menu" class="sidebar-menu">
@@ -123,11 +134,11 @@
                                 <li class="nav-item nav-profile">
                                     <a href="#" class="nav-link">
                                         <div class="nav-profile-image">
-                                            <img src="assets/img/profiles/avatar-17.jpg" alt="profile">
+                                            <img src="/uploads/img/property17.jpg" alt="profile">
                                         </div>
                                         <div class="nav-profile-text d-flex flex-column">
-                                            <span class="font-weight-bold mb-2">David Grey. H</span>
-                                            <span class="text-white text-small">Project Manager</span>
+                                            <span class="font-weight-bold mb-2">{{app.auth.name}}</span>
+                                            <span class="text-white text-xs">{{app.auth.Role.name}}</span>
                                         </div>
                                         <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
                                     </a>
@@ -137,4 +148,5 @@
                         </div>
                     </div>
                 </div>
+                {% endif %}
                 <div class="w-full flex pb-20" style="height: 100vh; z-index: 9999;">

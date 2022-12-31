@@ -37,7 +37,7 @@
                                     <th>Type</th>
                                     <th>Agent</th>
                                     <th>Offer type</th>
-                                    <th>Status</th>
+                                    <th>Web view</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -63,7 +63,17 @@
                                     </td>
                                     <td>{{item.agent_info.name}}</td>
                                     <td>{{item.request_type}}</td>
-                                    <td>{{item.status}}</td>
+                                    <td class="text-center">
+                                        <div class="status-toggle mx-auto">
+                                            <input id="status_{{item.id}}" 
+                                            {% if item.web %} 
+                                            @click="changeStatus('0', 'Property', {{item.id}})"  checked 
+                                            {% else %} 
+                                            @click="changeStatus(1, 'Property', {{item.id}})"  
+                                            {% endif %} class="check" type="checkbox">
+                                            <label for="status_{{item.id}}" class="checktoggle checkbox-bg mx-auto">checkbox</label>
+                                        </div>
+                                    </td>
                                     <td>
                                         {% if item.can('edit_contct', app) %}
                                         <a href="/properties/edit/{{item.id}}" class="font-bold"> Edit</a>

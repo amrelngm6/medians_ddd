@@ -68,15 +68,15 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{app.CONF.url}}">
-    <meta property="og:title" content="Medians ">
+    <meta property="og:title" content="{{title}} - {{app.Settings.sitename}}">
     <meta property="og:image" content="{{app.CONF.url}}front_assets/img/cover.jpg">
-    <meta property="og:description" content="">
+    <meta property="og:description" content="{{desc}}">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="Medians ">
+    <meta property="twitter:title" content="{{title}} - {{app.Settings.sitename}}">
     <meta property="twitter:image" content="{{app.CONF.url}}front_assets/img/cover.jpg">
-    <meta property="twitter:description" content="">
+    <meta property="twitter:description" content="{{desc}}">
     
     <script type="text/javascript">
         var rootURL = '{{app.CONF.url}}';
@@ -134,7 +134,7 @@
                     <div class="row d-flex align-items-center">
                         <div class="col-xl-4 col-lg-4">
                             <div class="logo-area">
-                                <a href="index.html" class="temp-logo">
+                                <a href="/" class="temp-logo">
                                     <img src="/uploads/img/logo_light.svg" width="157" height="40" alt="logo" class="img-fluid">
                                 </a>
                             </div>

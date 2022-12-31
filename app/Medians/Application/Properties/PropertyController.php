@@ -30,14 +30,10 @@ class PropertyController
 	 */
 	public function index($request, $app, $twig)
 	{
-		$items = $this->repo->getModel()->with('Agent');
-		if (!empty($request->get('request_type')))
-		{
-			$items = $items->where('request_type', $request->get('request_type'));
-		}
+		$items = $this->repo->filterItems($request);
 
 		return $twig->render('views/admin/properties/list.html.twig', [
-			'items' =>  $items->get(),
+			'items' =>  $items,
 	        'title' => 'Properties',
 	        'app' => $app,
 	    ]);

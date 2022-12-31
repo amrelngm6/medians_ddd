@@ -33,6 +33,26 @@ $app->request = $request;
 
 
 
+$app->post('/api/{type?}', function ($type) use ($app, $request) 
+{   
+    switch ($type) 
+    {
+        case 'create':
+            return (new apps\APIController)->create($request, $app);
+            break;
+        
+        case 'update':          
+            return (new apps\APIController)->update($request, $app);
+            break;
+        
+        case 'updateStatus':          
+            return (new apps\APIController)->updateStatus($request, $app);
+            break;
+    }
+
+    return (new apps\APIController)->handle($request, $app);
+});
+
 /*
 // Return list of device 
 */
@@ -89,6 +109,14 @@ $app->post('', function () use ($twig, $app, $request)
 
             case 'Organization.update':
                 $returnData =  (new apps\Organizations\OrganizationController())->update($request, $app); 
+                break;
+
+            case 'User.create':
+                $returnData =  (new apps\Users\UserController())->store($request, $app); 
+                break;
+
+            case 'User.update':
+                $returnData =  (new apps\Users\UserController())->update($request, $app); 
                 break;
 
             case 'userLogin':
@@ -176,6 +204,27 @@ $app->match('property/{id?}', function ($id) use ($twig, $app, $request)
     } 
 });
 
+/*
+// Return search for properties 
+*/
+$app->match('/find_property', function () use ($twig, $app, $request) 
+{
+    try {
+
+        return  $twig->render('views/front/properties/list.html.twig', [
+            'title' => 'Property list ',
+            'app' => $app,
+            'propertyModel' => (new Repo\Properties\PropertyRepository)->getModel(),
+            'properties' => (new Repo\Properties\PropertyRepository)->findItems($request),
+            'formAction' => $app->CONF['url'],
+        ]);
+
+
+    } catch (Exception $e) {
+        return $e->getMessage();
+    } 
+});
+
 
 
 /**
@@ -200,14 +249,9 @@ if (isset($app->auth->id))
     /*
     // Return list of device 
     */
-    $app->match('/dashboard', function () use ($twig, $app) 
+    $app->match('/dashboard', function () use ($request, $twig, $app) 
     {
-
-        return  $twig->render('views/admin/dashboard/index.html.twig', [
-            'title' => 'Home page ',
-            'app' => $app,
-            'formAction' => $app->CONF['url'],
-        ]);
+        return (new apps\DashboardController)->index($request, $twig, $app);
     });
 
     /**
@@ -317,6 +361,46 @@ if (isset($app->auth->id))
         }
     });
 
+    /**
+    * @return Contacts
+    */
+    $app->match('/users/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
+        $UserController = new apps\Users\UserController;
+        try {
+            
+            if ($action == 'create')
+            {
+                if ($action == 'agents')
+                    return $UserController->createAgent($request, $app, $twig);
+
+                if ($action == 'managers')
+                    return $UserController->createManager($request, $app, $twig);
+    
+                return $UserController->create($request, $app, $twig);
+            }
+
+            if ($action == 'edit')
+            {
+                return $UserController->edit($id, $request, $app, $twig);
+            }
+
+            if ($action == 'agents')
+                return $UserController->index( $UserController->queryByRole(3), 'Agents', $app, $twig );
+
+            if ($action == 'managers')
+                return $UserController->index( $UserController->queryByRole(2), 'Managers', $app, $twig );
+
+            if ($app->auth->can('view_admins', $app))
+                return $UserController->index( $UserController->queryByRole(1), 'Administrators', $app, $twig );
+
+
+            return '';
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    });
+
 
     /**
     * @return Media items
@@ -343,6 +427,48 @@ if (isset($app->auth->id))
         }
     });
 
+
+
+    /**
+    * @return Tasks
+    */
+    $app->match('/tasks/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
+
+        try {
+            
+            return (new apps\Tasks\TaskController)->index($request, $app, $twig);
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    });
+
+
+    /**
+    * @return Customers
+    */
+    $app->match('/customers/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  
+    {
+
+        try {
+            
+            if ($action == 'create')
+            {
+                return (new apps\Customers\CustomerController)->create($request, $app, $twig);
+            }
+
+            if ($action == 'edit')
+            {
+                return (new apps\Customers\CustomerController)->edit($id, $request, $app, $twig);
+            }
+
+            return (new apps\Customers\CustomerController)->index($request, $app, $twig);
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
+    });
 
 
 

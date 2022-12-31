@@ -24,8 +24,12 @@ class ContactRepository
 
 	public function find($id)
 	{
-
 		return Contact::find($id);
+	}
+
+	public function get($limit)
+	{
+		return Contact::limit($limit)->get();
 	}
 
 

@@ -2,7 +2,7 @@
     <div class="block w-full overflow-x-auto">
         
 
-        <div class="w-full flex gap gap-6"  v-if="Organization">
+        <div class="w-full  lg:flex gap gap-6"  v-if="Organization">
             <div class="w-full">
                 <div class="card flex-fill">
                     <div class="card-header">

@@ -26,7 +26,7 @@ class Event extends CustomController
 		'end_time',
 		'property_id',
 		'agent_id',
-		'active'
+		'active',
 		'status',
 	];
 

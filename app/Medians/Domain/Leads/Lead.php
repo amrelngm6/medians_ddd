@@ -41,16 +41,25 @@ class Lead extends CustomController
 	];
 
 
-	public $appends = ['location_fields'];
+	public $appends = ['name', 'photo'];
 
-
-	function __construct()
+	public function getNameAttribute() : String
 	{
+		return $this->name();
+	}
 
+	public function getPhotoAttribute() : ?String
+	{
+		return $this->photo();
 	}
 
 
-	public function name()
+	public function photo() : String
+	{
+		return !empty($this->profile_image) ? $this->profile_image : '/uploads/images/default_profile.jpg';
+	}
+
+	public function name() : String
 	{
 		return $this->first_name.' '.$this->last_name;
 	}

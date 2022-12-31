@@ -4,10 +4,8 @@ namespace Medians\Domain\Users;
 
 use Shared\dbaser\CustomController;
 
-use Medians\Domain\Providers\Provider;
-use Medians\Domain\Providers\ProviderUsers;
-use Medians\Domain\FaceBook\FBPageInfo;
-use Medians\Domain\FaceBook\FBUserInfo;
+use Medians\Domain\Properties\Property;
+
 
 class User extends CustomController
 {
@@ -20,21 +18,30 @@ class User extends CustomController
 
 
 	protected $fillable = [
-    	'firstname',
-    	'lastname',
+    	'first_name',
+    	'last_name',
     	'email',
     	'password',
     	'phone',
     	'profile_image',
-    	'role',
+    	'role_id',
     	'active',
 	];
 
-	public $appends = ['name'];
+	public $appends = ['name', 'photo', 'password'];
 
+	public function getPasswordAttribute() 
+	{
+		return null;
+	}
 	public function getNameAttribute() : String
 	{
-		return $this->firstname.' '.$this->lastname;
+		return $this->name();
+	}
+
+	public function getPhotoAttribute() : ?String
+	{
+		return $this->photo();
 	}
 
 
@@ -45,7 +52,7 @@ class User extends CustomController
 
 	public function name() : String
 	{
-		return $this->firstname.' '.$this->lastname;
+		return $this->first_name.' '.$this->last_name;
 	}
 
 	public function email() : String
@@ -79,25 +86,17 @@ class User extends CustomController
 		$this->publish = $publish;
 	}
 
-	public function providers()
+	public function properties()
 	{
-		return $this->HasManyThrough(
-			Provider::class, ProviderUsers::class, 'userId', 'id', 'id', 'providerId'
-		);
+		return $this->HasMany(Property::class , 'agent_id');
 	}
 
-	public function fb_pages()
-	{
-		return $this->HasMany(
-			FBPageInfo::class,  'user_id', 'id'
-		);
-	}
 
-	public function fb_user()
+	/**
+	 * Relation with role 
+	 */
+	public function Role() 
 	{
-		return $this->HasOne(
-			FBUserInfo::class,  'user_id', 'id'
-		);
+		return $this->hasOne(Role::class, 'id', 'role_id');
 	}
-
 }

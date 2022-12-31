@@ -1,7 +1,6 @@
 <template>
     <div class="block w-full overflow-x-auto">
         
-
         <div v-if="Property.id && tabs.length" class="w-full flex gap gap-3 mb-6" >
             <div v-for="tab in tabs" @click="setTab(tab.code)" class="cursor-pointer py-3 px-2 w-full border-r-1 border-gray-300 text-center text-normal" :class="tab.code == currentTab ? 'bg-purple-600 text-white font-bold rounded-lg' : ''" v-text="tab.title"></div>
         </div>
@@ -19,14 +18,37 @@
             </div>
         </div>
 
-        <div class="w-full" v-if="Property && currentTab == 'activities'">
+        <div class="w-full" v-if="Property && currentTab == 'tasks'">
             <button @click="addTask" class="w-28 px-3 py-2 text-center rounded-lg bg-gradient-primary text-white"  >Add Task</button>
             <div class="py-4">
-
+                <div class="table-responsive">
+                    <table class="w-full table table-striped table-nowrap custom-table mb-0 datatable">
+                        <thead>
+                            <tr>
+                                <th class="w-10">ID</th>
+                                <th>Name</th>
+                                <th>Priority</th>
+                                <th>Owner</th>
+                                <th>Users</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            <tr class="text-center" v-for="(item, i) in Property.tasks">
+                                <td v-text="item.id"></td>
+                                <td><a  href="javascript:;" @click="setActiveTask(i)" v-text="item.name"></a> </td>
+                                <td v-text="item.priority"></td>
+                                <td v-text="item.owner ? item.owner.name : ''"></td>
+                                <td v-text="item.task_users ? item.task_users.length : 0"></td>
+                                <td v-text="item.start_date +' '+ item.start_time"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <div class="w-full flex gap gap-6"  v-if="Property && currentTab == 'info'">
+        <div class="w-full lg:flex gap gap-6"  v-if="Property && currentTab == 'info'">
             <div class="w-full">
                 <div class="card flex-fill">
                     <div class="card-header">
@@ -201,6 +223,24 @@
                 </div>
             </div>
         </div>
+
+
+        <div class=" relative modal right fade w-full h-full top-0" id="form-sidebar" style="position:fixed; background: rgba(0, 0, 0, .4);" v-if="showSide && Property.id">
+            <div class="modal-dialog bg-white relative" role="document">
+                <span style="left:-25px" class="cursor-pointer absolute top-4 text-gray-800 float-right text-lg" @click="viewSide('').loadTasks(Property.id)"><i class="fa fa-close"></i></span>
+                <div class="modal-content p-2">
+                    <div class=" mt-20 relative overflow-y-auto " style="max-height: 80vh;">
+                        <task_form
+                        :task="activeTask"
+                        :old_agents="Agents"
+                        ref="task">
+                        </task_form>       
+                    </div>         
+                </div>
+            </div>
+        </div>
+
+
     </div>
 </template>
 <script>
@@ -211,18 +251,21 @@ export default
     computed: {},
     data() {
         return {
+            showSide:false,
             tabs: [
                 {title: 'Info', code: 'info'},
                 {title: 'Pictures', code: 'pictures'},
-                {title: 'Activities', code: 'activities'}
+                {title: 'Tasks', code: 'tasks'},
             ],
             
             currentTab:'info',
+
 
             file: null,
             Property: {id:0, type:'',files:[], location:{}, divisions:{}, areas:{}, faces:{}, spaces:{}},
             ItemsList: [],
             Agents:[],
+            activeTask:{model_type:"Medians\\Domain\\Properties\\Property", model_id:this.property.id},
             showList: true,
         }
     },
@@ -243,14 +286,42 @@ export default
             this.Property.tasks = this.property.tasks ? this.property.tasks : [];        
         }
 
-        console.log(this.Property);
     },
 
     methods: 
     {
+
+        setActiveTask(i)
+        {
+            this.activeTask = this.Property.tasks[i];
+            this.viewSide('task');
+        },
+        loadTasks(id)
+        {   
+            const params = new URLSearchParams([]);
+            params.append('model', 'Property.tasks');
+            params.append('id', id);
+            this.handleRequest(params, '/api').then(response=> {
+                this.Property.tasks = response;
+            });
+        },
+
+        checkById(id)
+        {   
+            this.showLoader = true;
+            const params = new URLSearchParams([]);
+            params.append('model', 'Property');
+            params.append('id', id);
+            this.handleRequest(params).then(response=> {
+                this.Property = response;
+                this.showLoader = false;
+            });
+        },
+
         addTask()
         {
-
+            this.showSide = true;
+            return this;
         },
         addFile()
         {
@@ -283,6 +354,17 @@ export default
 
             return val;
         },
+
+
+
+        viewSide(element)
+        {
+            jQuery('#form-sidebar').removeClass('hidden')
+            this.showSide = !this.showSide;
+            return this;
+        },
+
+
         submit() {
 
             const params = new URLSearchParams([]);
@@ -292,10 +374,10 @@ export default
                 this.$alert(data.result);
             });
         },
-        async handleRequest(params) {
+        async handleRequest(params, url='/') {
 
             // Demo json data
-            return await axios.post('/', params.toString()).then(response => 
+            return await axios.post(url, params.toString()).then(response => 
             {
                 if (response.data.status == true)
                     return response.data.result;

@@ -6,7 +6,7 @@ use Medians\Infrastructure\Users as Repo;
 
 use Medians\Domain\Customers\CustomerModel as CustomerModel;
 
-class Admin
+class Admin 
 {
 
 
@@ -18,7 +18,6 @@ class Admin
 
 	function __construct()
 	{
-
 		$this->repo = new Repo\UserRepository();
 	}
 

@@ -3,16 +3,20 @@
 namespace Medians\Infrastructure\Customers;
 
 use Medians\Domain\Customers\Customer;
+use Medians\Domain\Customers\LocationsInfo;
+use Medians\Domain\Properties\Files;
 
 
 class CustomerRepository 
 {
 
+	public $app;
 
 
 
 	function __construct()
 	{
+
 	}
 
 
@@ -22,12 +26,16 @@ class CustomerRepository
 	}
 
 
+
 	public function find($customerId)
 	{
-
-		return Customer::find($customerId);
+		return Customer::with('Agent','Source', 'Stage', 'properties')->find($customerId);
 	}
 
+	public function get($limit = 100)
+	{
+		return Customer::with('Agent','Source', 'stage', 'properties')->limit($limit)->get();
+	}
 
 	public function getByEmail($email)
 	{
@@ -45,11 +53,30 @@ class CustomerRepository
 
 
 
+	/**
+	* Save item to database
+	*/
+	public function storeLocation($data, $id) 
+	{
+
+		$Model = LocationsInfo::firstOrCreate([
+			'model_type' => Customer::class,
+			'model_id' => $id,
+		]);
+		$data['model_type'] = Customer::class;
+		$data['model_id'] = $id;
+		$Model->update($data);
+
+		return $Model;
+	}
+
+
+
 
 	/**
 	* Save item to database
 	*/
-	public static function store($data) 
+	public function store($data) 
 	{
 
 		$Model = new Customer();
@@ -63,11 +90,32 @@ class CustomerRepository
 		}	
 
 		// Return the FBUserInfo object with the new data
-    	$Object = Customer::create($dataArray);
-    	$Object->update($dataArray);
+    	$Model = Customer::create($dataArray);
+    	$Model->update($dataArray);
 
-    	return $Object;
+    	// Store Location data 
+    	$this->storeLocation( (array) $data['location'], $Model->id);
+
+    	return $Model;
     }
     	
+	/**
+	* Update item to database
+	*/
+	public function update($data) 
+	{
+		$Object = Property::find($data['id']);
+		
+		// Return the FBUserInfo object with the new data
+    	$Object->update( (array) $data);
+    	
+    	// Store Location data 
+    	$this->storeLocation( (array) $data['location'], $Object->id);
+
+    	return $Object; 
+
+	}
+
+
 
 }

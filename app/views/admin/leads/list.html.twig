@@ -55,7 +55,7 @@
                                     <td>
                                         {{item.id}}
                                     </td>
-                                    <td><a href="/leads/edit/{{item.id}}">{{item.name()}}</a> </td>
+                                    <td><a  href="javascript:;" @click="viewModal('lead', {{item.id}})">{{item.name()}}</a> </td>
                                     <td>
                                         {{item.source.name}}
                                     </td>
@@ -63,7 +63,7 @@
                                     <td>{{item.email}}</td>
                                     <td class="text-center"><span class="mx-auto block w-2 h-2 rounded-full {% if item.status %} bg-green-600 {% else %} bg-red-600 {% endif %}"></span></td>
                                     <td>
-                                        {% if item.can('edit_contct', app) %}
+                                        {% if item.can('edit_lead', app) %}
                                         <a href="/leads/edit/{{item.id}}" class="font-bold"> Edit</a>
                                         {% endif %}
                                     </td>

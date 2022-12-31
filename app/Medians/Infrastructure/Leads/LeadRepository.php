@@ -24,8 +24,14 @@ class LeadRepository
 
 	public function find($id)
 	{
+		return Lead::with('Agent', 'source')->find($id);
+	}
 
-		return Lead::find($id);
+
+
+	public function get($limit = 100)
+	{
+		return Lead::with('Agent', 'source')->limit($limit)->get();
 	}
 
 
@@ -54,7 +60,7 @@ class LeadRepository
 				$dataArray[$key] = $value;
 			}
 		}	
-
+ 
 		// Return the FBUserInfo object with the new data
     	$Object = Lead::create($dataArray);
     	$Object->update($dataArray);

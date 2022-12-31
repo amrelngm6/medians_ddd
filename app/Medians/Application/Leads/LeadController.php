@@ -33,7 +33,7 @@ class LeadController
 	public function index($request, $app, $twig)
 	{
 		return $twig->render('views/admin/leads/list.html.twig', [
-			'items' =>  $this->repo->getModel()->with('Agent', 'source')->get(),
+			'items' =>  $this->repo->get(100),
 	        'title' => 'Leads',
 	        'app' => $app,
 	    ]);
@@ -95,11 +95,12 @@ class LeadController
 	public function store($request, $app) 
 	{
 
-		$params = json_decode($request->get('params')['lead']);
+		$params = (array) json_decode($request->get('params')['lead']);
 
 		try {
 
-			$Property = $this->repo->store((array) $params);
+			$params['created_by'] = $app->auth->id;
+			$Property = $this->repo->store($params);
 
         	return array('success'=>1, 'result'=>'Created');
 
@@ -116,11 +117,11 @@ class LeadController
 	public function update($request, $app) 
 	{
 
-		$params = json_decode($request->get('params')['lead']);
+		$params = (array)  json_decode($request->get('params')['lead']);
 
 		try {
 
-			$Property = $this->repo->update((array) $params);
+			$Property = $this->repo->update($params);
 
         	return array('success'=>1, 'result'=>'Updated');
 

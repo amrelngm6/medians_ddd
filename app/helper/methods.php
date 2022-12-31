@@ -18,6 +18,19 @@ function getMenuList()
                 array('title'=>'Sale items', 'link'=>'properties?request_type=sale'),
 			]
 		),
+        array('title'=>'Users', 'link'=>'', 'sub'=>
+            [
+                array('title'=>'Administrators', 'link'=>'users/admin'),
+                array('title'=>'Managers', 'link'=>'users/managers'),
+                array('title'=>'Agents', 'link'=>'users/agents'),
+            ]
+        ),
+        array('title'=>'Customers', 'link'=>'', 'sub'=>
+            [
+                array('title'=>'Customers', 'link'=>'customers/index'),
+                array('title'=>'Create customer', 'link'=>'customers/create'),
+            ]
+        ),
         array('title'=>'Leads', 'link'=>'', 'sub'=>
             [
                 array('title'=>'Leads ', 'link'=>'leads/index'),
@@ -36,6 +49,9 @@ function getMenuList()
                 array('title'=>'Create organization', 'link'=>'organizations/create'),
             ]
         ),
+
+        array('title'=>'Tasks', 'link'=>'tasks'),
+        array('title'=>'Notifications', 'link'=>''),
 		array('title'=>'Settings', 'link'=>'settings'),
 		array('title'=>'Logout', 'link'=>'logout'),
 	);
@@ -78,9 +94,9 @@ function Page403($twig, $app)
 * Handle routes response 
 * based on session & Permissions
 */
-function response($response, $app, $twig)
+function response($response, $app, $twig=null)
 {
 
-	return isset($app->providerSession->id) ? $response : Page403($twig, $app);
+	return isset($app->auth->id) ? $response : Page403($twig, $app);
 
 }

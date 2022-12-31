@@ -13,5 +13,9 @@ class AgentRepository extends UserRepository
 		return new Agent;
 	}
 
+	public function get($limit = 100)
+	{
+		return Agent::where('role_id', 3)->limit($limit)->get();
+	}
 
 }
