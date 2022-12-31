@@ -242,17 +242,17 @@ $app->match('login', function () use ($request, $app, $twig)
 
 
 
+/*
+// Return list of device 
+*/
+$app->match('/dashboard', function () use ($request, $twig, $app) 
+{
+    return (new apps\DashboardController)->index($request, $twig, $app);
+});
 
 if (isset($app->auth->id))
 {
 
-    /*
-    // Return list of device 
-    */
-    $app->match('/dashboard', function () use ($request, $twig, $app) 
-    {
-        return (new apps\DashboardController)->index($request, $twig, $app);
-    });
 
     /**
     * @return Settings page
