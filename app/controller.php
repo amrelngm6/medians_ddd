@@ -20,15 +20,55 @@ use Twig\Environment;
 
 use Medians\Application as apps;
 use Shared\dbaser;
+use Medians\Infrastructure as Repo;
 use Medians\Infrastructure\Administrators\AdminRepository;
 use Medians\Infrastructure\Users\UserRepository;
+use Medians\Domain\FaceBook\FBUserInfo;
+// use Facebook\Facebook;
 
 
 $app->menuList = getMenuList();
 $app->currentPage = $request->getPathInfo();
-
-
 $app->request = $request;
+
+
+
+$app->post('/api/{type?}', function ($type) use ($app, $request) 
+{   
+    switch ($type) 
+    {
+        case 'create':
+            return (new apps\APIController)->create($request, $app);
+            break;
+        
+        case 'update':          
+            return (new apps\APIController)->update($request, $app);
+            break;
+        
+        case 'updateStatus':          
+            return (new apps\APIController)->updateStatus($request, $app);
+            break;
+    }
+
+    return (new apps\APIController)->handle($request, $app);
+});
+
+/*
+// Return list of device 
+*/
+$app->post('/media-library-api/{type?}', function ($type) use ($twig, $app, $request) 
+{ 
+    switch ($type) {
+        case 'delete':
+            return (new apps\Media\MediaController())->delete($request, $app, $twig);
+            break;
+        
+        default:
+            return (new apps\Media\MediaController())->upload($request, $app, $twig);
+            break;
+    }
+
+});
 
 /*
 // Return list of device 
@@ -36,255 +76,76 @@ $app->request = $request;
 $app->post('', function () use ($twig, $app, $request) 
 { 
 
-    $params = $request->get('params');
+    try {
+        switch ($request->get('type')) 
+        {
+            case 'Property.create':
+                $returnData =  (new apps\Properties\PropertyController())->store($request, $app); 
+                break;
 
-    switch ($request->get('type')) 
-    {
-        case 'userLogin':
-            
-            $returnData =  (new apps\Auth\AuthService( new AdminRepository() ))->userLogin($request, $app); 
-            break;
-        
+            case 'Property.update':
+                $returnData =  (new apps\Properties\PropertyController())->update($request, $app); 
+                break;
 
-        case 'add_device':
-            
-            $returnData =  (new apps\Devices\DeviceController( ))->store($request, $app); 
-            break;
+            case 'Lead.create':
+                $returnData =  (new apps\Leads\LeadController())->store($request, $app); 
+                break;
 
-        case 'delete_device':
-            
-            $returnData = (new apps\Devices\DeviceController( ))->delete($request, $app); 
-            break;
-            
-        case 'edit_device':
-            
-            $returnData = (new apps\Devices\DeviceController( ))->update($request, $app); 
+            case 'Lead.update':
+                $returnData =  (new apps\Leads\LeadController())->update($request, $app); 
+                break;
 
-            break;
-        
+            case 'Contact.create':
+                $returnData =  (new apps\Contacts\ContactController())->store($request, $app); 
+                break;
 
-        case 'add_device_type':
-            
-            $returnData = (new apps\Devices\DeviceTypeController)->store($request, $app); 
+            case 'Contact.update':
+                $returnData =  (new apps\Contacts\ContactController())->update($request, $app); 
+                break;
 
-            break;
-        
-        case 'delete_device_type':
-            
-            $returnData = (new apps\Devices\DeviceTypeController)->delete($request, $app); 
-            break;   
-            
-        case 'edit_device_type':
-            
-            $returnData = (new apps\Devices\DeviceTypeController)->update($request, $app); 
-            break;
-        
-        case 'updateSettings':
-            
-            $returnData = (new apps\Settings\SettingsController)->update($request, $app); 
+            case 'Organization.create':
+                $returnData =  (new apps\Organizations\OrganizationController())->store($request, $app); 
+                break;
 
-            break;
+            case 'Organization.update':
+                $returnData =  (new apps\Organizations\OrganizationController())->update($request, $app); 
+                break;
 
-        case 'add_product':
-            
-            $returnData = (new apps\Products\ProductController($params))->store($request, $app); 
+            case 'User.create':
+                $returnData =  (new apps\Users\UserController())->store($request, $app); 
+                break;
 
-            break;
-        
-        case 'edit_product':
-            
-            $returnData = (new apps\Products\ProductController)->update($request, $app); 
+            case 'User.update':
+                $returnData =  (new apps\Users\UserController())->update($request, $app); 
+                break;
 
-
-            break;
-        
-        case 'delete_product':
-            
-            $returnData = (new apps\Products\ProductController)->delete($request, $app); 
-        
-            break;
-        
-
-        case 'add_stock':
+            case 'userLogin':
+                    
+                    $returnData =  (new apps\Auth\AuthService( new AdminRepository() ))->userLogin($request, $app); 
+                break;
             
 
-            $returnData = (new apps\Products\StockController)->store($request, $app); 
-
-            break;
-        
-        case 'delete_stock':
-            
-            $returnData = (new apps\Products\StockController)->delete($request, $app); 
-        
-            break;
-        
-        
-
-        case 'order_product':
+            case 'updateSettings':
                 
-            $service = new apps\Orders\ProductOrder(null); 
+                $returnData = (new apps\Settings\SettingsController)->update($request, $app); 
 
-            try {
+                break;
 
-                $checkItem = (new apps\Devices\DeviceController)->getItem($params['id']);
+            default:
 
-                $params['products'] = $service->filterData($params['products']);
-                $params['providerId'] = $app->providerSession->id;
-                
-                if ($service->handle( $params ))
-                {
-                    $returnData = array('success'=>1, 'data'=>'Added', 'redirect'=>$app->CONF['url'].'provider_area/devices');
-                }
+                print_r($_POST);
 
-            } catch (Exception $e) {
+                break;
 
-                $returnData = array('error'=>$e->getMessage());
-            }   
-        
-            break;
-        
-        
-        case 'newDeviceOrder':
-            
-            $returnData = (new apps\Orders\DeviceOrderController(  ))->store_device_order($request, $app); 
-            break;
-        
-        case 'endDeviceOrder':
+        }
 
-            $service = new apps\Orders\DeviceOrderController($params['id']); 
+    } catch (Exception $e) {
 
-            try {
-
-                $service->setDeviceId($params['id']);
-
-                $service->setProviderId($app->providerSession->id);
-
-                $service->setOrderedBy($app->auth->id);
-
-                $checkDeviceOrder = $service->submitOrder();
-
-                $device = apps\Devices\DeviceController::create(array('id' => $checkDeviceOrder->device()->id,  'playing'=> '0', 'publish'=>1)); 
-                $device->editItem( $checkDeviceOrder->device()->id );
-
-                if (!empty($checkDeviceOrder->status()) ) { $returnData = array('success'=>1, 'redirect'=>$app->CONF['url'].'provider_area/order/'.$checkDeviceOrder->code(), 'data'=>1); }
-
-            } catch (Exception $e) {
-                $returnData = array('error'=>$e->getMessage());
-            }
-            break;
-
-        case 'setOrderPaid':
-
-            $code = $params['id'];
-
-            $service = new apps\Orders\Order($code); 
-
-            try {
-
-                $service->setCode($params['id']);
-
-                $orderData = $service->getByCode($code);
-                $orderData->device = (new apps\Devices\DeviceController)->getItem($orderData->device);
-                $service->setModel($service->createModel($orderData));
-                
-                $service->setOrderedBy($app->auth->id);
-
-                $checkOrder = $service->setOrderPaid();
-
-                if (!empty($checkOrder->status()) ) { $returnData = array('success'=>1, 'reload'=>1, 'data'=>1); }
-
-            } catch (Exception $e) {
-                $returnData = array('error'=>$e->getMessage());
-            }
-            break;
-
-
-
-        case 'add_discount':
-            
-            $service = new apps\Discounts\Discount($params); 
-
-            try {
-
-                if (!$service->validate())
-                {
-
-                    $checkInsert = $service->saveItem( ) ;
-
-                    if (!empty($checkInsert->id))
-                    {
-                        $returnData = array('success'=>1, 'data'=>'Added', 'reload'=>1);
-                    }
-                }
-
-            } catch (Exception $e) {
-                $returnData = array('error'=>$e->getMessage());
-            }
-
-            break;
-        
-        
-        case 'order_discount':
-
-            $code = $params['id'];
-            $discountCode = $params['discountCode'];
-
-            $service = new apps\Orders\Order($code); 
-
-            try {
-
-                $checkItem = $service->getByCode($code);
-
-                if (isset($checkItem->id))
-                {
-                    $checkItem->device = ((new apps\Devices\DeviceController())->getItem($checkItem->device));
-                    $service->setModel($service->createModel($checkItem));
-
-                    if ($service->handleOrderDiscount($discountCode) )
-                    {
-                        $returnData = array('success'=>1, 'data'=>'Updated', 'reload'=>1);
-                    }
-
-                }  else { $returnData = array('error'=>'Order not found'); }
-
-            } catch (Exception $e) { $returnData = array('error'=>$e->getMessage()); }   
-
-            break;
-        
-        
-        case 'delete_discount':
-            
-            $service = new apps\Discounts\Discount(null); 
-        
-            try {
-
-                $checkItem = $service->getItem($params['id']);
-
-                if (isset($checkItem->id))
-                {
-
-                    if ($service->deleteItem( $checkItem->id ))
-                    {
-                        $returnData = array('success'=>1, 'data'=>'Deleted', 'reload'=>1);
-                    }
-
-                }
-
-            } catch (Exception $e) {
-
-                $returnData = array('error'=>$e->getMessage());
-            }   
-        
-            break;
-        
-        
-
+        $returnData = array('error'=> $e->getMessage());            
     }
-
-
+    
     return json_encode($returnData);
 
-    // return true;
 });
 
 
@@ -293,346 +154,351 @@ $app->post('', function () use ($twig, $app, $request)
 */
 $app->match('', function () use ($twig, $app) 
 {
+    try {
 
-    return  $twig->render('views/front/home.html.twig', [
-        'title' => 'Home page ',
-        'app' => $app,
-        'formAction' => $app->CONF['url'].'/',
-    ]);
-
-
+        return  $twig->render('views/front/home.html.twig', [
+            'title' => 'Home page ',
+            'app' => $app,
+            'rent_properties' => (new Repo\Properties\PropertyRepository)->getItems('rent'),
+            'sale_properties' => (new Repo\Properties\PropertyRepository)->getItems('sale'),
+            'formAction' => $app->CONF['url'],
+        ]);
+    } catch (Exception $e) {
+        return $e->getMessage();
+    } 
 });
+
+
+/*
+// Return list of device 
+*/
+$app->match('property/{id?}', function ($id) use ($twig, $app, $request) 
+{
+    try {
+
+        if ($id)
+        {
+            return  $twig->render('views/front/properties/page.html.twig', [
+                'title' => 'Property page ',
+                'app' => $app,
+                'property' => (new Repo\Properties\PropertyRepository)->find($id),
+                'formAction' => $app->CONF['url'],
+            ]);
+
+        } else {
+
+            $type = $request->get('request_type');
+
+            return  $twig->render('views/front/properties/list.html.twig', [
+                'title' => 'Property list ',
+                'app' => $app,
+                'propertyModel' => (new Repo\Properties\PropertyRepository)->getModel(),
+                'properties' => (new Repo\Properties\PropertyRepository)->getItems($type),
+                'formAction' => $app->CONF['url'],
+            ]);
+
+        }
+
+    } catch (Exception $e) {
+        return $e->getMessage();
+    } 
+});
+
+/*
+// Return search for properties 
+*/
+$app->match('/find_property', function () use ($twig, $app, $request) 
+{
+    try {
+
+        return  $twig->render('views/front/properties/list.html.twig', [
+            'title' => 'Property list ',
+            'app' => $app,
+            'propertyModel' => (new Repo\Properties\PropertyRepository)->getModel(),
+            'properties' => (new Repo\Properties\PropertyRepository)->findItems($request),
+            'formAction' => $app->CONF['url'],
+        ]);
+
+
+    } catch (Exception $e) {
+        return $e->getMessage();
+    } 
+});
+
+
 
 /**
  * @return  Login page in case if not authorized 
 */
-$app->match('login', function () use ($twig, $app) 
-{
-
-    return  $twig->render('views/admin/forms/login.html.twig', [
-        'title' => 'Login page ',
-        'app' => $app,
-        'formAction' => $app->CONF['url'].'/',
-    ]);
-
-});
-
-
-
-/*
-// Return Products Stock list page
-*/
-$app->match('provider_area/discounts', function () use ($twig, $app) 
-{
-    return response((new apps\Discounts\DiscountController)->index($app, $twig), $app, $twig);
-});
-
-
-/**
-* @return Products list of provider
-*/
-$app->match('provider_area/products', function () use ($twig, $app) 
-{
-    return response((new apps\Products\ProductController)->index($app, $twig), $app, $twig);
-});
-
-
-/**
-* @return Products Stock list page
-*/
-$app->match('provider_area/stock', function () use ($twig, $app) 
-{
-    return response((new apps\Products\StockController)->index($app, $twig), $app, $twig);
-});
-
-
-/**
- * @return list of device 
-*/
-$devices = $app->match('provider_area/devices', function () use ($twig, $app) 
-{
-    return response( (new apps\Devices\DeviceController(null))->index($app, $twig), $app, $twig );
-});
-
-
-/**
- * @return list of device to manage
-*/
-$app->match('provider_area/devices_manage', function () use ($twig, $app) 
-{
-    return response( (new apps\Devices\DeviceController(null))->manage($app, $twig), $app, $twig );
-});
-
-
-/**
- * @return Show device form
-*/
-$app->match('provider_area/device/{id}', function ($id) use ($twig, $request, $app) 
-{
-
-    // Get Device model item with data by 'id'
-    return response( (new apps\Devices\DeviceController())->show($id, $app, $twig), $app, $twig);
-});
-
-
-/**
- * @return Edit device form
-*/
-$app->match('provider_area/edit_device/{id}', function ($id) use ($twig, $request, $app) 
-{
-    return response( (new apps\Devices\DeviceController())->edit($id, $app, $twig), $app, $twig);
-
-});
-
-
-
-
-
-
-/**
- * @return list of device type
-*/
-$app->match('provider_area/device_types', function () use ($twig, $request, $app) 
-{
-    return response( (new apps\Devices\DeviceTypeController())->index($app, $twig), $app, $twig);
-});
-
-/**
- * @return Edit device type form
-*/
-$app->match('provider_area/device_type/edit/{id}', function ($id) use ($twig, $request, $app) 
-{
-    return response( (new apps\Devices\DeviceTypeController())->edit($id, $app, $twig), $app, $twig);
-});
-
-
-
-/**
- * @return Products list page
-*/
-$app->match('provider_area/pos/{id}', function ($id) use ($twig, $app) 
-{
-    return (new apps\Products\ProductController)->pos($id, $app, $twig);
-
-});
-
-
-
-
-
-/*
-// Return Settings page
-*/
-$app->match('settings', function () use ($twig, $app) 
-{
-    return $twig->render('views/admin/forms/settings_form.html.twig', [
-        'title' => 'Settings',
-        'app' => $app,
-    ]);
-});
-
-
-
-
-
-
-
-
-
-
-/*
-// Return Orders list page
-*/
-$app->match('orders', function () use ($twig, $app) 
-{
-
-    $order = new apps\Orders\Order(null);
- 
-    $app->deviceOrder = new apps\Orders\DeviceOrderController(null);
-
-    $app->orders = $order->repo()->getTotalByMonth( date('Y-m', strtotime('-1 month')), date('Y-m') );
-
-    $app->currentPage = '/orders';
-    
-    return $twig->render('views/admin/orders/orders.html.twig', [
-        'title' => 'Orders list',
-        'app' => $app,
-        'orders' => $app->orders,
-        'todayOrders' => count($order->repo()->getTotalByDate(date('Y-m-d'), date('Y-m-d', strtotime('+1 day')) ) ),
-        'lastWeekOrders' => count($order->repo()->getTotalByDate(date('Y-m-d', strtotime('+1 week')), date('Y-m-d', strtotime('+1 day')))),
-        'lastMonthOrders' => count($app->orders),
-    ]);
-});
-
-
-
-/*
-// Return Order list for the custom month
-*/
-$app->match('orders/month/{month}', function ($month) use ($twig, $app) 
-{
-
-    $order = new apps\Orders\Order(null);
-    $app->deviceOrder = new apps\Orders\DeviceOrderController(null);
-
-    $app->orders = $order->repo()->getTotalByMonth( $month, date('Y-m', strtotime('+1 month', strtotime($month))));
-
-    $app->currentPage = '/orders';
-    
-    return $twig->render('views/admin/orders/orders.html.twig', [
-        'title' => 'Orders list',
-        'app' => $app,
-        'orders' => $app->orders,
-        'todayOrders' => $order->repo()->getTotalByDate(date('Y-m-d'), date('Y-m-d', strtotime('+1 day')) )->count(),
-        'lastWeekOrders' => $order->repo()->getTotalByDate(date('Y-m-d', strtotime('-1 week')), date('Y-m-d', strtotime('+1 day')))->count(),
-        'lastMonthOrders' => count($app->orders),
-    ]);
-});
-
-
-
-/*
-// Return Order list for the last week
-*/
-$app->match('orders/lastweek', function () use ($twig, $app) 
-{
-
-    $order = new apps\Orders\Order(null);
-    
-    $app->deviceOrder = new apps\Orders\DeviceOrderController();
-
-    $app->orders = $order->repo()->getTotalByDate(date('Y-m-d', strtotime('-1 week')), date('Y-m-d', strtotime('+1 day')));
-
-    $app->currentPage = '/orders';
-
-    return $twig->render('views/admin/orders/orders.html.twig', [
-        'title' => 'Orders list',
-        'app' => $app,
-        'orders' => $app->orders,
-    ]);
-
-});
-
-
-
-
-
-
-/*
-// Return single Order page with 'Code'
-*/
-$app->match('order/{code}', function ($code) use ($twig, $app, $qrcode) 
-{
-    $order = new apps\Orders\Order(null);
-
-    $orderData = $order->getByCode($code);
-
-    // print_r($orderData);
-
-    if (empty($orderData->id)) { return Page404($twig, $app); }
-
-    // $productOrder = new apps\Orders\ProductOrder();
-
-    $app->deviceOrder = new apps\Orders\DeviceOrderController();
-
-    // $checkOrder->device = (new apps\Devices\Device())->getItem($checkOrder->device);
-
-    // $orderData = $order->createModel($checkOrder);
+$app->match('login', function () use ($request, $app, $twig) 
+{   
+    try {
         
-    // $orderData->device()->prices = (new apps\Prices\Prices($orderData->device()->id))->getItem($orderData->device()->id);
-
-    // $orderData->deviceOrder = $deviceOrder->createModel($deviceOrder->getByOrderCode($checkOrder->code));
-    // $orderData->productsCost = $deviceOrder->calculate($orderData->deviceOrder->deviceCost(), $orderData->deviceOrder->startTime(), $orderData->deviceOrder->endTime());
-
-    // $orderData->bookingTime = $deviceOrder->calculateTime($checkOrder->startTime, $checkOrder->endTime);
-
-    // $orderData->products = $productOrder->handleModels($productOrder->getByOrderCode($orderData->code()));
-
-    // $orderData->discount = (new apps\Discounts\Discount(null))->getByCode($orderData->discountCode());
-
-    $app->currentPage = '/orders';
-
-    return $twig->render('views/admin/orders/order.html.twig', [
-        'title' => 'Orders list',
-        'qrcode' => $qrcode,
-        'app' => $app,
-        'order' => $orderData,
-    ]);
+        return (new apps\Auth\AuthService(new UserRepository))->loginPage($request, $app, $twig); 
+    } catch (Exception $e) {
+        return $e->getMessage();
+    }
 });
-
-
-
-
-
-
-
-
 
 
 
 /*
-// Return Product edit page
+// Return list of device 
 */
-$app->match('product/{id}', function ($id) use ($twig, $app) 
+$app->match('/dashboard', function () use ($request, $twig, $app) 
 {
-    $product = new apps\Products\ProductController(null);
-   
-    $product = $product->createModel($product->getItem($id));
+    return (new apps\DashboardController)->index($request, $twig, $app);
+});
 
-    if (empty($product->id))
+if (isset($app->auth->id))
+{
+
+
+    /**
+    * @return Settings page
+    */
+    $app->match('settings', function () use ($request, $app, $twig) 
     {
-        return $app->redirect('devices');
-    }
+        return (new apps\Settings\SettingsController)->index($request, $app, $twig); 
+    });
 
-    return $twig->render('views/admin/products/product.html.twig', [
-        'title' => 'Edit Product',
-        'app' => $app,
-        'product' => $product,
+
+
+    /**
+    * @return properties
+    */
+    $app->match('/properties/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
+        try {
+            
+            if ($action == 'create')
+            {
+                return (new apps\Properties\PropertyController(new Repo\Properties\PropertyRepository))->create($request, $app, $twig);
+            }
+
+            if ($action == 'edit')
+            {
+                return (new apps\Properties\PropertyController(new Repo\Properties\PropertyRepository))->edit($id, $request, $app, $twig);
+            }
+
+            return (new apps\Properties\PropertyController(new Repo\Properties\PropertyRepository))->index($request, $app, $twig);
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    });
+
+
+
+    /**
+    * @return Organizations
+    */
+    $app->match('/organizations/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
+        try {
+            
+            if ($action == 'create')
+            {
+                return (new apps\Organizations\OrganizationController(new Repo\Organizations\OrganizationRepository))->create($request, $app, $twig);
+            }
+
+            if ($action == 'edit')
+            {
+                return (new apps\Organizations\OrganizationController(new Repo\Organizations\OrganizationRepository))->edit($id, $request, $app, $twig);
+            }
+
+            return (new apps\Organizations\OrganizationController(new Repo\Organizations\OrganizationRepository))->index($request, $app, $twig);
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    });
+
+
+
+    /**
+    * @return Leads
+    */
+    $app->match('/leads/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
+        try {
+            
+            if ($action == 'create')
+            {
+                return (new apps\Leads\LeadController)->create($request, $app, $twig);
+            }
+
+            if ($action == 'edit')
+            {
+                return (new apps\Leads\LeadController)->edit($id, $request, $app, $twig);
+            }
+
+            return (new apps\Leads\LeadController)->index($request, $app, $twig);
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    });
+
+
+    /**
+    * @return Contacts
+    */
+    $app->match('/contacts/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
+        try {
+            
+            if ($action == 'create')
+            {
+                return (new apps\Contacts\ContactController)->create($request, $app, $twig);
+            }
+
+            if ($action == 'edit')
+            {
+                return (new apps\Contacts\ContactController)->edit($id, $request, $app, $twig);
+            }
+
+            return (new apps\Contacts\ContactController)->index($request, $app, $twig);
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    });
+
+    /**
+    * @return Contacts
+    */
+    $app->match('/users/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
+        $UserController = new apps\Users\UserController;
+        try {
+            
+            if ($action == 'create')
+            {
+                if ($action == 'agents')
+                    return $UserController->createAgent($request, $app, $twig);
+
+                if ($action == 'managers')
+                    return $UserController->createManager($request, $app, $twig);
+    
+                return $UserController->create($request, $app, $twig);
+            }
+
+            if ($action == 'edit')
+            {
+                return $UserController->edit($id, $request, $app, $twig);
+            }
+
+            if ($action == 'agents')
+                return $UserController->index( $UserController->queryByRole(3), 'Agents', $app, $twig );
+
+            if ($action == 'managers')
+                return $UserController->index( $UserController->queryByRole(2), 'Managers', $app, $twig );
+
+            if ($app->auth->can('view_admins', $app))
+                return $UserController->index( $UserController->queryByRole(1), 'Administrators', $app, $twig );
+
+
+            return '';
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    });
+
+
+    /**
+    * @return Media items
+    */
+    $app->match('/media-library-api/{type?}', function ($type) use ($request, $app, $twig)  {
+
+        try {
+        
+            $filter_type = $request->get('type');
+            
+            if ($type == 'media')
+            {
+                return (new apps\Media\MediaController())->media($filter_type, $request, $app, $twig);
+            }
+
+            if ($type == 'file')
+            {
+                return true;
+                return (new apps\Media\MediaController())->media($filter_type, $request, $app, $twig);
+            }
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    });
+
+
+
+    /**
+    * @return Tasks
+    */
+    $app->match('/tasks/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
+
+        try {
+            
+            return (new apps\Tasks\TaskController)->index($request, $app, $twig);
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    });
+
+
+    /**
+    * @return Customers
+    */
+    $app->match('/customers/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  
+    {
+
+        try {
+            
+            if ($action == 'create')
+            {
+                return (new apps\Customers\CustomerController)->create($request, $app, $twig);
+            }
+
+            if ($action == 'edit')
+            {
+                return (new apps\Customers\CustomerController)->edit($id, $request, $app, $twig);
+            }
+
+            return (new apps\Customers\CustomerController)->index($request, $app, $twig);
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
+    });
+
+
+
+    // Logout and remoce cookies and session
+    $app->match('logout', function () use ($twig, $request, $app) 
+    {
+
+        (new apps\Auth\AuthService(new UserRepository))->unsetSession();
+
+        return $app->redirect('./');
+    });
+
+}
+
+
+/*
+// Return list of device 
+*/
+$app->match('/{page}', function ($page) use ($twig, $app) 
+{
+
+    return  $twig->render('views/front/pages/page.html.twig', [
+        'title' => 'Medians',
+        'app' => $app
     ]);
 });
 
-
-
-
-
-
-// Logout and remoce cookies and session
-$app->match('logout', function () use ($twig, $request, $app) 
-{
-
-    (new apps\Auth\AuthService(new UserRepository))->unsetSession();
-
-    return $app->redirect('./');
-});
-
-
-
-include ('controller_provider.php');
 
 
 $app->run();
 
 
     
-
-
-
-
-
-/*
-// Async methods
-*/
-
-// use Spatie\Async\Pool;
-
-// $pool = Pool::create();
-
-// $pool[] = async(function () use ($app) {
-//    $output = ' Amr ';
-//    return $output;
-// })->then(function (String $output) {
-//    echo $output . "\n";
-// });
-
-// await($pool);
-

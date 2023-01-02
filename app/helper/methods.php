@@ -9,37 +9,55 @@
 function getMenuList()
 {
 	$data = array(
-		// array('title'=>'Dashboard', 'link'=>''),
-		/*array('title'=>'Devices', 'link'=>'/devices'),
-		array('title'=>'Orders', 'link'=>'/orders'),
-		array('title'=>'Products', 'link'=>'/products'),
-		array('title'=>'Stock', 'link'=>'/stock'),
-		array('title'=>'Devices management', 'link'=>'/devices_manage'),
-		array('title'=>'Devices types', 'link'=>'/device_types'),
-		array('title'=>'Settings', 'link'=>'/settings'),*/
-		// array('title'=>'Logout', 'link'=>'/logout'),
+		array('title'=>'Dashboard', 'link'=>'dashboard'),
+		array('title'=>'Properties', 'link'=>'', 'sub'=>
+			[
+				array('title'=>'Properties list', 'link'=>'properties'),
+                array('title'=>'Create Property', 'link'=>'properties/create'),
+                array('title'=>'Rent items', 'link'=>'properties?request_type=rent'),
+                array('title'=>'Sale items', 'link'=>'properties?request_type=sale'),
+			]
+		),
+        array('title'=>'Users', 'link'=>'', 'sub'=>
+            [
+                array('title'=>'Administrators', 'link'=>'users/admin'),
+                array('title'=>'Managers', 'link'=>'users/managers'),
+                array('title'=>'Agents', 'link'=>'users/agents'),
+            ]
+        ),
+        array('title'=>'Customers', 'link'=>'', 'sub'=>
+            [
+                array('title'=>'Customers', 'link'=>'customers/index'),
+                array('title'=>'Create customer', 'link'=>'customers/create'),
+            ]
+        ),
+        array('title'=>'Leads', 'link'=>'', 'sub'=>
+            [
+                array('title'=>'Leads ', 'link'=>'leads/index'),
+                array('title'=>'Create lead', 'link'=>'leads/create'),
+            ]
+        ),
+        array('title'=>'Contacts', 'link'=>'', 'sub'=>
+            [
+                array('title'=>'Contacts', 'link'=>'contacts/index'),
+                array('title'=>'Create contact', 'link'=>'contacts/create'),
+            ]
+        ),
+        array('title'=>'Organizations', 'link'=>'', 'sub'=>
+            [
+                array('title'=>'Organizations', 'link'=>'organizations/index'),
+                array('title'=>'Create organization', 'link'=>'organizations/create'),
+            ]
+        ),
+
+        array('title'=>'Tasks', 'link'=>'tasks'),
+        array('title'=>'Notifications', 'link'=>''),
+		array('title'=>'Settings', 'link'=>'settings'),
+		array('title'=>'Logout', 'link'=>'logout'),
 	);
 
 	return $data;
 }
-
-function getProviderMenuList()
-{
-	$data = array(
-		array('title'=>'Dashboard', 'link'=>'/provider_area'),
-		array('title'=>'Devices', 'link'=>'/provider_area/devices'),
-		array('title'=>'Orders', 'link'=>'/provider_area/orders'),
-		array('title'=>'Products', 'link'=>'/provider_area/products'),
-		array('title'=>'Stock', 'link'=>'/provider_area/stock'),
-		array('title'=>'Devices management', 'link'=>'/provider_area/devices_manage'),
-		array('title'=>'Discounts', 'link'=>'/provider_area/discounts'),
-		array('title'=>'Settings', 'link'=>'/provider_area/settings'),
-		array('title'=>'Logout', 'link'=>'/logout'),
-	);
-
-	return $data;
-}
-
 
 
 
@@ -76,9 +94,9 @@ function Page403($twig, $app)
 * Handle routes response 
 * based on session & Permissions
 */
-function response($response, $app, $twig)
+function response($response, $app, $twig=null)
 {
 
-	return isset($app->providerSession->id) ? $response : Page403($twig, $app);
+	return isset($app->auth->id) ? $response : Page403($twig, $app);
 
 }

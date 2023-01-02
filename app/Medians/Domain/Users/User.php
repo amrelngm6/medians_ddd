@@ -4,18 +4,56 @@ namespace Medians\Domain\Users;
 
 use Shared\dbaser\CustomController;
 
-use Medians\Domain\Providers\Provider;
-use Medians\Domain\Providers\ProviderUsers;
+use Medians\Domain\Properties\Property;
+
 
 class User extends CustomController
 {
 
 
-	public function name() : String
+	/*
+	/ @var String
+	*/
+	protected $table = 'users';
+
+
+	protected $fillable = [
+    	'first_name',
+    	'last_name',
+    	'email',
+    	'password',
+    	'phone',
+    	'profile_image',
+    	'role_id',
+    	'active',
+	];
+
+	public $appends = ['name', 'photo', 'password'];
+
+	public function getPasswordAttribute() 
 	{
-		return $this->name;
+		return null;
+	}
+	public function getNameAttribute() : String
+	{
+		return $this->name();
 	}
 
+	public function getPhotoAttribute() : ?String
+	{
+		return $this->photo();
+	}
+
+
+	public function photo() : String
+	{
+		return !empty($this->profile_image) ? $this->profile_image : '/uploads/images/default_profile.jpg';
+	}
+
+	public function name() : String
+	{
+		return $this->first_name.' '.$this->last_name;
+	}
 
 	public function email() : String
 	{
@@ -48,11 +86,17 @@ class User extends CustomController
 		$this->publish = $publish;
 	}
 
-	public function providers()
+	public function properties()
 	{
-		return $this->HasManyThrough(
-			Provider::class, ProviderUsers::class, 'userId', 'id', 'id', 'providerId'
-		);
+		return $this->HasMany(Property::class , 'agent_id');
 	}
 
+
+	/**
+	 * Relation with role 
+	 */
+	public function Role() 
+	{
+		return $this->hasOne(Role::class, 'id', 'role_id');
+	}
 }

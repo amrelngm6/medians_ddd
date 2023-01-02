@@ -1,5 +1,14 @@
 
-    <script type="text/javascript" src="{{app.CONF.url}}assets/alertify/alertify.min.js"></script>
+
+
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="{{app.CONF.url}}assets/dist/alertify.min.js"></script>
+<script type="text/javascript" src="{{app.CONF.url}}assets/dist/app.js"></script>
 
 <script type="text/javascript">
 
@@ -7,14 +16,13 @@
     {
         if (html.success)
         {
-            alertify.success(html.data);
             
             (html.reload) ? window.location.reload() : '';
 
             (html.redirect) ? (window.location.href = html.redirect) : '';
 
         } else if (html.error) {
-            alertify.error(html.error);
+
             return null;
         }
     }
@@ -142,6 +150,10 @@
 
 
 
+    jQuery(document).on('submit','form.disable', function(e){
+        e.preventDefault();
+    });
+
     jQuery(document).on('submit','form#redirect-form', function(e){
         e.preventDefault();
 
@@ -178,11 +190,6 @@
 
 </script>
 
-
-                    </div>
-                </div>
-            </div>
-        </div>
 </body>
 
 </html>

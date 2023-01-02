@@ -6,30 +6,7 @@ use Medians\Domain\Users\User;
 
 class AdminRepository 
 {
-
-	/*
-	/ @var String
-	*/
-	protected $table = 'administrators';
-
-
-	/*
-	/ @var Int
-	*/
-	private $id;
-
-
-	/*
-	/ @var Array
-	*/
-	private $data = array();
-
-
-
-	function __construct()
-	{
-	}
-
+	
 	public function getByID($customerId)
 	{
 
