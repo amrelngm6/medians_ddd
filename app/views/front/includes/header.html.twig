@@ -8,7 +8,7 @@
     <meta name="keywords" content="Landing, Business, Onepage, Html, Business, Apps, Apps Landing">
 
     <!--====== TITLE TAG ======-->
-    <title>{{title}} {{app.Settings.sitename}}</title>
+    <title>Medians PS System</title>
 
     <!--====== FAVICON ICON =======-->
     <link rel="shortcut icon" type="image/ico" href="{{app.CONF.url}}front_assets/img/favicon.png">
@@ -16,43 +16,19 @@
     <!--====== ASSETS ======-->
     <link href="{{app.CONF.url}}assets/alertify/alertify.min.css" rel="stylesheet">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Favicon Start Here -->
-    <link rel="shortcut icon" type="image/x-icon" href="img/favicon-homlisti.svg">
-    <link rel="stylesheet" href="/front_assets/jquery-ui.css">
-    <!-- Bootstrap Css Start Here -->
-    <link rel="stylesheet" href="/front_assets/bootstrap.min.css">
-    <!-- Animate Css Start Here -->
-    <link rel="stylesheet" href="/front_assets/animate.min.css">
-    <!-- Owl Carousel Start Here -->
-    <link rel="stylesheet" href="/front_assets/owl.carousel.min.css">
-    <link rel="stylesheet" href="/front_assets/owl.theme.default.min.css">
-    <!-- Swiper Css Start Here -->
-    <link rel="stylesheet" href="/front_assets/swiper-bundle.min.css" />
-    <!-- Flaticon Css Start Here -->
-    <link rel="stylesheet" href="/front_assets/flaticon.css">
-    <!-- Select Css Start Here -->
-    <link rel="stylesheet" href="/front_assets/nice-select.css">
-    <!-- Animate Css Start Here -->
-    <link rel="stylesheet" href="/front_assets/animate.min.css">
-    <!-- Pop Up Css Start Here -->
-    <link rel="stylesheet" href="/front_assets/magnific-popup.css">
-    <!-- All min Css Start Here -->
-    <link rel="stylesheet" href="/front_assets/all.min.css">
-    <!-- Pannellum -->
-    <link rel="stylesheet" href="/front_assets/pannellum.css">
-    <!-- noUIrangle slider -->
-    <link rel="stylesheet" href="/front_assets/nouislider.min.css">
-    <!-- Style Css Start Here -->
-    <link rel="stylesheet" href="/front_assets/style.css">
-    <!-- Google Font Start Here -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+    <!--====== STYLESHEETS ======-->
+    <link href="{{app.CONF.url}}front_assets/plugins.css" rel="stylesheet">
+    <link href="{{app.CONF.url}}front_assets/icons.css" rel="stylesheet">
+    <link href="{{app.CONF.url}}front_assets/typography.css" rel="stylesheet">
+    <link href="{{app.CONF.url}}front_assets/header.css" rel="stylesheet">
+    <link href="{{app.CONF.url}}front_assets/blog-and-pages.css" rel="stylesheet">
+    <link href="{{app.CONF.url}}front_assets/footer.css" rel="stylesheet">
 
+    <!--====== MAIN STYLESHEETS ======-->
+    <link href="{{app.CONF.url}}front_assets/style.css" rel="stylesheet">
+    <link href="{{app.CONF.url}}front_assets/responsive.css" rel="stylesheet">
+
+    <script src="{{app.CONF.url}}front_assets/modernizr-2.8.3.min.js"></script>
     <!--[if lt IE 9]>
         <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -61,6 +37,7 @@
     <style id="theia-sticky-sidebar-stylesheet-TSS">.theiaStickySidebar:after {content: "";display: table;clear: both;}</style>
 
 
+    <meta name="description" content="Medians PS Café system for PS and internet cafes to have full live control on  your business and get reports immediately..">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="canonical" href="{{app.CONF.url}}">
@@ -68,16 +45,33 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{app.CONF.url}}">
-    <meta property="og:title" content="{{title}} - {{app.Settings.sitename}}">
+    <meta property="og:title" content="Medians PS System">
     <meta property="og:image" content="{{app.CONF.url}}front_assets/img/cover.jpg">
-    <meta property="og:description" content="{{desc}}">
+    <meta property="og:description" content="Medians PS Café system for PS and internet cafes to have full live control on  your business and get reports immediately..">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="{{title}} - {{app.Settings.sitename}}">
+    <meta property="twitter:title" content="Medians PS System">
     <meta property="twitter:image" content="{{app.CONF.url}}front_assets/img/cover.jpg">
-    <meta property="twitter:description" content="{{desc}}">
+    <meta property="twitter:description" content="Medians PS Café system for PS and internet cafes to have full live control on  your business and get reports immediately...">
     
+
+    <!-- PushAlert 
+    <script type="text/javascript">
+            (function(d, t) {
+                    var g = d.createElement(t),
+                    s = d.getElementsByTagName(t)[0];
+                    g.src = "https://cdn.pushalert.co/integrate_aceadadec3f94105947a599615de5558.js";
+                    s.parentNode.insertBefore(g, s);
+            }(document, "script"));
+    </script>
+     End PushAlert -->
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://unpkg.com/v-tag-input@0.0.3/dist/v-tag-input.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.4.0/annyang.min.js"></script>
+
     <script type="text/javascript">
         var rootURL = '{{app.CONF.url}}';
         var imgURL = rootURL+'image.php?w=400&h=400&img=pic&src=';
@@ -87,119 +81,81 @@
 
 <body class="overflow-xhidden home-four" data-spy="scroll" data-target=".mainmenu-area" data-offset="90">
 
-
-<body class="sticky-header">
-    <!--[if IE]>
-    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+    <!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <!--=====================================-->
-    <!--=   Preloader     Start             =-->
-    <!--=====================================-->
-    <div id="preloader"></div>
-    <!--=====================================-->
-    <!--=   Preloader     End               =-->
-    <!--=====================================-->
 
-    <div class="wrapper" id="wrapper">
-    <!--=====================================-->
-    <!--=   Header     Start                =-->
-    <!--=====================================-->
+    <!--- PRELOADER -->
+    <div class="preeloader">
+        <div class="preloader-spinner"></div>
+    </div>
 
-        <header class="header">
-            <div id="header-topbar" class="header-topbar">
-                <div class="container">
-                    <div class="row d-flex align-items-center">
-                        <div class="col-lg-6">
-                            <ul class="topbar-left">
-                                <li class="item-location"><i class="fas fa-map-marker-alt"></i><span>{{app.Settings.address}}</span></li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-6 d-flex justify-content-end">
-                            <ul class="topbar-right">
-                                <li class="social-icon">
-                                    <label>Follow Us On:</label>
-                                        <a target="_blank" href="https://www.facebook.com/"><i class="fab fa-facebook-square"></i></a>
-                                        <a target="_blank" href="https://twitter.com/"><i class="fab fa-twitter"></i></a>
-                                        <a target="_blank" href="https://www.linkedin.com/signup"><i class="fab fa-linkedin-in"></i></a>
-                                        <a target="_blank" href="https://www.instagram.com/"><i class="fab fa-instagram"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="rt-sticky-placeholder"></div>
-            <div id="header-menu" class="header-menu menu-layout1 rt-sticky">
-                <div class="container">
-                    <div class="row d-flex align-items-center">
-                        <div class="col-xl-4 col-lg-4">
-                            <div class="logo-area">
-                                <a href="/" class="temp-logo">
-                                    <img src="/uploads/img/logo_light.svg" width="157" height="40" alt="logo" class="img-fluid">
-                                </a>
+    <!--SCROLL TO TOP-->
+    <a href="#scroolup" class="scrolltotop"><i class="fa fa-long-arrow-up"></i></a>
+
+    <!--START TOP AREA-->
+    <header class="top-area" id="home">
+        <div class="header-top-area" id="scroolup">
+            <!--MAINMENU AREA-->
+            <div class="mainmenu-area" id="mainmenu-area">
+                <div class="mainmenu-area-bg"></div>
+                <div class="cd-main-header animate-search">
+                    <div id="search" class="cd-main-search">
+                        <form>
+                            <input type="search" placeholder="Search..." name="s">
+                        </form>
+
+                        <div class="cd-search-suggestions">
+                            <div class="news">
+                                <h3>News</h3>
+                            </div>
+                            <div class="quick-links">
+                                <h3>Quick Links</h3>
+                                <ul>
+                                    <li><a href="#0">Find a store</a></li>
+                                    <li><a href="#0">Support</a></li>
+                                </ul>
                             </div>
                         </div>
-                        <div class="col-xl-8 col-lg-8 d-flex justify-content-center position-static">
-                            <nav id="dropdown" class="template-main-menu">
-                                <ul>
-                                    <li>
-                                        <a href="{{app.CONF.url}}" class="active">Home</a>
-                                    </li>
-                                    <li>
-                                        <a href="/about">About</a>
-                                    </li>
-                                    <li>
-                                        <a href="/property?request_type=rent">Property for rent</a>
-                                    </li>
-                                    <li >
-                                        <a href="/property?request_type=sale">Property for sale</a>
-                                    </li>
-                                    <li>
-                                        <a href="contact.html">Contact</a>
-                                    </li>
-                                </ul>
-                            </nav>
+                        <a href="#" class="close cd-text-replace"></a>
+                        <div class="cd-cover-layer"></div>
+                    </div>
+                </div>
+                <nav class="navbar">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12 flex-v-center">
+                                <div class="navbar-header">
+                                    <a href="{{app.CONF.url}}" class="custom-logo-link default-logo">
+                                        <img style="max-height: 100px" height="60" width="" src="{{app.CONF.url}}assets/img/WhiteLogo.png" alt="logo"></a>
+                                    <a href="{{app.CONF.url}}" class="custom-logo-link sticky-logo">
+                                        <img style="max-height: 70px" src="{{app.CONF.url}}front_assets/Logo.png" alt="logo"></a>
+                                </div>
+                                <svg class="ham hamRotate ham8" viewBox="0 0 100 100" width="50">
+                                    <path class="line top" d="m 30,33 h 40 c 3.722839,0 7.5,3.126468 7.5,8.578427 0,5.451959 -2.727029,8.421573 -7.5,8.421573 h -20" />
+                                    <path class="line middle" d="m 30,50 h 40" />
+                                    <path class="line bottom" d="m 70,67 h -40 c 0,0 -7.5,-0.802118 -7.5,-8.365747 0,-7.563629 7.5,-8.634253 7.5,-8.634253 h 20" />
+                                </svg>
+                                <div id="main-nav" class="stellarnav">
+                                    <ul id="nav" class="nav navbar-nav inline-block pull-right">
+                                        <li><a href="{{app.CONF.url}}">Home</a></li>
+                                        <li><a href="#features">Features</a></li>
+                                        <li><a href="#screenshots">Screenshots</a></li>
+                                        <li><a href="#pricing">Pricing</a></li>
+                                        <li><a href="#contact">Contact</a></li>
+                                    </ul>
+                                </div>
+                                <div class="header-call-to-action hidden-sm hidden-xs hidden-md">
+                                    <a href="{{app.CONF.url}}provider_area" class="action-button">Providers</a>
+                                    <a href="#search" class="search-button cd-search-trigger cd-text-replace"><i class="fa fa-search"></i></a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </nav>
             </div>
-        </header>
-        <div
-            class="rt-header-menu mean-container position-relative"
-            id="meanmenu">
-            <div class="mean-bar">
-                <a href="/">
-                    <img src='/uploads/img/logo_light2.svg' alt='logo' class='img-fluid'/>
-                </a>
-                <div class="mean-bar--right">
-                    <div class="actions search">
-                        <a href="#template-search" class="item-icon" title="Search">
-                            <i class="fas fa-search"></i>
-                        </a>
-                    </div>
-                    <div class="actions user">
-                        <a href="account.html"><i class="flaticon-user"></i></a>
-                    </div>
-                    <span class="sidebarBtn">
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                    </span>
-                </div>
-            </div>
-            <div class="rt-slide-nav">
-                <div class="offscreen-navigation">
-                    <nav class="menu-main-primary-container">
-                        <ul class="menu">
-                            <li class="list ">
-                                <a class="animation" href="/">Home</a>
-                            </li>
-                            <li class="list menu-item-parent">
-                                <a class="animation" href="contact.html">Contact us</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
+            <!--END MAINMENU AREA END-->
         </div>
+    </header>
+    <!--END TOP AREA-->
+    

@@ -22,20 +22,6 @@ class SettingsController
 
 	}
 
-	/**
-	 * Index settings page
-	 * 
-	 */
-	public function index($request, $app, $twig)
-	{
-
-		return $twig->render('views/admin/forms/settings_form.html.twig', [
-	        'title' => 'Settings',
-	        'app' => $app,
-	    ]);
-	} 
-
-
 
 	public function getItem($code = null) 
 	{	

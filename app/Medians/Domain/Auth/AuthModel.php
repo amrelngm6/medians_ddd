@@ -32,13 +32,13 @@ class AuthModel
 	public function setData($data) : void
 	{
 		$this->data = $data;
+
 		$this->setSession($this->data, $this->getCode());
 	}
 
 
 	protected function setSession($data) : void
 	{
-		$data = (object) $data;
         setcookie($this->code, $data->id, time() + (10 * 365 * 24 * 60 * 60), "/");
 
 	}

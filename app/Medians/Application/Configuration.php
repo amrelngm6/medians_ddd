@@ -64,11 +64,7 @@ class Configuration
 
 		$fullUrl  = $http."://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" ;
 
-		$dir = (dirname($_SERVER['SCRIPT_NAME']) && dirname($_SERVER['SCRIPT_NAME']) != '/') ? (dirname($_SERVER['SCRIPT_NAME'])) : '/';
-
-		$this->url = $http."://$_SERVER[HTTP_HOST]". $dir;
-
-		$this->url = str_replace('\\','/',$this->url);
+		$this->url = $http."://$_SERVER[HTTP_HOST]". dirname($_SERVER['SCRIPT_NAME']).'/';
 	}
 
 

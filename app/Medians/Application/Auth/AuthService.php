@@ -11,10 +11,6 @@ use Medians\Domain\Customers\CustomerModel;
 
 use Medians\Domain\Auth\AuthModel;
 
-use Medians\Application\FaceBook\FBApp;
-
-use Medians\Infrastructure as Repo;
-
 
 
 
@@ -54,26 +50,6 @@ class AuthService
 		$this->repo = $repo;
 	}
 
-
-	/**
-	 * Display login page 
-	 * 
-	 */
-	public function loginPage($request, $app, $twig)
-	{
-
-
-		if (isset($app->auth->id)) { return $app->redirect('/'); }
-
-	    return  $twig->render('views/admin/forms/login.html.twig', [
-	        'title' => 'Login page ',
-	        'app' => $app,
-	        // 'facebook_login_url' => (new FBApp(new Repo\FaceBook\FBRepository))->loginBtn($app),
-	        'formAction' => '/',
-	    ]);
-	}
-
-
 	public function userLogin($request, $app)
 	{
 		
@@ -91,29 +67,28 @@ class AuthService
             if (($request->get('request_type') == 'post'))
             {
 
-            	header("Location: " . $app->CONF['url']);
+            	header("Location: " . $app->CONF['url'].'provider_area/devices');
             	exit;
-            };
-
-            return array('success'=>1, 'result'=>'Logged in', 'redirect'=>$app->CONF['url']);
+            } ;
+            return array('success'=>1, 'data'=>'Logged in', 'redirect'=>$app->CONF['url'].'provider_area/devices');
 
         } catch (Exception $e) {
-            throw new \Exception($e->getMessage());
+            return array('error'=>$e->getMessage());
         }
 	}
 
 	public function checkLogin($email, $password)
 	{
 
-
 		$checkLogin = $this->repo->checkLogin($email, $password);
+
 
 		if (empty($checkLogin->id))
 		{
 			throw new \Exception("User credentials not valid", 1);
 		}
 
-		if (empty($checkLogin->active))
+		if (empty($checkLogin->publish))
 		{
 			throw new \Exception("User account is not active", 1);
 			
@@ -123,7 +98,7 @@ class AuthService
 	}
 
 
-	public function checkSignup($params) 
+	public function checkSignup($params) : CustomerModel
 	{
 
 		// Check if email already found 
@@ -211,17 +186,11 @@ class AuthService
 	}
 
 
-	public static function encrypt($value) : String 
+	public function encrypt($value) : String 
 	{
 		return sha1(md5($value));
 
 	}
-
-
-
-
-
-
 
 
 

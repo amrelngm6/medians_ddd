@@ -7,57 +7,43 @@ use Medians\Domain\Users\User;
 class UserRepository 
 {
 
-	public $app;
+
 
 
 	function __construct()
 	{
 	}
 
-	public function getModel()
-	{
-		return new User;
-	}
-
 	public function find($customerId)
 	{
-		return User::with('Role')->find($customerId);
+
+		return User::with('providers')->find($customerId);
+
 	}
 
 
-	public function get($limit = 100)
-	{
-		return User::with('Role')->limit($limit)->get();
-	}
-
-
-
-	/**
-	* Save item to database
-	*/
-	public static function store($data) 
+	public function getByID($customerId)
 	{
 
-		$Model = new User();
-		
-		// Return the FBUserInfo object with the new data
-    	return $Model->firstOrCreate( (array) $data);
+		return User::find($customerId);
 
 	}
-	
 
-	/**
-	* Update item to database
-	*/
-	public static function update($data) 
+
+	public function getByEmail($email)
 	{
-		$Object = User::find($data['id']);
-		
-		// Return the FBUserInfo object with the new data
-    	$Object->update( (array) $data);
-    	
-    	return $Object;	
+
+		return  User::where('email', $email)->first();
 	}
+
+
+	public function checkLogin($email, $password)
+	{
+
+		return User::where('password', $password)->where('email' , $email)->first();
+	}
+
+
 
 
 }
