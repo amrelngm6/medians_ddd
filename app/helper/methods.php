@@ -1,5 +1,30 @@
 <?php
 
+// TWIG template engine
+use Twig\Environment;
+$twig = new \Twig\Environment(new \Twig\Loader\FilesystemLoader('./app'), 
+    [
+        //'cache' => '/app/cache',
+        'debug' => true,
+    ]
+);
+
+
+$twig->addFilter(new \Twig\TwigFilter('html_entity_decode', 'html_entity_decode'));
+
+
+
+/** 
+ * Render function
+ * @param String twig file path
+ * @param [] List of data
+ */
+function render($path, $data)
+{
+    global $twig;
+
+    return $twig->render($path, $data);
+} 
 
 
 /*
@@ -10,12 +35,10 @@ function getMenuList()
 {
 	$data = array(
 		array('title'=>'Dashboard', 'link'=>'dashboard'),
-		array('title'=>'Properties', 'link'=>'', 'sub'=>
+		array('title'=>'Devices', 'link'=>'', 'sub'=>
 			[
-				array('title'=>'Properties list', 'link'=>'properties'),
-                array('title'=>'Create Property', 'link'=>'properties/create'),
-                array('title'=>'Rent items', 'link'=>'properties?request_type=rent'),
-                array('title'=>'Sale items', 'link'=>'properties?request_type=sale'),
+				array('title'=>'Calendar', 'link'=>'devices/calendar'),
+                array('title'=>'Management', 'link'=>'devices'),
 			]
 		),
         array('title'=>'Users', 'link'=>'', 'sub'=>
@@ -29,24 +52,6 @@ function getMenuList()
             [
                 array('title'=>'Customers', 'link'=>'customers/index'),
                 array('title'=>'Create customer', 'link'=>'customers/create'),
-            ]
-        ),
-        array('title'=>'Leads', 'link'=>'', 'sub'=>
-            [
-                array('title'=>'Leads ', 'link'=>'leads/index'),
-                array('title'=>'Create lead', 'link'=>'leads/create'),
-            ]
-        ),
-        array('title'=>'Contacts', 'link'=>'', 'sub'=>
-            [
-                array('title'=>'Contacts', 'link'=>'contacts/index'),
-                array('title'=>'Create contact', 'link'=>'contacts/create'),
-            ]
-        ),
-        array('title'=>'Organizations', 'link'=>'', 'sub'=>
-            [
-                array('title'=>'Organizations', 'link'=>'organizations/index'),
-                array('title'=>'Create organization', 'link'=>'organizations/create'),
             ]
         ),
 

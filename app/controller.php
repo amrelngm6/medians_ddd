@@ -32,22 +32,47 @@ $app->currentPage = $request->getPathInfo();
 $app->request = $request;
 
 
+$app->provider = $app->auth;
+
 
 $app->post('/api/{type?}', function ($type) use ($app, $request) 
 {   
+    try {
+         
+        switch ($type) 
+        {
+            case 'create':
+                return (new apps\APIController)->create($request, $app);
+                break;
+            
+            case 'update':          
+                return (new apps\APIController)->update($request, $app);
+                break;
+            
+            case 'updateStatus':          
+                return (new apps\APIController)->updateStatus($request, $app);
+                break;
+        }
+
+        return (new apps\APIController)->handle($request, $app);
+        
+    } catch (Exception $e) {
+        return $e->getMessage();
+    }
+});
+
+$app->match('/api/{type?}', function ($type) use ($app, $request) 
+{   
     switch ($type) 
     {
-        case 'create':
-            return (new apps\APIController)->create($request, $app);
+        case 'calendar':
+            return (new apps\APIController)->calendar($request, $app);
             break;
         
-        case 'update':          
-            return (new apps\APIController)->update($request, $app);
+        case 'calendar_events':          
+            return (new apps\APIController)->events($request, $app);
             break;
         
-        case 'updateStatus':          
-            return (new apps\APIController)->updateStatus($request, $app);
-            break;
     }
 
     return (new apps\APIController)->handle($request, $app);
@@ -67,7 +92,6 @@ $app->post('/media-library-api/{type?}', function ($type) use ($twig, $app, $req
             return (new apps\Media\MediaController())->upload($request, $app, $twig);
             break;
     }
-
 });
 
 /*
@@ -79,12 +103,12 @@ $app->post('', function () use ($twig, $app, $request)
     try {
         switch ($request->get('type')) 
         {
-            case 'Property.create':
-                $returnData =  (new apps\Properties\PropertyController())->store($request, $app); 
+            case 'Device.create':
+                $returnData =  (new apps\Devices\DeviceController($app))->store($request, $app); 
                 break;
 
-            case 'Property.update':
-                $returnData =  (new apps\Properties\PropertyController())->update($request, $app); 
+            case 'Device.update':
+                $returnData =  (new apps\Devices\DeviceController($app))->update($request, $app); 
                 break;
 
             case 'Lead.create':
@@ -152,20 +176,24 @@ $app->post('', function () use ($twig, $app, $request)
 /*
 // Return list of device 
 */
-$app->match('', function () use ($twig, $app) 
+$app->match('', function () use ($request, $twig, $app) 
 {
-    try {
+    try 
+    {
+        if (isset($app->auth->id))
+        {
+            return (new apps\DashboardController)->index($request, $twig, $app);
 
-        return  $twig->render('views/front/home.html.twig', [
-            'title' => 'Home page ',
-            'app' => $app,
-            'rent_properties' => (new Repo\Properties\PropertyRepository)->getItems('rent'),
-            'sale_properties' => (new Repo\Properties\PropertyRepository)->getItems('sale'),
-            'formAction' => $app->CONF['url'],
-        ]);
-    } catch (Exception $e) {
+        } else {
+
+            return (new apps\Auth\AuthService(new UserRepository))->loginPage($request, $app, $twig); 
+        }
+
+    } catch (Exception $e) 
+    {
         return $e->getMessage();
-    } 
+    }
+
 });
 
 
@@ -254,112 +282,36 @@ if (isset($app->auth->id))
 {
 
 
-    /**
-    * @return Settings page
-    */
-    $app->match('settings', function () use ($request, $app, $twig) 
-    {
-        return (new apps\Settings\SettingsController)->index($request, $app, $twig); 
-    });
-
 
 
     /**
     * @return properties
     */
-    $app->match('/properties/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
+    $app->match('/devices/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
         try {
             
             if ($action == 'create')
             {
-                return (new apps\Properties\PropertyController(new Repo\Properties\PropertyRepository))->create($request, $app, $twig);
+                return (new apps\Devices\DeviceController($app))->create($request, $app, $twig);
             }
 
             if ($action == 'edit')
             {
-                return (new apps\Properties\PropertyController(new Repo\Properties\PropertyRepository))->edit($id, $request, $app, $twig);
+                return (new apps\Devices\DeviceController($app))->edit($id, $request, $app, $twig);
             }
 
-            return (new apps\Properties\PropertyController(new Repo\Properties\PropertyRepository))->index($request, $app, $twig);
+            if ($action == 'manage')
+            {
+                return (new apps\Devices\DeviceController($app))->manage($request, $app, $twig);
+            }
+
+            return (new apps\Devices\DeviceController($app))->index($request, $app, $twig);
 
         } catch (Exception $e) {
             return $e->getMessage();
         }
     });
 
-
-
-    /**
-    * @return Organizations
-    */
-    $app->match('/organizations/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
-        try {
-            
-            if ($action == 'create')
-            {
-                return (new apps\Organizations\OrganizationController(new Repo\Organizations\OrganizationRepository))->create($request, $app, $twig);
-            }
-
-            if ($action == 'edit')
-            {
-                return (new apps\Organizations\OrganizationController(new Repo\Organizations\OrganizationRepository))->edit($id, $request, $app, $twig);
-            }
-
-            return (new apps\Organizations\OrganizationController(new Repo\Organizations\OrganizationRepository))->index($request, $app, $twig);
-
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-    });
-
-
-
-    /**
-    * @return Leads
-    */
-    $app->match('/leads/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
-        try {
-            
-            if ($action == 'create')
-            {
-                return (new apps\Leads\LeadController)->create($request, $app, $twig);
-            }
-
-            if ($action == 'edit')
-            {
-                return (new apps\Leads\LeadController)->edit($id, $request, $app, $twig);
-            }
-
-            return (new apps\Leads\LeadController)->index($request, $app, $twig);
-
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-    });
-
-
-    /**
-    * @return Contacts
-    */
-    $app->match('/contacts/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
-        try {
-            
-            if ($action == 'create')
-            {
-                return (new apps\Contacts\ContactController)->create($request, $app, $twig);
-            }
-
-            if ($action == 'edit')
-            {
-                return (new apps\Contacts\ContactController)->edit($id, $request, $app, $twig);
-            }
-
-            return (new apps\Contacts\ContactController)->index($request, $app, $twig);
-
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-    });
 
     /**
     * @return Contacts
@@ -470,6 +422,15 @@ if (isset($app->auth->id))
 
     });
 
+
+
+    /**
+    * @return Settings page
+    */
+    $app->match('settings', function () use ($request, $app, $twig) 
+    {
+        return (new apps\Settings\SettingsController)->index($request, $app, $twig); 
+    });
 
 
     // Logout and remoce cookies and session

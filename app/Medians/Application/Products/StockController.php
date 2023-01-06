@@ -25,7 +25,7 @@ class StockController
 	public function index($app, $twig) 
 	{	
 
-	    return $twig->render('views/admin/products/stock.html.twig', [
+	    return render('views/admin/products/stock.html.twig', [
 	        'title' => 'Products Stock',
 	        'app' => $app,
 	        'stockList' => $this->getByProvider($app->providerSession->id),

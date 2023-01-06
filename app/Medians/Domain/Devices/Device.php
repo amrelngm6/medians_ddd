@@ -2,9 +2,11 @@
 
 namespace Medians\Domain\Devices;
 
-use Medians\Domain\Prices\Prices;
-use Medians\Domain\Orders\DeviceOrder;
 use Shared\dbaser\CustomController;
+use Medians\Domain\Prices\Prices;
+use Medians\Domain\Games\Game;
+use Medians\Domain\Orders\OrderDevice;
+use Medians\Domain\Categories\category;
 
 
 class Device extends CustomController
@@ -21,94 +23,54 @@ class Device extends CustomController
 	*/
 	protected $fillable = [
     	'title',
-    	'providerId',
+    	'provider_id',
     	'playing',
     	'type',
-    	'publish'
+    	'status'
 	];
 
-	/**
-	* @var bool
-	*/
-	public $timestamps = false;
 
+	public $appends = ['price'];
+ 
 
-	function __construct()
+ 	/**
+ 	 * Filter fillable fields for frontend requests
+ 	 */ 
+	public function getFields()
 	{
+		return array_filter(array_map(function ($q) 
+		{
+			if (!in_array($q, array('model_type' ,'model_id')))
+			{
+				return $q;
+			}
+		}, $this->fillable));
+	}
 
+
+
+	/** 
+	 * Render options values
+	 */ 
+	public function renderOptions($category)
+	{
+		return (object) array_column(
+				array_map(function($q) use ($category) {
+					if ($q->category == $category) { return $q; }
+				}, (array) json_decode($this->SelectedOption))
+			, 'value', 'code');
 
 	}
 
 
-	public function id() : String
+	/** 
+	 * Render options values
+	 */ 
+	public function renderFields($category)
 	{
-		return $this->id;
+		return array_column(Options::where('model', Property::class)->where('category', $category)->get()->toArray(), 'title', 'code');
 	}
 
-
-	public function title() : String
-	{
-		return $this->title;
-	}
-
-
-	public function playing() : ?String
-	{
-		return $this->playing;
-	}
-
-
-	public function providerId() : ?Int
-	{
-		return $this->providerId;
-	}
-
-	public function type() 
-	{
-		return 	$this->type;
-	}
-
-	public function publish() : ?String
-	{
-		return $this->publish;
-	}
-
-
-	public function setId($id) : Device
-	{
-		$this->id = $id;
-		return $this;
-	}
-
-	public function setTitle($title) : Device
-	{
-		$this->title = $title;
-		return $this;
-	}
-
-	public function setPlaying($playing = 0) : Device
-	{
-		$this->playing = $playing;
-		return $this;
-	}
-
-	public function setProviderId($providerId = 0) : Device
-	{
-		$this->providerId = $providerId;
-		return $this;
-	}
-
-	public function setType($type) : Device
-	{
-		$this->type = $type;
-		return $this;
-	}
-
-	public function setPublish($publish = '0') : Device
-	{
-		$this->publish = $publish;
-		return $this;
-	}
 
 
 
@@ -116,9 +78,14 @@ class Device extends CustomController
 	 * Relatoins
 	 *
 	*/
+	public function games()
+	{
+		return  $this->hasMany(Game::class, 'type', 'type');
+	}
 
-	/*
-	// Relation with orders 
+	/**
+	 * Relatoins
+	 *
 	*/
 	public function currentOrder()
 	{
@@ -126,23 +93,40 @@ class Device extends CustomController
 	}
 
 
-	/*
-	// Relation 
-	*/
-	public function category()
-	{
-		return  $this->hasOne(DeviceType::class, 'id', 'type');
-	}
 
-
-	/*
-	// Relation 
+	/**
+	* Relation 
 	*/
 	public function prices()
 	{
-		return  $this->hasOne(Prices::class, 'device', 'id');
+		return  $this->MorphMany(Prices::class, 'model');
 	}
 
 
+	/**
+	* Relation 
+	*/
+	public function category()
+	{
+		return  $this->hasOne(Category::class, 'id', 'type')->where('model', Device::class);
+	}
+
+
+	/**
+	* Relation 
+	*/
+	public function order()
+	{
+		return  $this->hasOne(OrderDevice::class, 'device_id', 'id')->where('status','active')->where('model', Device::class);
+	}
+
+
+
+	
+
+	public function getPriceAttribute()
+	{
+		return (object) array_column( (array) json_decode($this->prices), 'value', 'code');
+	}
 
 }

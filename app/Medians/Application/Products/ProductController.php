@@ -53,7 +53,7 @@ class ProductController
 	 */ 
 	public function index( $app, $twig) 
 	{
-		return $twig->render('views/admin/products/products.html.twig', [
+		return render('views/admin/products/products.html.twig', [
 	        'title' => 'Products list',
 	        'app' => $app,
 	        'products' => $this->getByProvider($app->providerSession->id),
@@ -73,7 +73,7 @@ class ProductController
 	public function pos(Int $deviceId, $app, $twig) 
 	{
 		
-	    return $twig->render('views/admin/products/pos.html.twig', [
+	    return render('views/admin/products/pos.html.twig', [
 	        'title' => 'Products list',
 	        'app' => $app,
 	        'device' => (new DeviceController)->getItem($deviceId),

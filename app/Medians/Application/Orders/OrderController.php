@@ -47,7 +47,7 @@ class OrderController
 	    $app->currentPage = '/orders';
 
 
-	    return $twig->render('views/admin/orders/orders.html.twig', [
+	    return render('views/admin/orders/orders.html.twig', [
 	        'title' => 'Orders list',
 	        'app' => $app,
 	        'orders' => $query,

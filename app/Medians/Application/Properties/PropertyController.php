@@ -32,7 +32,7 @@ class PropertyController
 	{
 		$items = $this->repo->filterItems($request);
 
-		return $twig->render('views/admin/properties/list.html.twig', [
+		return render('views/admin/properties/list.html.twig', [
 			'items' =>  $items,
 	        'title' => 'Properties',
 	        'app' => $app,
@@ -45,7 +45,7 @@ class PropertyController
 	 */
 	public function create($request, $app, $twig)
 	{
-		return $twig->render('views/admin/properties/create.html.twig', [
+		return render('views/admin/properties/create.html.twig', [
 	        'title' => 'Properties',
 	        'Model' => $this->repo->getModel(),
 	        'agents' => $this->AgentRepo->getModel()->get(),
@@ -59,7 +59,7 @@ class PropertyController
 	 */
 	public function edit($id, $request, $app, $twig)
 	{
-		return $twig->render('views/admin/properties/create.html.twig', [
+		return render('views/admin/properties/create.html.twig', [
 	        'title' => 'Properties',
 	        'Model' => $this->repo->find($id),
 	        'agents' => $this->AgentRepo->getModel()->get(),

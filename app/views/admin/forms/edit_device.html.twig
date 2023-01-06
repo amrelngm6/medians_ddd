@@ -5,26 +5,26 @@
 
                             <div class="relative overflow-y-auto h-auto" style="max-height: 90vh; overflow: auto;">
                                 <a href="#!" class="ToggleItem float-right" data-toggle-target=".main-sidebar" data-toggle-class="activate">X</a>
-                                <form action="{{formAction}}" method="POST" data-refresh="1" id="add-device-form" class="action p-8 py-0 m-auto rounded-lg max-w-xl pb-10">
+                                <form action="/api/update" method="POST" data-refresh="1" id="add-device-form" class="action p-8 py-0 m-auto rounded-lg max-w-xl pb-10">
                                     <h1 class="m-auto max-w-xl text-2xl mb-10 text-center">{{title}}</h1>
-                                    <input name="type"  type="hidden" value="edit_device" > 
-                                    <input name="params[id]"  type="hidden" value="{{device.id}}" > 
-                                    <input name="params[title]" required="" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Device Title" value="{{ device.title }}"> 
+                                    <input name="type"  type="hidden" value="Device.update" > 
+                                    <input name="params[device][id]"  type="hidden" value="{{device.id}}" > 
+                                    <input name="params[device][title]" required="" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Device Title" value="{{ device.title }}"> 
 
-                                    <select name="params[type]" required="" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="">
+                                    <select name="params[device][type]" required="" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="">
                                     {% for type in typesList %}
-                                    <option {% if type.id == device.category.id %} selected="" {% endif  %}  value="{{type.id}}">{{type.title}}</option>
+                                    <option {% if type.id == device.type %} selected="" {% endif %} value="{{type.id}}">{{type.name}}</option>
                                     {% endfor %}
                                     </select>
 
                                     <label class="block pt-5">Single price</label>
-                                    <input name="params[prices][single_price]" type="number" class="h-12 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="Single price" value="{{device.prices.single_price}}">
+                                    <input name="params[device][prices][single_price]" type="number" class="h-12 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="Single price" value="{{device.price.single_price}}">
 
                                     <label class="block pt-5">Multi price</label>
-                                    <input name="params[prices][multi_price]" type="number" class="h-12 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="Multi price" value="{{device.prices.multi_price}}">
+                                    <input name="params[device][prices][multi_price]" type="number" class="h-12 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="Multi price" value="{{device.price.multi_price}}">
 
                                     <label class="inline-flex items-center mt-3">
-                                        <input name="params[publish]" type="checkbox" class="form-checkbox h-5 w-5 text-orange-600" {% if device.publish == 1 %} checked  {% endif %}><span class="ml-2 text-gray-700">publish</span>
+                                        <input name="params[device][status]" type="checkbox" class="form-checkbox h-5 w-5 text-orange-600" {% if device.status == 1 %} checked  {% endif %}><span class="ml-2 text-gray-700">Status</span>
                                     </label>
                                     
                                     <button class="uppercase h-10 mt-3 text-white w-full rounded bg-red-700 hover:bg-red-800">Update</button>

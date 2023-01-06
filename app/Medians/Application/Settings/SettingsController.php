@@ -29,7 +29,7 @@ class SettingsController
 	public function index($request, $app, $twig)
 	{
 
-		return $twig->render('views/admin/forms/settings_form.html.twig', [
+		return render('views/admin/forms/settings_form.html.twig', [
 	        'title' => 'Settings',
 	        'app' => $app,
 	    ]);

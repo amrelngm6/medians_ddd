@@ -32,7 +32,7 @@ class ContactController
 	 */
 	public function index($request, $app, $twig)
 	{
-		return $twig->render('views/admin/contacts/list.html.twig', [
+		return render('views/admin/contacts/list.html.twig', [
 			'items' =>  $this->repo->getModel()->with('Agent', 'source')->get(),
 	        'title' => 'Contacts',
 	        'app' => $app,
@@ -45,7 +45,7 @@ class ContactController
 	 */
 	public function create($request, $app, $twig)
 	{
-		return $twig->render('views/admin/contacts/create.html.twig', [
+		return render('views/admin/contacts/create.html.twig', [
 	        'title' => 'Contacts',
 	        'Model' => $this->repo->getModel(),
 	        'agents' => $this->AgentRepo->getModel()->get(),
@@ -60,7 +60,7 @@ class ContactController
 	 */
 	public function edit($id, $request, $app, $twig)
 	{
-		return $twig->render('views/admin/contacts/create.html.twig', [
+		return render('views/admin/contacts/create.html.twig', [
 	        'title' => 'Contacts',
 	        'Model' => (object) $this->repo->find($id),
 	        'agents' => $this->AgentRepo->getModel()->get(),

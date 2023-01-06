@@ -17,7 +17,7 @@ class DiscountController
 
 	public function index($app, $twig)
 	{
-	    return $twig->render('views/admin/discounts/discounts.html.twig', [
+	    return render('views/admin/discounts/discounts.html.twig', [
 	        'title' => 'Discounts list',
 	        'app' => $app,
 	        'discounts' => $this->getAll(100),

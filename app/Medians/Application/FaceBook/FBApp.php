@@ -45,7 +45,7 @@ class FBApp
 
 		$list = (new Repo\FaceBook\FBPageInfoRepository())->getByUserId($app->auth->id);
 
-	    return  $twig->render('views/admin/fb/pages.html.twig', [
+	    return  render('views/admin/fb/pages.html.twig', [
 	        'title' => 'Facebook pages list',
 	        'app' => $app,
 	    ]);
@@ -64,7 +64,7 @@ class FBApp
 	        $app->auth = $app->auth->with('fb_pages')->with('fb_user')->find($app->auth->id);
 	    }
 
-	    return  $twig->render('views/admin/fb/pages.html.twig', [
+	    return  render('views/admin/fb/pages.html.twig', [
 	        'title' => 'Facebook pages list',
 	        'app' => $app,
 	        'fb_page' => (new Repo\FaceBook\FBPageInfoRepository())->getByPageId($request->get('id')),

@@ -17,70 +17,13 @@ class Prices extends CustomController
 
 
 	public $fillable = [
-			'device',
-			'single_price',
-			'multi_price'
+			'model_id',
+			'model_type',
+			'code',
+			'value'
 		];
 
 	public $timestamps = null;
-
-
-
-
-	function __construct()
-	{
-
-	}
-
-
-	public function id() : ?int
-	{
-		return $this->id;
-	}
-
-
-	public function device() : ?Device
-	{
-		return Device::find($this->device);
-	}
-
-
-	public function single_price() : ?Int
-	{
-		return (int) $this->single_price;
-	}
-
-
-	public function multi_price() : ?Int
-	{
-		return (int) $this->multi_price;
-	}
-
-
-
-	public function setId($id) : Prices
-	{
-		$this->id = $id;
-		return $this;
-	}
-
-	public function setDevice($deviceId) : Prices
-	{
-		$this->device = $deviceId;
-		return $this;
-	}
-
-	public function setSinglePrice($singlePrice) : Prices
-	{
-		$this->single_price = $singlePrice;
-		return $this;
-	}
-
-	public function setMultiPrice($multiPrice) : Prices
-	{
-		$this->multi_price = $multiPrice;
-		return $this;
-	}
 
 
 }

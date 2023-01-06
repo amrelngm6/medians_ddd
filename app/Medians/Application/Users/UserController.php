@@ -30,7 +30,7 @@ class UserController
 	 */
 	public function index($list, $title, $app, $twig)
 	{
-		return $twig->render('views/admin/users/list.html.twig', [
+		return render('views/admin/users/list.html.twig', [
 			'items' =>  $list,
 	        'title' => $title,
 	        'app' => $app,
@@ -65,7 +65,7 @@ class UserController
 	 */
 	public function index($list, $title, $app, $twig)
 	{
-		return $twig->render('views/admin/users/list.html.twig', [
+		return render('views/admin/users/list.html.twig', [
 			'items' =>  $list,
 	        'title' => $title,
 	        'app' => $app,
@@ -79,7 +79,7 @@ class UserController
 	 */
 	public function create($request, $app, $twig)
 	{
-		return $twig->render('views/admin/users/create.html.twig', [
+		return render('views/admin/users/create.html.twig', [
 	        'title' => 'Users',
 	        'Model' => $this->repo->getModel(),
 	        '' => '',
@@ -93,7 +93,7 @@ class UserController
 	 */
 	public function edit($id, $request, $app, $twig)
 	{
-		return $twig->render('views/admin/users/create.html.twig', [
+		return render('views/admin/users/create.html.twig', [
 	        'title' => 'Users',
 	        'Model' => $this->repo->find($id),
 	        'app' => $app,

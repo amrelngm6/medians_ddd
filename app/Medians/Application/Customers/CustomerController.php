@@ -35,7 +35,7 @@ class CustomerController
 	public function index($request, $app, $twig)
 	{
 		$this->AgentRepo->app = $app;
-		return $twig->render('views/admin/customers/list.html.twig', [
+		return render('views/admin/customers/list.html.twig', [
 			'items' =>  $this->repo->get(),
 	        'title' => 'Customers',
 	        'app' => $app,
@@ -50,7 +50,7 @@ class CustomerController
 	public function create($request, $app, $twig)
 	{
 		$this->AgentRepo->app = $app;
-		return $twig->render('views/admin/customers/create.html.twig', [
+		return render('views/admin/customers/create.html.twig', [
 	        'title' => 'Customers',
 	        'Model' => $this->repo->getModel(),
 	        'agents' => $this->AgentRepo->get(),

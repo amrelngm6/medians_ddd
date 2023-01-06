@@ -56,18 +56,33 @@ class APIController
 	 */
 	public function create($request, $app)
 	{
-		$return = [];
-		switch ($request->get('type')) 
-		{
-			case 'Task.create':
-				$return = (new Tasks\TaskController)->store($request, $app);
-				break;
-			case 'Customer.create':
-				$return = (new Customers\CustomerController)->store($request, $app);
-				break;
-		}
+		try {
+				
+			$return = [];
+			switch ($request->get('type')) 
+			{
+				case 'Device.create':
+					$return = (new Devices\DeviceController($app))->store($request, $app);
+					break;
+				case 'Task.create':
+					$return = (new Tasks\TaskController)->store($request, $app);
+					break;
+				case 'Customer.create':
+					$return = (new Customers\CustomerController)->store($request, $app);
+					break;
+				case 'Event.create':
 
-		return response(json_encode($return), $app);
+					$params = (array)  json_decode($request->get('params')['event']);
+					$check = (new Repo\Devices\DevicesRepository($app))->storeOrder($params);
+					$return = isset($check->id) ? ['result'=>'Created'] : ['result'=>'Error'];
+					break;
+			}
+
+			return response(json_encode($return), $app);
+
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
 	} 
 
 	/**
@@ -84,6 +99,11 @@ class APIController
 				break;
 			case 'Customer.update':
 				$return = (new Customers\CustomerController)->update($request, $app);
+				break;
+			case 'Event.update':
+				$params = (array)  json_decode($request->get('params')['event']);
+				$check = (new Repo\Devices\DevicesRepository($app))->updateOrder($params);
+				$return = isset($check->id) ? ['result'=>'Updated'] : ['result'=>'Error'];
 				break;
 		}
 
@@ -113,5 +133,63 @@ class APIController
 		return response(json_encode($return), $app);
 	} 
 
+	public function calendar($request, $app)
+	{
+		$repo = new Repo\Devices\DevicesRepository($app);
+
+		$data = $repo->get(100);
+
+		foreach ($data as $key => $value) {
+			$data[$key]->businessHours = [(object) [
+				'days'=>[0],
+				'daysOfWeek' => [0, 1, 2, 3, 4, 5, 6],
+				'disabledDates' => [],
+				'startTime' => "00:000",
+				'endTime' => "06:00",
+				'status' => true
+			], (object) [
+				'days'=>[0],
+				'daysOfWeek' => [0, 1, 2, 3, 4, 5, 6],
+				'disabledDates' => [],
+				'startTime' => "13:000",
+				'endTime' => "23:59",
+				'status' => true
+			
+			]];
+
+		}
+
+		return json_encode(['data'=>$data, 'status'=>TRUE]);
+
+	}
+
+	public function events($request, $app)
+	{
+		$repo = new Repo\Devices\DevicesRepository($app);
+
+		$data = $repo->events($request, 100);
+
+		foreach ($data as $key => $value) {
+			// $data[$key]->id = $value->id;
+			$data[$key]->title = isset($value->game->name) ? $value->game->name : $value->device->name;
+			$data[$key]->resourceId = $value->device_id;
+			$data[$key]->start = $value->start_time;
+			$data[$key]->start_time = date('H:i', strtotime(date($data[$key]->start)));
+			$data[$key]->end = $value->end_time;
+			$data[$key]->end_time = date('H:i', strtotime(date($data[$key]->end)));
+			$data[$key]->date = date('Y-m-d', strtotime(date($value->created_at)));
+			$data[$key]->backgroundColor = '#f56954';
+			$data[$key]->borderColor = '#000';
+			$data[$key]->display = 'block';
+			$data[$key]->draggable = true;
+			$data[$key]->allow = true;
+			$data[$key]->url = 'javascript:;';
+			$data[$key]->classNames = $value->status;
+			$data[$key]->games = $repo->getGames($value->device->type);
+		}
+
+		return $data;
+
+	}
 
 }

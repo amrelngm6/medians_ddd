@@ -4,14 +4,14 @@
 <head>
     <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>{{app.Settings.sitename}}</title>
-    <link rel="stylesheet" type="text/css" href="{{app.CONF.url}}assets/tailwind.min.css">
-    <link rel="stylesheet" type="text/css" href="{{app.CONF.url}}assets/dist/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="{{app.CONF.url}}assets/bootstrap-grid.min.css">
-    <link rel="stylesheet" type="text/css" href="{{app.CONF.url}}assets/style.css">
-    <link rel="stylesheet" type="text/css" href="{{app.CONF.url}}assets/alertify/alertify.min.css">
-    <link rel="stylesheet" type="text/css" href="{{app.CONF.url}}assets/theme.css">
+    <link rel="stylesheet" type="text/css" href="{{app.CONF.url ? app.CONF.url : '/'}}assets/tailwind.min.css">
+    <link rel="stylesheet" type="text/css" href="{{app.CONF.url ? app.CONF.url : '/'}}assets/dist/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="{{app.CONF.url ? app.CONF.url : '/'}}assets/bootstrap-grid.min.css">
+    <link rel="stylesheet" type="text/css" href="{{app.CONF.url ? app.CONF.url : '/'}}assets/style.css">
+    <link rel="stylesheet" type="text/css" href="{{app.CONF.url ? app.CONF.url : '/'}}assets/alertify/alertify.min.css">
+    <link rel="stylesheet" type="text/css" href="{{app.CONF.url ? app.CONF.url : '/'}}assets/theme.css">
     <!-- External Theem  -->
-    <link rel="stylesheet" type="text/css" href="{{app.CONF.url}}assets/theme.min.css">
+    <link rel="stylesheet" type="text/css" href="{{app.CONF.url ? app.CONF.url : '/'}}assets/theme.min.css">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp">
     <style>
         .bg-orange{
@@ -47,9 +47,9 @@
 
     </style>
     <script type="text/javascript">
-        var site_url = '{{app.CONF.url}}';
+        var site_url = '{{app.CONF.url ? app.CONF.url : "/"}}';
     </script>
-    <script type="text/javascript" src="{{app.CONF.url}}assets/js/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="{{app.CONF.url ? app.CONF.url : '/'}}assets/js/jquery-3.5.1.min.js"></script>
 </head>
 
 <body>
@@ -63,7 +63,7 @@
                     <div class="inline-flex">
                         <!-- Logo -->
                         <div class="mx-auto h-16  pt-4 w-auto pr-10">
-                            <img style="max-height: 100%" src="{{app.CONF.url}}assets/img/Logo.png" height="40">
+                            <img style="max-height: 100%" src="{{app.CONF.url ? app.CONF.url : '/'}}assets/img/Logo.png" height="40">
                             <!--end logo -->
                         </div>
                     </div>
@@ -127,7 +127,7 @@
                     </div>
                 </div>
             </div>
-            <div class="gap gap-6 h-screen flex w-full overflow-hidden py-4 pb-10 ">
+            <div class="gap gap-6 h-full flex w-full overflow-hidden py-4 pb-10 ">
                 {% if app.auth.id %}    
                 <div class="sidebar" id="sidebar">
                     <div class="sidebar-inner slimscroll">
@@ -146,9 +146,9 @@
                                     </a>
                                 </li>
                             </ul>
-                            <side-menu :same-page="false" url="{{app.CONF.url}}" :menus="{{app.menuList|json_encode}}"></side-menu>
+                            <side-menu :same-page="false" url="{{app.CONF.url ? app.CONF.url : '/'}}" :menus="{{app.menuList|json_encode}}"></side-menu>
                         </div>
                     </div>
                 </div>
                 {% endif %}
-                <div class="w-full flex pb-20" style="height: 100vh; z-index: 9999;">
+                <div class="w-full flex" style="height: 85vh; z-index: 9999;">

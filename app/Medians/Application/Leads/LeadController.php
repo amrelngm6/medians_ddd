@@ -32,7 +32,7 @@ class LeadController
 	 */
 	public function index($request, $app, $twig)
 	{
-		return $twig->render('views/admin/leads/list.html.twig', [
+		return render('views/admin/leads/list.html.twig', [
 			'items' =>  $this->repo->get(100),
 	        'title' => 'Leads',
 	        'app' => $app,
@@ -45,7 +45,7 @@ class LeadController
 	 */
 	public function create($request, $app, $twig)
 	{
-		return $twig->render('views/admin/leads/create.html.twig', [
+		return render('views/admin/leads/create.html.twig', [
 	        'title' => 'Leads',
 	        'Model' => $this->repo->getModel(),
 	        'agents' => $this->AgentRepo->getModel()->get(),
@@ -61,7 +61,7 @@ class LeadController
 	 */
 	public function edit($id, $request, $app, $twig)
 	{
-		return $twig->render('views/admin/leads/create.html.twig', [
+		return render('views/admin/leads/create.html.twig', [
 	        'title' => 'Leads',
 	        'Model' => $this->repo->find($id),
 	        'agents' => $this->AgentRepo->getModel()->get(),

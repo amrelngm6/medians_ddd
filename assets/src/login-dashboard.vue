@@ -47,8 +47,9 @@ export default {
             console.log(response);
             if (response && response.success == 1)
             {
-                this.$alert(response.result);
-                // location.reload();
+                this.$alert(response.result).then(() => {
+                    location.reload();
+                });;
             }
 
             if (response && response.error)

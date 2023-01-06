@@ -29,18 +29,16 @@ class DeviceController
 	protected $data = array();
 	
 
-	function __construct($data = null)
+	function __construct($app)
 	{
 
-		$this->data = (object) $data;
-
-		$this->repo = new Repo\Devices\DevicesRepository();
+		$this->repo = new Repo\Devices\DevicesRepository($app);
 
 	    // Set PricesModel
-	    $this->PricesController = new apps\Prices\PricesController();
+	    // $this->PricesController = new Repo\Prices\PricesController();
 
 	    // Set PricesModel
-	    $this->DeviceTypeController = new apps\Devices\DeviceTypeController();
+	    $this->CategoryRepo = new Repo\Categories\CategoryRepository();
 
 	}
 
@@ -52,13 +50,13 @@ class DeviceController
 	 * @param \Twig\Environment $twig
 	 * 
 	 */ 
-	public function index( $app, $twig) 
+	public function index($request, $app, $twig) 
 	{
-	    return $twig->render('views/admin/devices/devices.html.twig', [
+	    return render('views/admin/devices/calendar.html.twig', [
 	        'title' => 'Devices list',
 	        'app' => $app,
-	        'devicesList' => $this->repo->getByProvider($app->providerSession->id),
-	        'typesList' => $this->DeviceTypeController->getAll()
+	        'devicesList' => $this->repo->get(50),
+	        'typesList' => $this->CategoryRepo->categories(Device::class),
 	    ]);
 	}
 
@@ -70,24 +68,24 @@ class DeviceController
 	 * @param \Twig\Environment $twig
 	 * 
 	 */ 
-	public function manage( $app, $twig) 
+	public function manage( $request, $app, $twig) 
 	{
 
-	    return $twig->render('views/admin/devices/devices_manage.html.twig', [
+	    return render('views/admin/devices/devices_manage.html.twig', [
 	        'title' => 'Devices list',
 	        'app' => $app,
-	        'devicesList' => $this->repo->getByProvider($app->providerSession->id),
-	        'typesList' => $this->DeviceTypeController->getAll()
+	        'devicesList' => $this->repo->get(100),
+	        'typesList' => $this->CategoryRepo->categories(Device::class),
 
 	    ]);
 	}
 
 
 
-	public function show(int $id , $app, $twig) 
+	public function show(int $id,$request , $app, $twig) 
 	{
 
-	    return $twig->render('views/admin/devices/device.html.twig', [
+	    return render('views/admin/devices/device.html.twig', [
 	        'title' => 'Edit device',
 	        'typesList' => $this->DeviceTypeController->getAll(),
 	        'app' => $app,
@@ -97,136 +95,82 @@ class DeviceController
 
 
 
-	public function edit(int $id , $app, $twig) 
+	public function edit(int $id , $request, $app, $twig) 
 	{
 
-	    return $twig->render('views/admin/forms/edit_device.html.twig', [
+	    return render('views/admin/forms/edit_device.html.twig', [
 	        'title' => 'Edit device',
-	        'typesList' => $this->DeviceTypeController->getAll(),
+	        'typesList' => $this->CategoryRepo->categories(Device::class),
 	        'app' => $app,
 	        'device' => $this->repo->find($id)
 	    ]);
 	}
 
 
-
+	/**
+	*  Store item
+	*/
 	public function store($request, $app) 
-	{	
-        try {
+	{
 
-        	$params = $request->get('params');
+		$params = (array) $request->get('params')['device'];
 
-            $returnData = ((!$this->validate($params)) && !empty($this->saveItem($params, $app))) 
-            ? array('success'=>1, 'data'=>'Added', 'reload'=>1)
-            : array('success'=>0, 'data'=>'Error', 'error'=>1);
+		try {
+
+			$params['provider_id'] = $app->provider->id;
+			$Property = $this->repo->store($params);
+
+        	return array('success'=>1, 'result'=>'Created');
 
         } catch (Exception $e) {
-            $returnData = array('error'=>$e->getMessage());
+            return  array('error'=>$e->getMessage());
         }
-
-		return $returnData;
 	}
 
 
+
+	/**
+	*  update item
+	*/
 	public function update($request, $app) 
-	{	
-        try {
+	{
 
-        	$params = $request->get('params');
+		$params = (array)  $request->get('params')['device'];
 
-            $check = $this->repo->find($params['id']);
+		try {
 
-            if (($app->providerSession->id == $check->providerId) && $this->editItem( $params )) 
-            {
+			$params['provider_id'] = $app->provider->id;
+			$params['status'] = !empty($params['status']) ? 1 : 0;
+			$Property = $this->repo->update($params);
 
-                $this->PricesController->saveItem($params['prices'], $check->id);
-
-                $returnData = array('success'=>1, 'data'=>'Updated');
-            } else {
-
-               $returnData = array('error'=>'Not allowed');
-            }
+        	return array('success'=>1, 'result'=>'Updated');
 
         } catch (Exception $e) {
-            $returnData = array('error'=>$e->getMessage());
+            return  array('error'=>$e->getMessage());
         }
-
-		return $returnData;
 	}
 
+
+	/** 
+	 * Delete item
+	 */
 	public function delete($request, $app) 
 	{	
 
-        try {
+		$params = (array)  json_decode($request->get('params')['device']);
 
-        	$params = $request->get('params');
-            
-            $check = $this->repo->find($params['id']);
+		try {
 
-            $returnData = (($app->providerSession->id == $check->providerId) && $this->deleteItem( $params['id'] )) 
-            ? array('success'=>1, 'data'=>'Deleted', 'reload'=>1)
-            : array('error'=>'Not allowed');
+			$Property = $this->repo->destroy($params);
 
+        	return array('success'=>1, 'result'=>'Deleted');
 
         } catch (Exception $e) {
-
-            $returnData = array('error'=>$e->getMessage());
-        }   
-
-		return $returnData;
-	}
-
-
-
-	public function getItem($deviceId = null) : ?Device
-	{	
-		return $this->repo->find($deviceId);
-	}
-
-
-
-	public function getAll($limit = 100) 
-	{	
-
-		return $this->repo->getAll($limit);
-	}
-
-
-
-	public function saveItem($params, $app) : ?Device
-	{
-
-		$data['title'] = $params['title'];
-		$data['providerId'] = $app->providerSession->id;
-		$data['type'] = $params['type'];
-		$data['playing'] = 0;
-		$data['publish'] = 1;
-
-		return $this->repo->store($data);
+            return  array('error'=>$e->getMessage());
+        }
 
 	}
 
-
-	public function editItem($params) 
-	{
-
-		$check = $this->repo->find($params['id']);
-
-		$check->title = $params['title'];	
-		$check->type = $params['type'];	
-		$check->publish = !empty($params['publish']) ? 1 : 0;	
-
-		return $this->repo->edit($check);	
-
-	}
-
-
-	public function deleteItem($id) 
-	{
-
-		return $this->repo->delete($this->repo->find($id));	
-
-	}
 
 	public function validate($params) 
 	{

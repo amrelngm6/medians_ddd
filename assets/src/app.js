@@ -14,6 +14,10 @@ window.Vue = require('vue');
 
 Vue.use(VueSimpleAlert);
 
+
+
+Vue.component('calendar_component', () => import('./calendar-component.vue'));
+
 Vue.component('demo', () => import('./demo.vue'));
 Vue.component('login-dashboard', () => import('./login-dashboard.vue'));
 Vue.component('side-menu', () => import('./side-menu.vue'));
@@ -24,6 +28,7 @@ Vue.component('contacts_form', () => import('./contacts_form.vue'));
 Vue.component('users_form', () => import('./users_form.vue'));
 Vue.component('task_form', () => import('./task_form.vue'));
 Vue.component('customers_form', () => import('./customers_form.vue'));
+
 
 Vue.component('user_modal', () => import('./user_modal.vue'));
 Vue.component('lead_modal', () => import('./lead_modal.vue'));

@@ -39,7 +39,7 @@ class DeviceTypeController
 	 */ 
 	public function index( $app, $twig) 
 	{
-	    return $twig->render('views/admin/devices/device_types.html.twig', [
+	    return render('views/admin/devices/device_types.html.twig', [
 	        'title' => 'Device types',
 	        'app' => $app,
 	        'typesList' => $this->getAll(),
@@ -54,7 +54,7 @@ class DeviceTypeController
 	public function edit(int $id , $app, $twig) 
 	{
 
-		return $twig->render('views/admin/forms/edit_device_type.html.twig', [
+		return render('views/admin/forms/edit_device_type.html.twig', [
 	        'title' => 'Edit device type',
 	        'app' => $app,
 	        'deviceType' => $this->getItem($id),

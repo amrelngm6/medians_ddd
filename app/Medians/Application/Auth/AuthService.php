@@ -65,7 +65,7 @@ class AuthService
 
 		if (isset($app->auth->id)) { return $app->redirect('/'); }
 
-	    return  $twig->render('views/admin/forms/login.html.twig', [
+	    return  render('views/admin/forms/login.html.twig', [
 	        'title' => 'Login page ',
 	        'app' => $app,
 	        // 'facebook_login_url' => (new FBApp(new Repo\FaceBook\FBRepository))->loginBtn($app),

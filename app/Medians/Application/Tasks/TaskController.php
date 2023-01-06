@@ -32,7 +32,7 @@ class TaskController
 	 */
 	public function index($request, $app, $twig)
 	{
-		return $twig->render('views/admin/tasks/list.html.twig', [
+		return render('views/admin/tasks/list.html.twig', [
 			'items' =>  $this->repo->getModel()->with('Files', 'Owner', 'TaskUsers')->get(),
 	        'title' => 'Tasks',
 	        'agents' => $this->AgentRepo->get(),

@@ -14,23 +14,24 @@ class DeviceOrder extends CustomController
 	/**
 	* @var String
 	*/
-	protected $table = 'device_orders';
+	protected $table = 'order_devices';
 
 	/**
 	* @var Array
 	*/
 	public $fillable = [
-			'providerId',
-			'deviceId',
-			'deviceCost',
-			'orderCode',
-			'bookingType',
-			'startTime',
-			'endTime',
-			'lastCheck',
-			'insertedBy',
-			'status',
-		];
+		'provider_id',	
+		'device_id',	
+		'device_cost',	
+		'order_code',	
+		'booking_type',	
+		'start_time',	
+		'break_time',	
+		'end_time',	
+		'last_check',	
+		'created_by'	
+		'status'
+	];
 
 	/**
 	* @var Boolen
