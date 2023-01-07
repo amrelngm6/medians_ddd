@@ -41,11 +41,24 @@ class OrderDevice extends CustomController
 	*/
 	// public $timestamps = null;
 
+	public $appends = ['duration', 'duration_time', 'currency'];
 
 
-	public function spend_time() 
+	public function getCurrencyAttribute() 
 	{
-		$interval = (new \DateTime($this->startTime ))->diff(new \DateTime($this->endTime));
+		return 'EGP';
+	}
+
+	public function getDurationAttribute() 
+	{
+		return round(abs(strtotime($this->end_time) - strtotime($this->start_time)) / 60,2);
+	}
+
+
+
+	public function getDurationTimeAttribute() 
+	{
+		$interval = (new \DateTime($this->start_time ))->diff(new \DateTime($this->end_time));
 		$hours   = $interval->format('%h : %i'); 
 		return $hours;
 	}

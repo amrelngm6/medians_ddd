@@ -30,7 +30,7 @@ class Device extends CustomController
 	];
 
 
-	public $appends = ['price'];
+	public $appends = ['price', 'name'];
  
 
  	/**
@@ -124,6 +124,10 @@ class Device extends CustomController
 
 	
 
+	public function getNameAttribute()
+	{
+		return $this->title;
+	}
 	public function getPriceAttribute()
 	{
 		return (object) array_column( (array) json_decode($this->prices), 'value', 'code');

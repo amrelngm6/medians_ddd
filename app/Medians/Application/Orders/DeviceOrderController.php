@@ -75,14 +75,6 @@ class DeviceOrderController
 	}
 
 
-	/*
-	// Genrate unique code 
-	*/
-	public function genrateCode() : String
-	{
-		return time().rand(9,99);
-	}
-
 
 	public function handleEndTime($hours = 1, $minutes = 0) 
 	{

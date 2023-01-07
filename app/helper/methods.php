@@ -41,6 +41,12 @@ function getMenuList()
                 array('title'=>'Management', 'link'=>'devices'),
 			]
 		),
+        array('title'=>'Produts', 'link'=>'', 'sub'=>
+            [
+                array('title'=>'Products list', 'link'=>'products/index'),
+                array('title'=>'Stock log', 'link'=>'stock/index'),
+            ]
+        ),
         array('title'=>'Users', 'link'=>'', 'sub'=>
             [
                 array('title'=>'Administrators', 'link'=>'users/admin'),
@@ -55,6 +61,8 @@ function getMenuList()
             ]
         ),
 
+        array('title'=>'Invoices', 'link'=>'invoices'),
+        array('title'=>'Payments', 'link'=>'payments'),
         array('title'=>'Tasks', 'link'=>'tasks'),
         array('title'=>'Notifications', 'link'=>''),
 		array('title'=>'Settings', 'link'=>'settings'),

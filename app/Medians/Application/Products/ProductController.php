@@ -2,7 +2,7 @@
 
 namespace Medians\Application\Products;
 
-use Medians\Infrastructure\Products as Repo;
+use Medians\Infrastructure\Products\ProductsRepository;
 use Medians\Application\Devices\DeviceController;
 
 class ProductController
@@ -18,30 +18,8 @@ class ProductController
 	function __construct()
 	{
 
-		$this->repo = new Repo\ProductsRepository();
+		$this->repo = new ProductsRepository();
 	}
-
-
-
-	public function getItem($id = 0) 
-	{
-		return $this->repo->find($id);
-	}
-
-
-	public function getByProvider($providerId = 0) 
-	{
-		return $this->repo->getByProvider($providerId);
-	}
-
-
-	public function getAll($limit = null) 
-	{
-		return $this->repo->getAll( $limit );
-	}
-
-
-
 
 
 	/**
@@ -51,12 +29,32 @@ class ProductController
 	 * @param \Twig\Environment $twig
 	 * 
 	 */ 
-	public function index( $app, $twig) 
+	public function index($request, $app) 
 	{
 		return render('views/admin/products/products.html.twig', [
 	        'title' => 'Products list',
 	        'app' => $app,
-	        'products' => $this->getByProvider($app->providerSession->id),
+	        'products' => $this->repo->get($app->provider->id),
+	        'typesList' => $this->repo->getModel()->categoriesList(),
+	        'stock' => new StockController(null),
+	    ]);
+	}
+
+
+	/**
+	 * Admin index items
+	 * 
+	 * @param Silex\Application $app
+	 * @param \Twig\Environment $twig
+	 * 
+	 */ 
+	public function edit($id, $request, $app) 
+	{
+		return render('views/admin/products/product.html.twig', [
+	        'title' => 'Products list',
+	        'app' => $app,
+	        'product' => $this->repo->find($id),
+	        'typesList' => $this->repo->getModel()->categoriesList(),
 	        'stock' => new StockController(null),
 	    ]);
 	}
@@ -77,7 +75,7 @@ class ProductController
 	        'title' => 'Products list',
 	        'app' => $app,
 	        'device' => (new DeviceController)->getItem($deviceId),
-	        'products' => $this->getByProvider($app->providerSession->id),
+	        'products' => $this->getByProvider($app->provider->id),
 	        'stock' => new StockController(null),
 	    ]);
 	}
@@ -95,11 +93,11 @@ class ProductController
 	public function store($request, $app) 
 	{	
         
-        $params = $request->get('params');
+		$params = $request->get('params')['product'];
 
         try {
 
-            return !empty($this->saveItem($params, $app)) 
+            return ($this->repo->store($params))
             ? array('success'=>1, 'data'=>'Added', 'reload'=>1)
             : array('success'=>0, 'data'=>'Error', 'error'=>1);
 
@@ -113,32 +111,6 @@ class ProductController
 
 
 	/**
-	 * Excute Store item to database
-	 * 
-	 * @param Symfony\Component\HttpFoundation\Request::$params $params
-	 * @param Silex\Application $app
-	 * 
-	 * @return [] 
-	*/
-	public function saveItem($params, $app) 
-	{
-
-		$data['providerId'] = $app->providerSession->id;
-		$data['title'] = isset($params['title']) ? $params['title'] : '';
-		$data['picture'] = isset($params['picture']) ? $params['picture'] : 'default.png';
-		$data['description'] = isset($params['description']) ? $params['description'] : '';
-		$data['stock'] = isset($params['stock']) ? $params['stock'] : 0;
-		$data['price'] = isset($params['price']) ? $params['price'] : 0;
-		$data['type'] = isset($params['type']) ? $params['type'] : '';
-		$data['publish'] = isset($params['picture']) ? $params['publish'] : 0;
-		$data['playing'] = 0;
-
-		return $this->repo->store($data);
-
-	}
-
-
-	/**
 	 * Update item to database
 	 * 
 	 * @param Symfony\Component\HttpFoundation\Request $request
@@ -148,14 +120,14 @@ class ProductController
 	*/
 	public function update($request, $app) 
 	{
-		$params = $request->get('params');
+		$params = $request->get('params')['product'];
 
         try {
 
-        	$check = $this->getItem($params['id']);
+        	$check = $this->repo->find($params['id']);
 
-           	$returnData =  ($this->editItem($request, $app ))
-           	? array('success'=>1, 'data'=>'Updated', 'redirect'=>$app->CONF['url'].'provider_area/products')
+           	$returnData =  ($this->repo->update($params))
+           	? array('success'=>1, 'data'=>'Updated', 'redirect'=>$app->CONF['url'].'products/index')
            	: array('error'=>'Not allowed');
 
 

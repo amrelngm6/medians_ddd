@@ -2,89 +2,36 @@
     <div class="container calendar">
 
         <div class="fixed top-0 left-0 w-full h-full" style="z-index: 9;" v-if="showPopup && activeItem">
-            <div @click="showPopup = false; showUpdate = false" class="fixed h-full w-full top-0 left-0 bg-gray-800" style="opacity: .6"></div>
-            <div class="top-20 relative mx-auto w-full bg-white p-6 rounded-lg" style="max-width: 600px;" v-if="activeItem.status == 'completed'">
 
-                <div class="bg-yellow-200 rounded-md py-2 px-4" role="alert">
-                    <strong>Warning!</strong> This order is completed.
-                    <button @click="showPopup = false; showUpdate = false" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <!-- Modal bg overlay -->
+            <div @click="hidePopup" class="fixed h-full w-full top-0 left-0 bg-gray-800" style="opacity: .6"></div>
+
+            <!-- Confirm overlay -->
+            <div class="top-20 relative mx-auto w-full bg-white p-6 rounded-lg" style="max-width: 600px; z-index: 99;" v-if="showConfirm">
+                
+                <div class="bg-blue-200 rounded-md py-2 px-4" role="alert">
+                    <strong>Confirm!</strong> Are your sure you want to finish this booking.
+                    <button @click="showConfirm = false" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
 
-                <div class="w-full block gap-4 py-2 border-b  border-gray-200">
-                    <label class="w-full">Game</label>
+                <div  class="my-2 cursor-pointer w-full text-white  font-semibold py-2 border-b border-gray-200">
+                    <label @click="activeItem.status = 'completed'; submit('Event.update')" class="w-32 mx-auto py-2 rounded-lg bg-gradient-primary block text-center cursor-pointer">Confirm</label>
+                </div>
 
-                    <div  class="w-full block gap-4 my-2 text-gray-600 overflow-x-auto">
-                        <div class="overflow-x-auto" >
-                            <label class="inline-block cursor-pointer py-2 w-40 my-2 rounded-2xl text-center font-semibold bg-purple-600 text-white" >
-                                <img class="mx-auto w-6 h-6 rounded-full my-2" :src="activeItem.game ? activeItem.game.picture : ''">
-                                <span v-text="activeItem.game ? activeItem.game.name : ''"></span> 
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="w-full flex gap-4 py-2 border-b border-gray-200">
-                    <label class="w-full">Start</label>
-                    <input disabled class="w-full" type="time" v-model="activeItem.start_time">
-                </div>
-                <div class="w-full flex gap-4 py-2 border-b border-gray-200">
-                    <label class="w-full">End</label>
-                    <input disabled class="w-full" type="time" v-model="activeItem.end_time">
-                </div>
-                <div class="w-full flex gap-4 py-2 border-b border-gray-200">
-                    <label class="w-full">Date</label>
-                    <input disabled class="w-full" type="text" :value="dateText(activeItem.startStr)">
-                </div>
-                <div class="w-full flex gap-6 my-2 text-gray-600">
-                    <label  class="cursor-pointer py-2 w-full mx-2 rounded-2xl text-center font-semibold bg-purple-600 text-white" >
-                        <span v-text="activeItem.booking_type"></span>
-                    </label>
-                </div>
             </div>
-            <div class="top-20 relative mx-auto w-full bg-white p-6 rounded-lg" style="max-width: 600px;" v-if="activeItem.status != 'completed'">
-                <div class="w-full block gap-4 py-2 border-b  border-gray-200">
-                    <label class="w-full">Game</label>
 
-                    <div  class="w-full block gap-4 my-2 text-gray-600 overflow-x-auto">
-                        <div class="overflow-x-auto" :style='{"min-width": games.length*35+"%"}' >
-                            <label v-for="game in games"  
-                                @click="activeItem.game_id = game.id;  showPopup = false; showPopup = true; updateInfo(activeItem)"
-                                :for="'single-'+game.id"  
-                                class="inline-block cursor-pointer py-2 w-40 my-2 rounded-2xl text-center font-semibold" 
-                                :class="activeItem.game_id == game.id ? 'bg-purple-600 text-white' : 'border-purple-600 text-purple-800'" >
-                                    <img class="mx-auto w-6 h-6 rounded-full my-2" :src="game.picture">
-                                    <span v-text="game.name"></span> 
-                                    <input @change="updateInfo(activeItem)"  :id="'id-'+game.id" v-model="activeItem.game_id" :value="game.id" type="radio" name="game_id" class="hidden">
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- <input name="game_id" v-model="activeItem.game_id" v-text="game.name" :value="game.id"></option> -->
-
-<!--                     <select class="w-full" type="time" v-model="activeItem.game_id">
-                        <option v-for="game in games" v-text="game.name" :value="game.id"></option>
-                    </select> -->
-
+            
+            <div class="left-0 right-0 fixed mx-auto w-full " style="max-width: 600px; z-index: 99;" >
+                <div v-if="showBooking " class="relative">
+                    <calendar_modal :modal="activeItem"></calendar_modal>
                 </div>
-                <div class="w-full flex gap-4 py-2 border-b border-gray-200">
-                    <label class="w-full">Start</label>
-                    <input @change="updateInfo(activeItem)" class="w-full" type="time" v-model="activeItem.start_time">
-                </div>
-                <div class="w-full flex gap-4 py-2 border-b border-gray-200">
-                    <label class="w-full">End</label>
-                    <input @change="updateInfo(activeItem)"  class="w-full" type="time" v-model="activeItem.end_time">
-                </div>
-                <div class="w-full flex gap-6 my-2 text-gray-600">
-                    <label @click="activeItem.booking_type = 'single';  updateInfo(activeItem)" for="single"  class="cursor-pointer py-2 w-full mx-2 rounded-2xl text-center font-semibold" :class="activeItem.booking_type == 'single' ? 'bg-purple-600 text-white' : ''" >Single <input id="signle" v-model="activeItem.booking_type" value="single" type="radio" name="booking_type" class="hidden"></label>
-                    <label @click="activeItem.booking_type = 'multi'; updateInfo(activeItem)"  for="multi" class="cursor-pointer py-2 w-full mx-2 rounded-2xl text-center font-semibold" :class="activeItem.booking_type == 'multi' ? 'bg-purple-600 text-white' : ''"  >Multi <input id="multi"  v-model="activeItem.booking_type" value="multi" type="radio" name="booking_type"  class="hidden"></label>
-                </div>
-                <div v-if="!activeItem.id" class="w-full text-white  font-semibold py-2 border-b border-gray-200">
-                    <label @click="storeInfo(activeItem)" class="px-4 py-2 rounded-lg bg-gradient-primary block">Start Playing</label>
-                </div>
-                <div v-if="activeItem.id && showUpdate" class="w-full text-white  font-semibold py-2 border-b border-gray-200">
-                    <label @click="submit('Event.update')" class="px-4 py-2 rounded-lg bg-gradient-primary block">Update</label>
+                <div v-if="showActiveBooking"  class="relative">
+                    <calendar_active_item :games="games" :modal="activeItem"></calendar_active_item>
                 </div>
             </div>
         </div>
+
+        <side_cart ref="side_cart" currency="EGP" :cart_items="[]"></side_cart>
 
         <FullCalendar :options="calendarOptions" ref="calendar" class="h-full"></FullCalendar>
 
@@ -114,6 +61,11 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
 
             return {
                 
+                showActiveBooking: false,
+                showBooking: false,
+                confirm: false,
+                showNewEvent: false,
+                showConfirm: false,
                 showPopup: false,
                 
                 showUpdate: false,
@@ -163,9 +115,9 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
                     },
                     events: '/api/calendar_events',
                     businessHours: false,
-                    aspectRatio: 1.2,
+                    aspectRatio: 2.2,
                     nowIndicator: true,
-                    slotDuration: '00:15:00',
+                    slotDuration: '00:10:00',
                     selectable: true,
                     selectMirror: true,
                     eventMaxStack: 3,
@@ -226,7 +178,7 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
                         console.log(event);
                     },
                     eventClassNames: function (arg) {
-                        return [ 'background-event-element bg-gradient-purple' ];
+                        return [ 'background-event-element ' ];
                     }
                 },
             };
@@ -248,11 +200,36 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
 
         },
         methods: {
+            addToCart(activeItem)
+            {
+                let item = {};
+                if (activeItem)
+                {
+                    item.id = activeItem.id;
+                    item.device = activeItem.device;
+                    item.price = activeItem.price;
+                    item.duration_time = activeItem.duration_time;
+                    item.duration_hours = activeItem.duration_hours;
+                    item.subtotal = activeItem.subtotal;
+                    item.game = activeItem.game;
+                }
+                this.$refs.side_cart.showCart = true
+                this.$refs.side_cart.addToCart(item);
+            },
+            addTime(time)
+            {
+                var now = new Date(time);
+                var d = new Date(now.getTime() + (1 * 60 * 60 * 1000));
+                var datestring = (d.getHours() > 9 ? d.getHours() : '0'+d.getHours()) + ":" + (d.getMinutes() > 9 ? d.getMinutes() : '0'+d.getMinutes());
+
+                return datestring;
+            },
             dateTime(date)
             {
                 // var datestring = d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear() + " ";
                 var d = new Date(date);
                 var datestring = (d.getHours() > 9 ? d.getHours() : '0'+d.getHours()) + ":" + (d.getMinutes() > 9 ? d.getMinutes() : '0'+d.getMinutes());
+
                 return datestring;
             },
             dateText(date)
@@ -263,6 +240,7 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
             },
             reloadEvents() 
             {
+                this.hidePopup()
                 this.$refs.calendar.getApi().refetchEvents();
             },
 
@@ -270,7 +248,7 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
             {
                 return {
                     left: this.title,
-                    right: this.headerViewsProviders,
+                    right: 'this.headerViewsProviders',
                     center: 'prev,today,title,next',
                 };
             },
@@ -281,16 +259,17 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
              */
             setNewItem(newEvenet)
             {
+                this.showActiveBooking = true
                 this.games = newEvenet.resource.extendedProps.games
                 this.activeItem.device_id = newEvenet.resource.id
                 this.activeItem.start = this.dateTime(newEvenet.start)
                 this.activeItem.end = this.dateTime(newEvenet.end)
                 this.activeItem.startStr = newEvenet.startStr
                 this.activeItem.start_time = this.dateTime(newEvenet.startStr)
-                this.activeItem.end_time = this.dateTime(newEvenet.endStr)
+                this.activeItem.end_time = this.addTime(newEvenet.start)
                 this.activeItem.date = this.dateText(newEvenet.startStr)
                 this.activeItem.booking_type = 'single'
-
+                this.showNewEvent = true
                 return this;
             },
 
@@ -300,7 +279,15 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
              */
             setActiveItem(props)
             {
+                if (props.status == 'active')
+                {
+                    this.showActiveBooking = true
+                } else {
+                    this.showBooking = true
+
+                }
                 console.log(this.activeEvent)
+                console.log(props)
                 this.games = this.activeEvent.event.extendedProps.games
                 this.activeItem.id = this.activeEvent.event.id;
                 this.activeItem.startStr = this.activeEvent.event.startStr
@@ -314,13 +301,32 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
                 this.activeItem.game = props.game;
                 this.activeItem.game_id = props.game_id;
                 this.activeItem.booking_type = props.booking_type;
+                this.activeItem.duration = props.duration;
+                this.activeItem.duration_minutes = props.duration_minutes;
+                this.activeItem.duration_hours = props.duration_hours;
+                this.activeItem.duration_time = props.duration_time;
+                this.activeItem.currency = props.currency;
+                this.activeItem.subtotal = this.subtotal();
+                this.showNewEvent = true
 
                 return this;
+            },
+            subtotal()
+            {
+                let price = (this.activeItem.booking_type == 'single') ? this.activeItem.device.price.single_price : this.activeItem.device.price.multi_price;
+
+                return (Number(price) * Number(this.activeItem.duration_hours)).toFixed(2) ;
             },
             hidePopup()
             {
                 this.showPopup = false;
                 this.showUpdate = false;
+                this.showConfirm = false;
+                this.showNewEvent = false;
+                this.showBooking = false;
+                this.showActiveBooking = false;
+                this.$refs.side_cart.showCart = false
+
             },
             /**
              * Update event data
@@ -337,6 +343,7 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
                 this.showPopup = false; 
                 this.showUpdate = true;
                 this.showPopup = true
+
                 return this;
             } ,
 

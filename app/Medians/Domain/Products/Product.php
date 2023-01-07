@@ -5,6 +5,8 @@ namespace Medians\Domain\Products;
 
 use Shared\dbaser\CustomController;
 
+use Medians\Domain\Categories\Category;
+
 /**
  * Product class database queries
  */
@@ -18,14 +20,16 @@ class Product extends CustomController
 
 
 	protected $fillable = [
-    	'title',
+    	'name',
     	'description',
-    	'providerId',
+    	'provider_id',
     	'picture',
     	'price',
-    	'type',
+    	'tax',
     	'stock',
-    	'publish'
+    	'type',
+    	'created_by',
+    	'status'
 	];
 
 	// public $timestamps = false;
@@ -36,116 +40,34 @@ class Product extends CustomController
 
 	}
 
-
-	public function id() : String
+	public function getFields()
 	{
-		return $this->id;
+		return $this->fillable;
 	}
 
-
-	public function title() : String
+	public function addStock($qty)
 	{
-		return $this->title;
-	}
-
-	public function providerId() : ?String
-	{
-		return $this->providerId;
-	}
-
-
-	public function description() : String
-	{
-		return $this->description;
-	}
-
-
-	public function picture() : ?String
-	{
-		return $this->picture;
-	}
-
-	public function price() : String
-	{
-		return $this->price;
-	}
-
-	public function type() : String
-	{
-		// return !is_object($this->type) ? DeviceTypeModel::applyId($this->type) : $this->type;
-		return $this->type;
-	}
-
-	public function stock() : ?int
-	{
-		return $this->stock;
-	}
-
-	public function publish() : ?String
-	{
-		return $this->publish;
-	}
-
-
-
-	public function setId($id) : Product
-	{
-		$this->id = $id;
+		$this->stock = !empty($this->stock) ? (number_format($this->stock) + number_format($qty)) : $qty;
 		return $this;
 	}
 
-	public function setProviderId($providerId) : Product
+	public function pullStock($qty)
 	{
-		$this->providerId = $providerId;
+		$this->stock = !empty($this->stock) ? (number_format($this->stock) - number_format($qty)) : 0;
 		return $this;
 	}
 
-	public function setTitle($title) : Product
+	public function categoriesList()
 	{
-		$this->title = $title;
-		return $this;
+		return Category::byModel(Product::class);
 	}
 
-	public function setDescription($description) : Product
+	public function category()
 	{
-		$this->description = $description;
-		return $this;
+		return $this->hasOne(Category::class, 'code', 'type');
 	}
 
-	public function setPicture($picture = 0) : Product
-	{
-		$this->picture = $picture;
-		return $this;
-	}
-
-	public function setPrice($price = 0) : Product
-	{
-		$this->price = $price;
-		return $this;
-	}
-
-	public function setStock($stock = 0) : Product
-	{
-		$this->stock = $stock;
-		return $this;
-	}
-
-	public function setType($type) : Product
-	{
-		$this->type = $type;
-		return $this;
-	}
-
-	public function setPublish($publish = '0') 
-	{
-		$this->publish = $publish;
-		return $this;
-	}
-
-
-
-
-	public function total_stock()
+	public function stock_log()
 	{
 		return $this->hasMany(Stock::class, 'product', 'id');
 	}

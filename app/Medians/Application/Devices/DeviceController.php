@@ -188,4 +188,90 @@ class DeviceController
 	}
 
 
+
+	public function calendar($request, $app)
+	{
+		$repo = new Repo\Devices\DevicesRepository($app);
+
+		$data = $repo->get(100);
+
+		foreach ($data as $key => $value) {
+			$data[$key]->businessHours = [(object) [
+				'days'=>[0],
+				'daysOfWeek' => [0, 1, 2, 3, 4, 5, 6],
+				'disabledDates' => [],
+				'startTime' => "00:000",
+				'endTime' => "06:00",
+				'status' => true
+			], (object) [
+				'days'=>[0],
+				'daysOfWeek' => [0, 1, 2, 3, 4, 5, 6],
+				'disabledDates' => [],
+				'startTime' => "13:000",
+				'endTime' => "23:59",
+				'status' => true
+			
+			]];
+
+		}
+
+		return json_encode(['data'=>$data, 'status'=>TRUE]);
+	}
+
+
+	public function events($request, $app)
+	{
+		$repo = new Repo\Devices\DevicesRepository($app);
+
+		$data = $repo->events($request, 100);
+
+		$newdata = [];
+		foreach ($data as $key => $value) {
+			if ((date('Y-m-d H:i', strtotime(date($value->end_time)))) == date('Y-m-d 00:00', strtotime(date($value->end_time))))
+			{
+				if ($value->end_time == '0000-00-00 00:00:00' || $value->end_time == (date('Y-m-d', strtotime(date($value->end_time))).' 00:00:00') )
+				{
+					$value->end_time = date('Y-m-d 23:59:00', strtotime(date($value->start_time)));
+				}
+			}
+			$newdata[] = $this->filterItem($value, $repo);
+		}
+
+		return json_encode($newdata);
+
+	}
+
+	public function filterItem($event, $repo)
+	{
+
+		$event->id = $event->id;
+		$event->duration_minutes = $event->duration;
+		$event->duration_hours = round(number_format($event->duration)/60, 2);
+		$event->title = isset($event->game->name) ? $event->game->name : $event->device->name;
+		$event->resourceId = $event->device_id;
+		$event->start = $event->start_time;
+		$event->start_time = date('H:i', strtotime(date($event->start_time)));
+		$event->end = $event->end_time;
+		$event->end_time = date('H:i', strtotime(date($event->end)));
+		$event->date = date('Y-m-d', strtotime(date($event->created_at)));
+		$event->backgroundColor = '#f56954';
+		$event->borderColor = '#000';
+		$event->display = isset($event->display )? $event->display : 'block';
+		$event->draggable = true;
+		$event->allow = true;
+		$event->url = 'javascript:;';
+		$event->classNames = $event->status.' ';
+		$event->classNames .= $event->order_code ? '  ' : 'bg-gradient-purple';
+		$event->games = $repo->getGames($event->device->type);
+
+		return $event;
+	}
+
+
+	public function getMinutes($from, $to)
+	{
+		return round(abs(strtotime($to) - strtotime($from)) / 60,2);
+	}
+
+
 }

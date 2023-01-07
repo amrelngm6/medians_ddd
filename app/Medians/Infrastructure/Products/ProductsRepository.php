@@ -12,7 +12,10 @@ use Medians\Domain\Products\Product;
 class ProductsRepository 
 {
 
-
+	public function getModel()
+	{
+		return new Product;
+	}
 
 	/*
 	// Find item by `id` 
@@ -23,29 +26,14 @@ class ProductsRepository
 		return Product::find($id);
 	}
 
-
 	/*
-	// Find item by `id` 
+	// Find items by `provider_id` 
 	*/
-	public function getById($id) 
+	public function get($provider_id) 
 	{
 
-		return Product::find($id);
-
-	}
-
-
-	/*
-	// Find items by `providerId` 
-	*/
-	public function getByProvider($providerId) 
-	{
-
-		return Product::with(['total_stock'=>function($q)
-		{
-			return $q->sum('stock');
-		}])
-		->where('providerId', $providerId)->get();
+		return Product::with('category')
+		->where('provider_id', $provider_id)->get();
 	}
 
 
@@ -66,28 +54,36 @@ class ProductsRepository
 	{	
 
 		$Model = new Product();
-		$Model->setTitle($data['title'])
-		->setProviderId ($data['providerId'])
-		->setPicture($data['picture'])
-		->setPublish($data['publish'])
-		->save();
+		$dataArray = [];
+		foreach ($data as $key => $value) 
+		{
+			if (in_array($key, $Model->getFields()))
+			{
+				$dataArray[$key] = $value;
+			}
+		}	
 
-		// Return the DeviceType object with the new data
-		return $Model;
+		// Return the FBUserInfo object with the new data
+    	$Object = Product::create($dataArray);
+    	$Object->update($dataArray);
+
+    	return $Object;
 	}
 
 
 	/*
 	// Update item to database
 	*/
-	public function edit($object) : Product
-	{
-		$object->save();
+    public function update($data)
+    {
 
-		// Return the DeviceType object with the new data
-		return Product::find($object->id);
+		$Object = Product::find($data['id']);
 		
-	}
+		// Return the FBUserInfo object with the new data
+    	$Object->update( (array) $data);
+
+    	return $Object;
+    } 
 
 
 

@@ -32,6 +32,10 @@ class Category extends CustomController
 		return $this->fillable;
 	}
 
+	public static function byModel($Model)
+	{
+		return Category::where('model', $Model)->where('status', 1)->get();
+	}
 
 
 }

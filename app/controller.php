@@ -52,6 +52,11 @@ $app->post('/api/{type?}', function ($type) use ($app, $request)
             case 'updateStatus':          
                 return (new apps\APIController)->updateStatus($request, $app);
                 break;
+
+            case 'checkout':          
+                return (new apps\Orders\OrderController($app))->checkout($request, $app);
+                break;
+            
         }
 
         return (new apps\APIController)->handle($request, $app);
@@ -63,19 +68,25 @@ $app->post('/api/{type?}', function ($type) use ($app, $request)
 
 $app->match('/api/{type?}', function ($type) use ($app, $request) 
 {   
-    switch ($type) 
-    {
-        case 'calendar':
-            return (new apps\APIController)->calendar($request, $app);
-            break;
+    try {
         
-        case 'calendar_events':          
-            return (new apps\APIController)->events($request, $app);
-            break;
-        
-    }
+        switch ($type) 
+        {
+            case 'calendar':
+                return (new apps\Devices\DeviceController($app))->calendar($request, $app);
+                break;
+            
+            case 'calendar_events':          
+                return (new apps\Devices\DeviceController($app))->events($request, $app);
+                break;
+         
+        }
 
-    return (new apps\APIController)->handle($request, $app);
+        return (new apps\APIController)->handle($request, $app);
+
+    } catch (Exception $e) {
+        return $e->getMessage();
+    }
 });
 
 /*
@@ -197,63 +208,6 @@ $app->match('', function () use ($request, $twig, $app)
 });
 
 
-/*
-// Return list of device 
-*/
-$app->match('property/{id?}', function ($id) use ($twig, $app, $request) 
-{
-    try {
-
-        if ($id)
-        {
-            return  $twig->render('views/front/properties/page.html.twig', [
-                'title' => 'Property page ',
-                'app' => $app,
-                'property' => (new Repo\Properties\PropertyRepository)->find($id),
-                'formAction' => $app->CONF['url'],
-            ]);
-
-        } else {
-
-            $type = $request->get('request_type');
-
-            return  $twig->render('views/front/properties/list.html.twig', [
-                'title' => 'Property list ',
-                'app' => $app,
-                'propertyModel' => (new Repo\Properties\PropertyRepository)->getModel(),
-                'properties' => (new Repo\Properties\PropertyRepository)->getItems($type),
-                'formAction' => $app->CONF['url'],
-            ]);
-
-        }
-
-    } catch (Exception $e) {
-        return $e->getMessage();
-    } 
-});
-
-/*
-// Return search for properties 
-*/
-$app->match('/find_property', function () use ($twig, $app, $request) 
-{
-    try {
-
-        return  $twig->render('views/front/properties/list.html.twig', [
-            'title' => 'Property list ',
-            'app' => $app,
-            'propertyModel' => (new Repo\Properties\PropertyRepository)->getModel(),
-            'properties' => (new Repo\Properties\PropertyRepository)->findItems($request),
-            'formAction' => $app->CONF['url'],
-        ]);
-
-
-    } catch (Exception $e) {
-        return $e->getMessage();
-    } 
-});
-
-
 
 /**
  * @return  Login page in case if not authorized 
@@ -278,11 +232,10 @@ $app->match('/dashboard', function () use ($request, $twig, $app)
     return (new apps\DashboardController)->index($request, $twig, $app);
 });
 
+
+
 if (isset($app->auth->id))
 {
-
-
-
 
     /**
     * @return properties
@@ -306,6 +259,30 @@ if (isset($app->auth->id))
             }
 
             return (new apps\Devices\DeviceController($app))->index($request, $app, $twig);
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    });
+
+
+    /**
+    * @return Products
+    */
+    $app->match('/products/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
+        try {
+            
+            if ($action == 'create')
+            {
+                return (new apps\Products\ProductController($app))->create($request, $app, $twig);
+            }
+
+            if ($action == 'edit')
+            {
+                return (new apps\Products\ProductController($app))->edit($id, $request, $app, $twig);
+            }
+
+            return (new apps\Products\ProductController($app))->index($request, $app, $twig);
 
         } catch (Exception $e) {
             return $e->getMessage();

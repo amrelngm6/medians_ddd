@@ -15,7 +15,7 @@
                             <thead class="dark:bg-gray-800 bg-white text-gray-500">
                                 <tr>
                                     <th class="p-2">Item</th>
-                                    <!-- <th class="p-2 text-left">Category</th> -->
+                                    <th class="p-2 text-left">Category</th>
                                     <th class="p-2 text-left">Price</th>
                                     <th class="p-2 text-left">Stock</th>
                                     <th class="p-2 text-left">Status</th>
@@ -34,24 +34,20 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <!-- <td class="p-2">
-                                        {{product.type}}
-                                    </td> -->
+                                    <td class="p-2">
+                                        {{product.category.name}}
+                                    </td>
                                     <td class="p-2 font-bold">
                                         {{product.price}}
                                     </td>
                                     <td class="p-2 font-bold">
-                                        {% if product.total_stock %}
-                                        {{product.total_stock.sum('stock')}}
-                                        {% else %}
                                         {{ product.stock }}
-                                        {% endif %}
                                     </td>
                                     <td class="p-2">
                                         <span class="bg-red-400 {% if product.publish == 1 %} bg-green-400 {% endif %}  text-gray-50 rounded-md px-2">{{product.publish}}</span>
                                     </td>
                                     <td class="p-2 ">
-                                        <a href="{{app.CONF.url}}provider_area/product/{{product.id}}" class="text-gray-400 hover:text-gray-100  mx-2">
+                                        <a href="{{app.CONF.url}}products/edit/{{product.id}}" class="text-gray-400 hover:text-gray-100  mx-2">
                                             <i class="material-icons-outlined text-base">edit</i>
                                         </a>
                                         <a  data-ajax="true" data-confirm="true" data-request-id="{{product.id}}" data-request-type="delete_product" data-type="post" href="#!"  class="text-gray-400 hover:text-gray-100  ml-2">
@@ -68,20 +64,21 @@
 
                     <div class="px-4 mb-6 py-4 rounded-lg shadow-lg bg-white dark:bg-gray-700 ">
 
-                        <form action="{{formAction}}" method="POST" data-refresh="1" id="add-device-form" class="action p-8 py-0 m-auto rounded-lg max-w-xl pb-10">
+                        <form action="/api/create" method="POST" data-refresh="1" id="add-device-form" class="action p-8 py-0 m-auto rounded-lg max-w-xl pb-10">
                             <h1 class="m-auto max-w-xl text-2xl mb-10 text-center">Add product</h1>
-                            <input name="type"  type="hidden" value="add_product" > 
-                            <input name="params[title]" required="" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Product Title"> 
+                            <input name="type"  type="hidden" value="Product.create" > 
+                            <input name="params[product][status]"  type="hidden" value="1" > 
+                            <input name="params[product][name]" required="" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Product Title"> 
 
-                            <input name="params[price]" required="" type="number" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Product price"> 
+                            <input name="params[product][price]" required="" type="number" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Product price"> 
 
-                            <textarea name="params[description]" rows="3" required="" class=" mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Product description"></textarea> 
+                            <textarea name="params[product][description]" rows="3" required="" class=" mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Product description"></textarea> 
 
                             <label class="pt-5 block">Type:</label>
-                            <select name="params[type]" required="" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="">
+                            <select name="params[product][type]" required="" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="">
                                 <option value="0">Default</option>
                                 {% for type in typesList %}
-                                <option value="{{type.id()}}">{{type.title()}}</option>
+                                <option value="{{type.code}}">{{type.name}}</option>
                                 {% endfor %}
                             </select>
                             
@@ -95,16 +92,7 @@
         </div>
         <!-- END New releases -->
     </main>
-    
-    <!-- end of main -->
-    <div id="main-forms-container">
-        {% include 'views/admin/forms/add_product.html.twig' %}
-    </div>
 
-    <script type="text/javascript">
-        function openProductPage(id) {
-            window.location.href =  '{{app.CONF.url}}product/' + id;
-        }
-    </script>
+
 
 {% include 'views/admin/includes/footer.html.twig' %}

@@ -139,7 +139,7 @@ class DevicesRepository
 		$Object = Device::find($data['id']);
 		
 		// Return the FBUserInfo object with the new data
-    	$Object->update( (array) $data);
+    	$Object->delete();
 
     	return $Object;
 
@@ -225,6 +225,11 @@ class DevicesRepository
 		$newData['end_time'] = $date.' '.$data['end_time'];
 		$newData['game_id'] = isset($data['game_id']) ? $data['game_id'] : $Object->game_id;
 		$newData['booking_type'] = isset($data['booking_type']) ? $data['booking_type'] : $Object->booking_type;
+		$newData['status'] = $data['status'];
+		if ($data['status'] == 'completed')
+		{
+			$newData['end_time'] = date('Y-m-d H:i:s');
+		}
 
 		// Return the FBUserInfo object with the new data
     	$Object->update( (array) $newData);

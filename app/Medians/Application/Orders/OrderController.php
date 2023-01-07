@@ -2,7 +2,7 @@
 
 namespace Medians\Application\Orders;
 
-use Medians\Infrastructure\Orders as Repo;
+use Medians\Infrastructure\Orders\OrdersRepository;
 use Medians\Application\Devices\Device;
 use Medians\Application\Calculator\Calculator;
 use Medians\Application\Prices\Prices;
@@ -14,10 +14,10 @@ class OrderController
 {
 
 
-	function __construct()
+	function __construct($app)
 	{
 
-		$this->repo = new Repo\OrdersRepository();
+		$this->repo = new OrdersRepository($app);
 	}
 
 
@@ -35,11 +35,11 @@ class OrderController
 	    switch ($filter) 
 	    {
 	        case 'lastweek':
-	            $query = $this->getByLastWeek( $app->providerSession->id );
+	            $query = $this->repo->getByDate($app->providerSession->id,date('Y-m-d',strtotime('-1 week')), date('Y-m-d', strtotime('+1 day')));
 	            break;
 
 	        case 'month':
-	            $query = $this->getByMonth($app->providerSession->id, date('Y-m'), date('Y-m', strtotime('+1 month')));
+	            $query = $this->repo->getByDate($app->providerSession->id, date('Y-m'), date('Y-m', strtotime('+1 month')));
 	            break;
 	    }
 
@@ -51,9 +51,9 @@ class OrderController
 	        'title' => 'Orders list',
 	        'app' => $app,
 	        'orders' => $query,
-	        'todayOrders' => count($this->getByLastDay($app->providerSession->id)),
-	        'lastWeekOrders' => count($this->getByLastWeek($app->providerSession->id)),
-	        'lastMonthOrders' => count($this->getByMonth($app->providerSession->id, date('Y-m'), date('Y-m', strtotime('+1 month')))),
+	        'todayOrders' => count($this->repo->getByDate($app->providerSession->id, date('Y-m-d' ), date('Y-m-d', strtotime('+1 day') )  )),
+	        'lastWeekOrders' => count($this->repo->getByDate($app->providerSession->id, date('Y-m-d',strtotime('-1 week')), date('Y-m-d', strtotime('+1 day')))),
+	        'lastMonthOrders' => count($this->repo->getByDate($app->providerSession->id, date('Y-m'), date('Y-m', strtotime('+1 month')))),
 
 	    ]);
 
@@ -61,47 +61,87 @@ class OrderController
 
 
 
-	public function getItem($id) 
+
+	/**
+	* Genrate unique code 
+	*/
+	public function genrateCode() : String
 	{
-
-		return $this->repo->getById($id);
-	}
-
-	public function getByCode($code) 
-	{
-
-		return $this->repo->getByCode($code);
+		return time().rand(9,99);
 	}
 
 
-	public function getByMonth(?Int $providerId, $month, $nextmonth) 
+	public function checkout($request, $app) 
 	{
-		return $this->repo->getByMonth($providerId, $month, $nextmonth);
+
+		$params = (array) json_decode($request->get('params')['cart']);
+
+		try {
+
+			$cost = 0;
+
+			foreach ($params as $key => $value) 
+			{
+				$cost += $value->subtotal;
+			}
+
+			$data = [];
+			$data['provider_id'] = $app->provider->id;
+			$data['customer_id'] = '0';
+			$data['tax'] = '0';
+			$data['discount'] = '0';
+			$data['discount_code'] = '';
+			$data['code'] = $this->genrateCode();
+			$data['subtotal'] = $cost;
+			$data['total_cost'] = $cost;
+			$data['date'] = date('Y-m-d');
+			$data['created_by'] = $app->auth->id;
+			$data['status'] = 'paid';
+
+			$save = $this->repo->store($data, $params);
+
+        	return isset($save->id) ? 'Order Created' : '' ;
+
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            return  array('error'=>$e->getMessage());
+        }
+
 	}
 
 
-	public function getByLastWeek($providerId ) 
+
+	public function calculate($cost, $startTime, $endTime) 
 	{
 
-		return $this->repo->getByDate($providerId , date('Y-m-d', strtotime('-1 week') ), date('Y-m-d', strtotime('+1 day') ) );
-	}
+		$interval = date_diff(new \DateTime($startTime) , new \DateTime($endTime));
 
-	public function getByLastDay($providerId) 
+		return (new Calculator
+			( 	
+				$cost, 
+				$interval->format('%h'), 
+				$interval->format('%i')
+			)
+		)->getCost(0);
+
+	}	
+
+
+	public function calculateCost($item)  
 	{
-		return $this->repo->getByDate($providerId, date('Y-m-d' ), date('Y-m-d', strtotime('+1 day') )  );
+		return $this->calculate($item->subtotal, $item->start_time, $item->end_time );
 	}
+	
 
-	public function getSalesByDay($providerId, $day) 
-	{
-		return $this->repo->getSalesByDay($providerId , $day, date('Y-m-d', strtotime("+1 day", strtotime($day))) );
-	}
-
-	public function getAll($providerId, $limit = null) 
+	public function calculateTime($time1, $time2) 
 	{
 
-		return $this->repo->getAll( $providerId, $limit );
-	}
+		$start_date = new \DateTime($time1);
 
+		return array_map(function($a){
+			return ($a > 9) ? $a : '0'.$a;
+		}, (array) $start_date->diff(new \DateTime($time2)));
+	}
 
 
 	public function checkDiscountUsed($discountCode) 

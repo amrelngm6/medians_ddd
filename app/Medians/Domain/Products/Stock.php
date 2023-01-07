@@ -25,12 +25,14 @@ class Stock extends CustomController
 	* @var Array
 	*/
 	protected $fillable = [
-    	'startStock',
-    	'providerId',
+    	'product_id',
+    	'provider_id',
     	'stock',
-    	'product',
-    	'time',
-    	'insertedBy',
+    	'type',
+    	'date',
+    	'created_by',
+		'model_type',	
+		'model_id',	
 	];
 
 	/**
@@ -39,89 +41,6 @@ class Stock extends CustomController
 	// public $timestamps = false;
 
 
-
-	public function id() : String
-	{
-		return $this->id;
-	}
-
-
-	public function providerId() 
-	{
-		return $this->providerId;
-	}
-
-	public function product() 
-	{
-		return $this->product;
-	}
-
-
-	public function startStock() : String
-	{
-		return $this->startStock;
-	}
-
-
-	public function stock() : ?String
-	{
-		return $this->stock;
-	}
-
-	public function time() : String
-	{
-		return $this->time;
-	}
-
-	public function insertedBy() : String
-	{
-		return $this->insertedBy;
-	}
-
-
-
-
-	public function setId($id) : stock
-	{
-		$this->id = $id;
-		return $this;
-	}
-
-	public function setProduct($product) : stock
-	{
-		$this->product = $product;
-		return $this;
-	}
-
-	public function setProviderId($providerId) : stock
-	{
-		$this->providerId = $providerId;
-		return $this;
-	}
-
-	public function setStock($stock) : stock
-	{
-		$this->stock = $stock;
-		return $this;
-	}
-
-	public function setStartStock($startStock = 0) : stock
-	{
-		$this->startStock = $startStock;
-		return $this;
-	}
-
-	public function setTime($time = 0) : stock
-	{
-		$this->time = $time;
-		return $this;
-	}
-
-	public function setInsertedBy($insertedBy = 0) : stock 
-	{
-		$this->insertedBy = $insertedBy;
-		return $this;
-	}
 
 	public function Products()
 	{

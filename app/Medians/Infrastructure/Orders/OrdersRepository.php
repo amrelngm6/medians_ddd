@@ -3,22 +3,28 @@
 namespace Medians\Infrastructure\Orders;
 
 use Medians\Domain\Orders\Order;
+use Medians\Domain\Devices\OrderDevice;
 
 class OrdersRepository
 {
 
 
+	public $app;
 
 
-	/*
-	// Find item by `id` 
+	function __construct($app)
+	{
+		$this->app = $app;
+	}
+
+
+	/**
+	* Find item by `id` 
 	*/
 	public function find($id) 
 	{
-
-		return Order::with('items')
+		return Order::with('items', 'order_devices')
 		->find($id);
-
 	}
 
 	/*
@@ -158,6 +164,48 @@ class OrdersRepository
 
 	
 
+
+	/**
+	* Save item to database
+	*/
+	public function store($data, $items) 
+	{
+		try {
+			
+			$Model = new Order();
+			
+			foreach ($data as $key => $value) 
+			{
+				if (in_array($key, $Model->getFields()))
+				{
+					$dataArray[$key] = $value;
+				}
+			}	
+
+			// Return the FBUserInfo object with the new data
+	    	$Object = Order::create($dataArray);
+	    	$Object->update($dataArray);
+	 	
+	    	$this->updateOrderDevice($Object, $items);
+
+	    	return $Object;
+
+		} catch (Exception $e) {
+			return $e->getMessage();
+		}
+    }
+    
+
+    public function updateOrderDevice($Object, $items)
+    {
+
+    	foreach ($items as $key => $value) 
+    	{
+    		$update = OrderDevice::find($value->id)->update(['order_code' => $Object->code, 'status' => 'paid']);
+    	}
+
+
+    }
 
 
 }
