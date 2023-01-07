@@ -74,7 +74,7 @@ class DevicesRepository
 		$start = date('Y-m-d H:i:s', strtotime(date($request->get('start'))));
 		$end = date('Y-m-d H:i:s', strtotime(date($request->get('end'))));
 
-		return OrderDevice::whereBetween('start_time' , [$start , $end] )->with('game')->with('device')->get();
+		return OrderDevice::whereBetween('start_time' , [$start , $end] )->with('game')->with('device')->with('products')->get();
 	}
 
 

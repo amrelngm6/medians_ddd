@@ -2,61 +2,35 @@
 
 namespace Medians\Application\Products;
 
-use Medians\Infrastructure\Products as Repo;
+use Medians\Infrastructure as Repo;
 
 use Medians\Application\Products\ProductController;
 
-use Medians\Domain\Products\StockModel;
 
 class StockController
 {
 
 
-	function __construct()
+	function __construct($app)
 	{
 
-		$this->repo = new Repo\StockRepository();
+		$this->repo = new Repo\Products\StockRepository($app);
+		$this->ProductsRepo = new Repo\Products\ProductsRepository($app);
 
 	}
 
 
 
 
-	public function index($app, $twig) 
+	public function index($request, $app) 
 	{	
 
 	    return render('views/admin/products/stock.html.twig', [
 	        'title' => 'Products Stock',
 	        'app' => $app,
-	        'stockList' => $this->getByProvider($app->providerSession->id),
-	        'products' => (new ProductController)->getByProvider($app->providerSession->id),
+	        'stockList' => $this->repo->get($request),
+	        'products' => $this->ProductsRepo->get(),
 	    ]);
-	}
-
-
-	public function getItem($id) 
-	{	
-		return $this->repo->getById($id);
-	}
-
-	public function getByProvider($providerId, $limit = 100) 
-	{	
-		return $this->repo->getByProvider($providerId, $limit);
-	}
-
-	public function getItemStock($id, $qty = 1) : ?int 
-	{	
-		return $this->repo->getStock($id, $qty);
-	}
-
-
-
-
-
-	public function getAll($limit = 100) : Array
-	{	
-
-		return $this->repo->getAll($limit);
 	}
 
 
@@ -71,19 +45,15 @@ class StockController
 	public function store($request, $app) 
 	{	
         
-        $params = $request->get('params');
+        $params = $request->get('params')['stock'];
 
         try {
 
-        	$check = (new ProductController)->getItem($params['product']);
+            $params['provider_id'] = $app->provider->id;
+            $params['created_by'] = $app->auth->id;
+            $params['date'] = date('Y-m-d');
 
-        	if (empty($check->id))
-            	return array('success'=>0, 'data'=>'Error', 'error'=>1);
-
-
-            $params['stock'] = $params['startStock'];
-
-            return !empty($this->saveItem($params, $app)) 
+            return !empty($this->repo->store($params)) 
             ? array('success'=>1, 'data'=>'Added', 'reload'=>1)
             : array('success'=>0, 'data'=>'Error', 'error'=>1);
 

@@ -73,6 +73,9 @@ class APIController
 				case 'Product.create':
 					$return = (new Products\ProductController($app))->store($request, $app);
 					break;
+				case 'Stock.create':
+					$return = (new Products\StockController($app))->store($request, $app);
+					break;
 				case 'Event.create':
 
 					$params = (array)  json_decode($request->get('params')['event']);

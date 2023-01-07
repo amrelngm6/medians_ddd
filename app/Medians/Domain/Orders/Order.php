@@ -80,7 +80,7 @@ class Order  extends CustomController
 	 */
 	public function order_devices()
 	{
-		return $this->hasMany(OrderDevice::class, 'order_code', 'code')->with('device')->with('game');
+		return $this->hasMany(OrderDevice::class, 'order_code', 'code')->with('device')->with('game')->with('products');
 	}
 
 

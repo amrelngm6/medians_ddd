@@ -286,8 +286,7 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
                     this.showBooking = true
 
                 }
-                console.log(this.activeEvent)
-                console.log(props)
+
                 this.games = this.activeEvent.event.extendedProps.games
                 this.activeItem.id = this.activeEvent.event.id;
                 this.activeItem.startStr = this.activeEvent.event.startStr
@@ -305,6 +304,7 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
                 this.activeItem.duration_minutes = props.duration_minutes;
                 this.activeItem.duration_hours = props.duration_hours;
                 this.activeItem.duration_time = props.duration_time;
+                this.activeItem.products = props.products;
                 this.activeItem.currency = props.currency;
                 this.activeItem.subtotal = this.subtotal();
                 this.showNewEvent = true

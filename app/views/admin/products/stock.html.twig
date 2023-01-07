@@ -15,10 +15,10 @@
                             <thead class="dark:bg-gray-800 bg-white text-gray-500">
                                 <tr>
                                     <th class="p-2">Item</th>
-                                    <th class="p-2 text-left">Stock</th>
-                                    <th class="p-2 text-left">Start</th>
-                                    <th class="p-2 text-left">Sold</th>
-                                    <th class="p-2 text-left">Time</th>
+                                    <th class="p-2 text-left">Qty</th>
+                                    <th class="p-2 text-left">Type</th>
+                                    <th class="p-2 text-left">date</th>
+                                    <th class="p-2 text-left">By</th>
                                     <th class="p-2 text-left">Action</th>
                                 </tr>
                             </thead>
@@ -29,22 +29,22 @@
                                         <div class="flex align-items-center">
                                             <img class="rounded-full h-12 w-12  object-cover" src="{{app.CONF.url}}assets/img/ps.png" alt="unsplash image">
                                             <div class="ml-3">
-                                                <div class="font-medium">{{stock.Products.title}}</div>
-                                                <div class="text-gray-500 text-sm">{{stock.Products.description}}</div>
+                                                <div class="font-medium">{{stock.product.name}}</div>
+                                                <div class="text-gray-500 text-sm">{{stock.product.name}}</div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="p-2 font-bold">
+                                    <td class="p-2 font-bold ">
                                         {{stock.stock}}
                                     </td>
                                     <td class="p-2">
-                                        {{stock.startStock}}
+                                        {{stock.type}}
                                     </td>
                                     <td class="p-2">
-                                        {{stock.startStock - stock.stock}}
+                                        {{stock.date}}
                                     </td>
                                     <td class="p-2">
-                                        <span class="bg-red-400 {% if product.publish == 1 %} bg-green-400 {% endif %}  text-gray-50 rounded-md px-2">{{stock.time|date("m/d - H:i")}}</span>
+                                        {{stock.user.name}}
                                     </td>
                                     <td class="p-2 ">
                                         <!-- <a href="{{app.CONF.url}}stock/{{stock.id}}" class="text-gray-400 hover:text-gray-100  mx-2">
@@ -64,19 +64,26 @@
 
                     <div class="px-4 mb-6 py-4 rounded-lg shadow-lg bg-white dark:bg-gray-700 ">
 
-                        <form action="{{formAction}}" method="POST" data-refresh="1" id="add-device-form" class="action p-8 py-0 m-auto rounded-lg max-w-xl pb-10">
+                        <form action="/api/create" method="POST" data-refresh="1" id="add-device-form" class="action p-8 py-0 m-auto rounded-lg max-w-xl pb-10">
                             <h1 class="m-auto max-w-xl text-2xl mb-10 text-center">Add new stock</h1>
-                            <input name="type"  type="hidden" value="add_stock" > 
-
+                            <input type="hidden" name="type" value="Stock.create" > 
+                            <input type="hidden" name="params[stock][type]" value="add" > 
 
                             <label class="pt-5 block">Product:</label>
-                            <select name="params[product]" required="" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="">
+                            <select name="params[stock][product_id]" required="" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="">
                                 {% for product in products %}
-                                <option value="{{product.id }}">{{product.title}}</option>
+                                <option value="{{product.id }}">{{product.name}}</option>
                                 {% endfor %}
                             </select>
 
-                            <input name="params[startStock]" required="" type="number" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Start stock"> 
+                            <label class="pt-5 block">Qty:</label>
+                            <input name="params[stock][stock]" required="" type="number" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Start stock"> 
+                            
+                            <label class="pt-5 block">Purchase amount:</label>
+                            <input name="params[stock][payment][amount]" type="number" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Paid amount"> 
+                            
+                            <label class="pt-5 block">Invoice No:</label>
+                            <input name="params[stock][payment][invoice_id]" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Invoice number"> 
                             
                             <button class="uppercase h-12 mt-3 text-white w-full rounded bg-red-700 hover:bg-red-800">Save</button>
                         </form>

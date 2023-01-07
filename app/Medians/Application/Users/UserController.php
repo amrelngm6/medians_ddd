@@ -60,20 +60,6 @@ class UserController
 
 
 	/**
-	 * Index page
-	 * 
-	 */
-	public function index($list, $title, $app, $twig)
-	{
-		return render('views/admin/users/list.html.twig', [
-			'items' =>  $list,
-	        'title' => $title,
-	        'app' => $app,
-	    ]);
-	} 
-
-
-	/**
 	 * Create page
 	 * 
 	 */

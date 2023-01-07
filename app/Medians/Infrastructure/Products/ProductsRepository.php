@@ -12,6 +12,14 @@ use Medians\Domain\Products\Product;
 class ProductsRepository 
 {
 
+	public $app ;
+
+
+	function __construct ($app)
+	{
+		$this->app = $app;
+	}
+
 	public function getModel()
 	{
 		return new Product;
@@ -23,26 +31,17 @@ class ProductsRepository
 	public function find($id) 
 	{
 
-		return Product::find($id);
+		return Product::where('provider_id', $this->app->provider->id)->find($id);
 	}
 
 	/*
-	// Find items by `provider_id` 
+	// Find items by `params` 
 	*/
-	public function get($provider_id) 
+	public function get($params = null) 
 	{
 
 		return Product::with('category')
-		->where('provider_id', $provider_id)->get();
-	}
-
-
-	/*
-	// Find all items 
-	*/
-	public function getAll($limit = null)
-	{
-		return  Product::limit($limit)->get();
+		->where('provider_id', $this->app->provider->id)->get();
 	}
 
 
@@ -54,7 +53,7 @@ class ProductsRepository
 	{	
 
 		$Model = new Product();
-		$dataArray = [];
+		$dataArray = ['provider_id'=>$this->app->provider->id];
 		foreach ($data as $key => $value) 
 		{
 			if (in_array($key, $Model->getFields()))

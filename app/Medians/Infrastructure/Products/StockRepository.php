@@ -2,57 +2,65 @@
 
 namespace Medians\Infrastructure\Products;
 
-use Medians\Infrastructure\Products\ProductsRepository;
 use Medians\Domain\Products\Product;
 use Medians\Domain\Products\Stock;
+use Medians\Domain\Payments\Payment;
 
 /**
  * Stock class database queries
  */
 class StockRepository 
 {
+
+
+	public $app;
+
+
+
+	function __construct($app)
+	{
+		$this->app = $app;
+	}
 	
-
-	/*
-	/ @var String
+	/**
+	* Find item by `id` 
 	*/
-	protected $table = 'stock';
-
-
-	
-	/*
-	// Find item by `id` 
-	*/
-	public function getById($id) 
+	public function find($id) 
 	{
-
-		return  Stock::find($id);
-
+		return  Stock::with('user', 'product')->where('provider_id', $this->app->provider->id)->find($id);
 	}
 
-
-
-	/*
-	// Find item by `id` 
+	/**
+	* Find items by `params` 
 	*/
-	public function getByProvider($providerId, $limit) 
+	public function get($params = null) 
 	{
-		// print_r();
-		return Stock::where('providerId', $providerId)
-		->with('Products')
-		->get();
+		$query =  Stock::with('user', 'product')
+
+		->where('provider_id', $this->app->provider->id);
+
+		if (!empty($params->get('product')))
+		{
+			$query->where('product_id', $params->get('product'));
+		}
+
+		if (!empty($params->get('by')))
+		{
+			$query->where('created_by', $params->get('by'));
+		}
+
+		if (!empty($params->get('type')) && in_array($params->get('type'), ['add', 'pull']) )
+		{
+			$query->where('type', $params->get('type'));
+		}
+
+		if (!empty($params->get('start')) && !empty($params->get('end')))
+		{
+			$query->whereBetween('date', [$params->get('start'), $params->get('end')]);
+		}
+
+		return $query->get();
 	}
-
-
-	/*
-	// Find all items 
-	*/
-	public function getAll($limit = 1000)
-	{
-		return  Stock::limit($limit)->get();
-	}
-
-
 
 	/*
 	// Find available stock 
@@ -70,8 +78,8 @@ class StockRepository
 	}
 
 
-	/*
-	// Find available stock 
+	/**
+	* Find available stock 
 	*/
 	public function getStock($product, $qty = 1) : ?Int
 	{
@@ -115,21 +123,55 @@ class StockRepository
 	* @param Array $data
 	* @return Object 
 	*/
+	public function savePayment($Object, $data) 
+	{	
+
+		$save =  Payment::create([
+			'name' => 'Purchase for products Stock',
+			'invoice_id' => $data['invoice_id'],
+			'amount' => $data['amount'],
+			'created_by' => $Object->created_by,
+		]);
+
+		$Object->update(['model_type'=> Payment::class, 'model_id'=>$save->id]);
+		return $save;
+	}	
+
+	public function updateProductStock($Object)
+	{
+		return Product::find($Object->product_id)->addStock($Object->stock);
+	}
+
+
+	/**
+	* Save item to database
+	* 
+	* @param Array $data
+	* @return Object 
+	*/
 	public function store($data) 
 	{	
 
 		$Model = new Stock();
-		$Model
-		->setProduct($data['product'])
-		->setProviderId ($data['providerId'])
-		->setStock($data['stock'])
-		->setStartStock($data['startStock'])
-		->setInsertedBy($data['insertedBy'])
-		->setTime($data['time'])
-		->save();
+		$dataArray = [];
+		foreach ($data as $key => $value) 
+		{
+			if (in_array($key, $Model->getFields()))
+			{
+				$dataArray[$key] = $value;
+			}
+		}	
 
-		// Return the DeviceType object with the new data
-		return $Model;
+		// Return the FBUserInfo object with the new data
+    	$Object = Stock::create($dataArray);
+    	$Object->update($dataArray);
+
+		$this->savePayment($Object, $data['payment']);
+
+
+		$this->updateProductStock($Object);
+
+		return $Object;
 	}
 
 
@@ -142,10 +184,7 @@ class StockRepository
 	*/
 	public function edit($object) 
 	{
-		$object->save();
 
-		// Return the DeviceType object with the new data
-		return Stock::find($object->id);
 		
 	}
 

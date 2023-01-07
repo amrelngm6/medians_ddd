@@ -4,6 +4,7 @@ namespace Medians\Domain\Products;
 
 
 use Medians\Domain\Products\Product;
+use Medians\Domain\Users\User;
 
 use Shared\dbaser\CustomController;
 
@@ -42,9 +43,19 @@ class Stock extends CustomController
 
 
 
-	public function Products()
+	public function getFields()
 	{
-		return $this->hasOne(Product::class, 'id', 'product');
+		return $this->fillable;
+	}
+
+	public function product()
+	{
+		return $this->hasOne(Product::class, 'id', 'product_id');
+	}
+
+	public function user()
+	{
+		return $this->hasOne(User::class, 'id', 'created_by');
 	}
 
 }

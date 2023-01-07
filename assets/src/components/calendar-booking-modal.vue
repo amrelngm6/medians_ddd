@@ -42,29 +42,46 @@
                                     <span class="w-full block text">Cost</span>
                                     <div class="py-2 text-lg text-purple-600 font-semibold" v-if="activeItem.subtotal">
                                         <span v-text="activeItem.subtotal"></span>
-                                        <span v-text="activeItem.currency"></span>
+                                        <span class="text-sm" v-text="activeItem.currency"></span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <div v-if="activeItem.products && activeItem.products.length" class=" pb-4">
+                    <span class="text-md font-semibold w-full block py-4">Purchased Products</span>
+                    <div v-for="product in activeItem.products" v-if="product" class="font-semibold w-full flex gap-4 py-2 border-b border-gray-200">
+                        <label class="w-full text-purple-600" v-text="product.product_name"></label>
+                        <input disabled class="w-full text-md p-2 text-right" v-model="product.subtotal+' '+activeItem.currency">
+                    </div>
+                    <div class="font-semibold w-full flex gap-4 py-2 border-b border-gray-200 ">
+                        <label class="w-full text-purple-600" ></label>
+                        <input disabled class="w-full text-lg p-2 text-red-600 text-right" :value="products_subtotal()+' '+activeItem.currency">
+                    </div>
+                </div>
+
+                <span class="text-md font-semibold w-full block py-4">Information</span>
                 <div class="w-full flex gap-4 py-2 border-b border-gray-200">
                     <label class="w-full">Start</label>
-                    <input disabled class="w-full" type="time" v-model="activeItem.start_time">
+                    <input disabled class="w-full p-2" type="time" v-model="activeItem.start_time">
                 </div>
                 <div class="w-full flex gap-4 py-2 border-b border-gray-200">
                     <label class="w-full">End</label>
-                    <input disabled class="w-full" type="time" v-model="activeItem.end_time">
+                    <input disabled class="w-full p-2" type="time" v-model="activeItem.end_time">
                 </div>
                 <div class="w-full flex gap-4 py-2 border-b border-gray-200">
                     <label class="w-full">Date</label>
-                    <input disabled class="w-full" type="text" :value="$parent.dateText(activeItem.startStr)">
+                    <input disabled class="w-full p-2" type="text" :value="$parent.dateText(activeItem.startStr)">
                 </div>
                 <div class="w-full flex gap-4 py-2 border-b border-gray-200">
                     <label class="w-full">Type</label>
-                    <input disabled class="w-full" type="text" :value="activeItem.booking_type">
+                    <input disabled class="w-full p-2" type="text" :value="activeItem.booking_type">
                 </div>
+
+
+
                 <div class="w-full flex gap-6 my-2 text-gray-600" v-if="!activeItem.order_code && activeItem.status == 'completed'">
                     <label @click="$parent.addToCart(activeItem)" class="cursor-pointer py-2 w-full mx-2 rounded-2xl text-center font-semibold bg-purple-600 text-white" >
                         <span  >Pay</span>
@@ -101,6 +118,21 @@ export default {
             }
         },
         methods: {
+            products_subtotal()
+            {
+                let subtotal = 0;
+
+                if (this.activeItem.products)
+                {
+                    for (var i = this.activeItem.products.length - 1; i >= 0; i--) {
+                        if (this.activeItem.products[i])
+                        {
+                            subtotal =   (Number(this.activeItem.products[i].subtotal) + Number(subtotal));
+                        }
+                    }
+                }
+                return subtotal;
+            }
         }
     }
 </script>

@@ -15,10 +15,10 @@ class ProductController
 
 
 
-	function __construct()
+	function __construct($app)
 	{
 
-		$this->repo = new ProductsRepository();
+		$this->repo = new ProductsRepository($app);
 	}
 
 
@@ -34,7 +34,7 @@ class ProductController
 		return render('views/admin/products/products.html.twig', [
 	        'title' => 'Products list',
 	        'app' => $app,
-	        'products' => $this->repo->get($app->provider->id),
+	        'products' => $this->repo->get($request),
 	        'typesList' => $this->repo->getModel()->categoriesList(),
 	        'stock' => new StockController(null),
 	    ]);
@@ -96,7 +96,8 @@ class ProductController
 		$params = $request->get('params')['product'];
 
         try {
-
+        	$params['provider_id'] = $app->provider->id;
+        	$params['created_by'] = $app->auth->id;
             return ($this->repo->store($params))
             ? array('success'=>1, 'data'=>'Added', 'reload'=>1)
             : array('success'=>0, 'data'=>'Error', 'error'=>1);
@@ -124,7 +125,6 @@ class ProductController
 
         try {
 
-        	$check = $this->repo->find($params['id']);
 
            	$returnData =  ($this->repo->update($params))
            	? array('success'=>1, 'data'=>'Updated', 'redirect'=>$app->CONF['url'].'products/index')

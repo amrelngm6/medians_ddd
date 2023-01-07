@@ -7,6 +7,7 @@ use Shared\dbaser\CustomController;
 
 use Medians\Domain\Devices\Device;
 use Medians\Domain\Games\Game;
+use Medians\Domain\Products\Product;
 
 
 class OrderDevice extends CustomController
@@ -72,6 +73,14 @@ class OrderDevice extends CustomController
 	public function device()
 	{
 		return $this->hasOne(Device::class, 'id', 'device_id');
+	}
+
+	/**
+	 * Relations
+	 */
+	public function products()
+	{
+		return $this->hasMany(OrderDeviceItem::class, 'order_device_id', 'id')->where('model_type', Product::class)->with('product');
 	}
 
 

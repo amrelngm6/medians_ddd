@@ -48,6 +48,9 @@ class Product extends CustomController
 	public function addStock($qty)
 	{
 		$this->stock = !empty($this->stock) ? (number_format($this->stock) + number_format($qty)) : $qty;
+
+		$this->save();
+		
 		return $this;
 	}
 

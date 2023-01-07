@@ -289,6 +289,29 @@ if (isset($app->auth->id))
         }
     });
 
+    /**
+    * @return stock
+    */
+    $app->match('/stock/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
+        try {
+            
+            if ($action == 'create')
+            {
+                return (new apps\Products\StockController($app))->create($request, $app, $twig);
+            }
+
+            if ($action == 'edit')
+            {
+                return (new apps\Products\StockController($app))->edit($id, $request, $app, $twig);
+            }
+
+            return (new apps\Products\StockController($app))->index($request, $app, $twig);
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    });
+
 
     /**
     * @return Contacts
