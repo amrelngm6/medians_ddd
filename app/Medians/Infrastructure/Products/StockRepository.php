@@ -130,6 +130,7 @@ class StockRepository
 
 		$data =  [
 			'name' => 'Purchase for products Stock',
+			'provider_id' => $this->app->provider->id,
 			'invoice_id' => $data['invoice_id'],
 			'amount' => $data['amount'],
 			'created_by' => $this->app->auth->id,
@@ -166,7 +167,7 @@ class StockRepository
 
 		$dataArray['created_by'] = $this->app->auth->id;
 		$dataArray['provider_id'] = $this->app->provider->id;
-		
+
 		// Return the FBUserInfo object with the new data
     	$Object = Stock::create($dataArray);
     	$Object->update($dataArray);
