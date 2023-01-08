@@ -463,7 +463,7 @@ if (isset($app->auth->id))
     $app->match('logout', function () use ( $request, $app) 
     {
 
-        (new apps\Auth\AuthService(new UserRepository))->unsetSession();
+        (new apps\Auth\AuthService(new UserRepository($app)))->unsetSession();
 
         return $app->redirect('./');
     });
