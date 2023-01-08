@@ -477,7 +477,7 @@ if (isset($app->auth->id))
 $app->match('/{page}', function ($page) use ( $app) 
 {
 
-    return  $twig->render('views/front/pages/page.html.twig', [
+    return  render('views/front/pages/page.html.twig', [
         'title' => 'Medians',
         'app' => $app
     ]);
