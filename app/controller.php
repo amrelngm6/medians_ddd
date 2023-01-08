@@ -163,7 +163,7 @@ $app->match('', function () use ($request,  $app)
 
         } else {
 
-            return (new apps\Auth\AuthService(new UserRepository))->loginPage($request, $app); 
+            return (new apps\Auth\AuthService(new UserRepository($app)))->loginPage($request, $app); 
         }
 
     } catch (Exception $e) 
