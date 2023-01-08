@@ -8,6 +8,7 @@ use Shared\dbaser\CustomController;
 use Medians\Domain\Devices\Device;
 use Medians\Domain\Games\Game;
 use Medians\Domain\Products\Product;
+use Medians\Domain\Users\User;
 
 
 class OrderDevice extends CustomController
@@ -42,7 +43,7 @@ class OrderDevice extends CustomController
 	*/
 	// public $timestamps = null;
 
-	public $appends = ['duration', 'duration_time', 'currency'];
+	public $appends = ['duration', 'duration_time', 'currency', 'subtotal', 'duration_hours'];
 
 
 	public function getCurrencyAttribute() 
@@ -52,7 +53,21 @@ class OrderDevice extends CustomController
 
 	public function getDurationAttribute() 
 	{
-		return round(abs(strtotime($this->end_time) - strtotime($this->start_time)) / 60,2);
+		return round(abs(strtotime($this->end_time) - strtotime($this->start_time)) / 60, 2);
+	}
+
+	public function getDurationHoursAttribute() 
+	{
+		return number_format($this->duration / 60, 2);
+	}
+
+
+	/**
+	 * Get subtotal for the booking
+	 */ 
+	public function getSubtotalAttribute() 
+	{
+        return round(number_format($this->device_cost) * $this->duration_hours, 2) ;
 	}
 
 
@@ -60,7 +75,7 @@ class OrderDevice extends CustomController
 	public function getDurationTimeAttribute() 
 	{
 		$interval = (new \DateTime($this->start_time ))->diff(new \DateTime($this->end_time));
-		$hours   = $interval->format('%h : %i'); 
+		$hours   = $interval->format('%H : %I'); 
 		return $hours;
 	}
 
@@ -90,6 +105,15 @@ class OrderDevice extends CustomController
 	public function game()
 	{
 		return $this->hasOne(Game::class, 'id', 'game_id');
+	}
+
+
+	/**
+	 * Relations
+	 */
+	public function user()
+	{
+		return $this->hasOne(User::class, 'id', 'created_by');
 	}
 
 

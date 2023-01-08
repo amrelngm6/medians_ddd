@@ -30,7 +30,7 @@ class ContactController
 	 * Index page
 	 * 
 	 */
-	public function index($request, $app, $twig)
+	public function index($request, $app)
 	{
 		return render('views/admin/contacts/list.html.twig', [
 			'items' =>  $this->repo->getModel()->with('Agent', 'source')->get(),
@@ -43,7 +43,7 @@ class ContactController
 	 * Create page
 	 * 
 	 */
-	public function create($request, $app, $twig)
+	public function create($request, $app)
 	{
 		return render('views/admin/contacts/create.html.twig', [
 	        'title' => 'Contacts',
@@ -58,7 +58,7 @@ class ContactController
 	 * Create page
 	 * 
 	 */
-	public function edit($id, $request, $app, $twig)
+	public function edit($id, $request, $app)
 	{
 		return render('views/admin/contacts/create.html.twig', [
 	        'title' => 'Contacts',

@@ -35,7 +35,7 @@ class FBApp
 	 * FB Pages list
 	 * 
 	*/
-	public function fb_pages_list($request, $app, $twig)
+	public function fb_pages_list($request, $app)
 	{
 
 	    if (isset($app->auth))
@@ -56,7 +56,7 @@ class FBApp
 	 * FB Pages list
 	 * 
 	*/
-	public function fb_page($request, $app, $twig)
+	public function fb_page($request, $app)
 	{
 
 	    if (isset($app->auth))
@@ -542,7 +542,7 @@ class FBApp
 
 
 
-	public function fb_page_chat($page_id, $request, $app, $twig)
+	public function fb_page_chat($page_id, $request, $app)
 	{
 		
 		$page = (new Repo\FaceBook\FBPageInfoRepository())->getByPageId($page_id);

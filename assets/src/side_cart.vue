@@ -35,8 +35,8 @@
                         </div>
                         <div class="w-full flex gap-1">
                             <label class="font-medium inline-block w-full my-3 text-sm uppercase">Payment</label>
-                            <select class="block p-2 text-gray-600 w-full text-sm">
-                                <option>Cash</option>
+                            <select class="block p-2 text-gray-600 w-full text-sm" v-model="payment_method">
+                                <option value="Cash">Cash</option>
                             </select>
                         </div>
                         <div class="border-t mt-8 w-full">
@@ -62,6 +62,7 @@ export default
 {
     data() {
         return {
+            payment_method:'Cash',
             id:0,
             ItemsIds: [],
             Items: [],
@@ -144,6 +145,7 @@ export default
             const params = new URLSearchParams([]);
             params.append('type', 'checkout');
             params.append('params[cart]', JSON.stringify(this.Items));
+            params.append('params[payment_method]', this.payment_method);
             this.handleRequest(params, '/api/checkout').then(response=> {
                 this.showLoader = false;
                 this.$alert(response)

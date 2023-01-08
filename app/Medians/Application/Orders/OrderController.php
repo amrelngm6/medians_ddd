@@ -29,18 +29,27 @@ class OrderController
 	 * @param \Twig\Environment $twig
 	 * 
 	 */ 
-	public function index($filter = 'month', $app, $twig) 
+	public function index($request, $app) 
 	{
 
-	    switch ($filter) 
+	    switch ($request->get('filter')) 
 	    {
 	        case 'lastweek':
-	            $query = $this->repo->getByDate($app->providerSession->id,date('Y-m-d',strtotime('-1 week')), date('Y-m-d', strtotime('+1 day')));
+	            $query = $this->repo->getByDate(date('Y-m-d',strtotime('-1 week')), date('Y-m-d', strtotime('+1 day')));
 	            break;
 
 	        case 'month':
-	            $query = $this->repo->getByDate($app->providerSession->id, date('Y-m'), date('Y-m', strtotime('+1 month')));
+	            $query = $this->repo->getByDate(date('Y-m-01', strtotime(date($request->get('month')))), date('Y-m-31', strtotime(date($request->get('month')))));
 	            break;
+
+	        case 'date':
+	        	$start = $request->get('start') ? date('Y-m-d', strtotime(date($request->get('start')))) : date('Y-m-d');
+	        	$end = $request->get('end') ? date('Y-m-d', strtotime(date($request->get('end')))) : date('Y-m-d');
+	        	$query = $this->repo->getByDate($start, $end);
+	        	break;	
+	        default:
+	        	$query = $this->repo->getByDate(date('Y-m-d'), date('Y-m-d', strtotime('+1 day')));
+	        	break;	
 	    }
 
 
@@ -51,10 +60,30 @@ class OrderController
 	        'title' => 'Orders list',
 	        'app' => $app,
 	        'orders' => $query,
-	        'todayOrders' => count($this->repo->getByDate($app->providerSession->id, date('Y-m-d' ), date('Y-m-d', strtotime('+1 day') )  )),
-	        'lastWeekOrders' => count($this->repo->getByDate($app->providerSession->id, date('Y-m-d',strtotime('-1 week')), date('Y-m-d', strtotime('+1 day')))),
-	        'lastMonthOrders' => count($this->repo->getByDate($app->providerSession->id, date('Y-m'), date('Y-m', strtotime('+1 month')))),
+	        'todayOrders' => count($this->repo->getByDate(date('Y-m-d' ), date('Y-m-d', strtotime('+1 day') )  )),
+	        'lastWeekOrders' => count($this->repo->getByDate(date('Y-m-d',strtotime('-1 week')), date('Y-m-d', strtotime('+1 day')))),
+	        'lastMonthOrders' => count($this->repo->getByDate(date('Y-m'), date('Y-m', strtotime('+1 month')))),
 
+	    ]);
+
+	}
+
+
+
+	/**
+	 * Admin index items
+	 * 
+	 * @param Silex\Application $app
+	 * @param \Twig\Environment $twig
+	 * 
+	 */ 
+	public function show($code, $request, $app) 
+	{
+	    return render('views/admin/orders/order.html.twig', [
+	        'title' => 'Invoice',
+	        'app' => $app,
+	        'order' => $this->repo->code($code),
+	        // 'qrcode' => $qrcode,
 	    ]);
 
 	}
@@ -97,6 +126,7 @@ class OrderController
 			$data['date'] = date('Y-m-d');
 			$data['created_by'] = $app->auth->id;
 			$data['status'] = 'paid';
+			$data['payment_method'] = $request->get('params')['payment_method'];
 
 			$save = $this->repo->store($data, $params);
 

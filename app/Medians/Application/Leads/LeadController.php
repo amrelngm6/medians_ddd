@@ -30,7 +30,7 @@ class LeadController
 	 * Index page
 	 * 
 	 */
-	public function index($request, $app, $twig)
+	public function index($request, $app)
 	{
 		return render('views/admin/leads/list.html.twig', [
 			'items' =>  $this->repo->get(100),
@@ -43,7 +43,7 @@ class LeadController
 	 * Create page
 	 * 
 	 */
-	public function create($request, $app, $twig)
+	public function create($request, $app)
 	{
 		return render('views/admin/leads/create.html.twig', [
 	        'title' => 'Leads',
@@ -59,7 +59,7 @@ class LeadController
 	 * Create page
 	 * 
 	 */
-	public function edit($id, $request, $app, $twig)
+	public function edit($id, $request, $app)
 	{
 		return render('views/admin/leads/create.html.twig', [
 	        'title' => 'Leads',

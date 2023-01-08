@@ -50,7 +50,7 @@ class DeviceController
 	 * @param \Twig\Environment $twig
 	 * 
 	 */ 
-	public function index($request, $app, $twig) 
+	public function index($request, $app) 
 	{
 	    return render('views/admin/devices/calendar.html.twig', [
 	        'title' => 'Devices list',
@@ -62,19 +62,36 @@ class DeviceController
 
 
 	/**
+	 * Admin index orders
+	 * 
+	 * @param Silex\Application $app
+	 * @param \Twig\Environment $twig
+	 * 
+	 */ 
+	public function orders($request, $app) 
+	{
+	    return render('views/admin/devices/orders.html.twig', [
+	        'title' => 'Devices bookings',
+	        'app' => $app,
+	        'events' => $this->repo->events($request, 10),
+	    ]);
+	}
+
+
+	/**
 	 * Admin manage items
 	 * 
 	 * @param Silex\Application $app
 	 * @param \Twig\Environment $twig
 	 * 
 	 */ 
-	public function manage( $request, $app, $twig) 
+	public function manage( $request, $app) 
 	{
 
 	    return render('views/admin/devices/devices_manage.html.twig', [
 	        'title' => 'Devices list',
 	        'app' => $app,
-	        'devicesList' => $this->repo->get(100),
+	        'devicesList' => $this->repo->getAll(100),
 	        'typesList' => $this->CategoryRepo->categories(Device::class),
 
 	    ]);
@@ -82,7 +99,7 @@ class DeviceController
 
 
 
-	public function show(int $id,$request , $app, $twig) 
+	public function show(int $id,$request , $app) 
 	{
 
 	    return render('views/admin/devices/device.html.twig', [
@@ -95,7 +112,7 @@ class DeviceController
 
 
 
-	public function edit(int $id , $request, $app, $twig) 
+	public function edit(int $id , $request, $app) 
 	{
 
 	    return render('views/admin/forms/edit_device.html.twig', [

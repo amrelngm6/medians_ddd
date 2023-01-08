@@ -114,6 +114,10 @@ class APIController
 				$check = (new Repo\Devices\DevicesRepository($app))->updateOrder($params);
 				$return = isset($check->id) ? ['result'=>'Updated'] : ['result'=>'Error'];
 				break;
+            case 'Settings.update':
+                $returnData = (new Settings\SettingsController($app))->update($request, $app); 
+                break;
+
 		}
 
 		return response(json_encode($return), $app);

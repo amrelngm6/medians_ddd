@@ -4,7 +4,19 @@
         <div class="relative w-full h-full" v-if="activeItem && activeItem.status == 'completed' ||activeItem.status == 'paid' ">
 
             <div class="top-20 relative mx-auto w-full bg-white p-6 rounded-lg" style="max-width: 600px;" >
-                <div :class="(activeItem.status == 'completed') ? 'bg-yellow-200' : 'bg-red-200'"  class=" rounded-md py-2 px-4" role="alert">
+
+
+                <div class="w-full" v-if="activeItem.products && activeItem.products.length">
+                    has products
+                </div>
+
+
+                <div v-if="activeItem.status == 'paid'"  class="bg-red-200 rounded-md py-2 px-4" role="alert">
+                    <strong>Alert!</strong> This order is {{activeItem.status}}. <a target="_blank" :href="'/orders/show/'+activeItem.order_code"><b>Show invoice</b></a>
+                    <button @click="$parent.hidePopup" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div v-if="activeItem.status == 'completed'"  class="bg-yellow-200 rounded-md py-2 px-4" role="alert">
                     <strong>Alert!</strong> This order is {{activeItem.status}}.
                     <button @click="$parent.hidePopup" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>

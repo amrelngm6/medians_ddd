@@ -23,9 +23,7 @@ class Settings
 	function __construct($data = null)
 	{
 
-		$this->data = (object) $data;
-
-		$this->repo = new Repo\SettingsRepository();
+		$this->repo = new Repo\SettingsRepository($app);
 
 	}
 

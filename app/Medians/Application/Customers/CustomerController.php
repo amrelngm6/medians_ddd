@@ -32,7 +32,7 @@ class CustomerController
 	 * Index page
 	 * 
 	 */
-	public function index($request, $app, $twig)
+	public function index($request, $app)
 	{
 		$this->AgentRepo->app = $app;
 		return render('views/admin/customers/list.html.twig', [
@@ -47,7 +47,7 @@ class CustomerController
 	 * Create page
 	 * 
 	 */
-	public function create($request, $app, $twig)
+	public function create($request, $app)
 	{
 		$this->AgentRepo->app = $app;
 		return render('views/admin/customers/create.html.twig', [

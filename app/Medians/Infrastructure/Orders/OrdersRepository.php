@@ -27,6 +27,15 @@ class OrdersRepository
 		->find($id);
 	}
 
+	/**
+	 * Find by code
+	 */  
+	public function code($code)
+	{
+		return Order::with('items', 'order_devices')
+		->where('code', $code)->first();
+	} 
+	
 	/*
 	// Find items by `deviceId` 
 	*/
@@ -127,10 +136,10 @@ class OrdersRepository
 	/*
 	// Find total cost by day
 	*/
-	public function getSalesByDay($providerId, $day, $nextday )
+	public function getSalesByDay($day, $nextday )
 	{
 
-	  	return  Order::where('providerId' , $providerId)
+	  	return  Order::where('providerId' , $this->app->provider->id)
 			->whereDate('endTime' , '>=', date('Y-m-d H:i:s', strtotime(date($day)))) 
 			->whereDate('endTime' , '<', date('Y-m-d H:i:s', strtotime(date($nextday))))
   			->sum('totalcost');
@@ -142,11 +151,11 @@ class OrdersRepository
 	/*
 	// Find all items between two days By ProviderId
 	*/
-	public function getByDate($providerId, $date1, $date2 )
+	public function getByDate($date1, $date2 )
 	{
 
-	  	return  Order::where('providerId' , $providerId)
-  			->whereBetween('updated_at' , [date('Y-m-d H:i:s', strtotime(date($date1))) , date('Y-m-d H:i:s', strtotime(date($date2)))])
+	  	return  Order::where('provider_id' , $this->app->provider->id)
+  			->whereBetween('date' , [date('Y-m-d', strtotime(date($date1))) , date('Y-m-d', strtotime(date($date2)))])
 			->get();
 	}
 

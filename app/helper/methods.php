@@ -34,39 +34,45 @@ function render($path, $data)
 function getMenuList()
 {
 	$data = array(
-		array('title'=>'Dashboard', 'link'=>'dashboard'),
-		array('title'=>'Devices', 'link'=>'', 'sub'=>
+		array('title'=>'Dashboard', 'icon'=>'fa-dashboard', 'link'=>'dashboard'),
+		array('title'=>'Devices',  'icon'=>'fa-desktop', 'link'=>'', 'sub'=>
 			[
-				array('title'=>'Calendar', 'link'=>'devices/calendar'),
-                array('title'=>'Management', 'link'=>'devices'),
+				array('title'=>'Calendar',  'icon'=>'fa-dashboard', 'link'=>'devices/calendar'),
+                array('title'=>'All bookings',  'icon'=>'fa-dashboard', 'link'=>'devices/orders'),
+                array('title'=>'Active bookings',  'icon'=>'fa-dashboard', 'link'=>'devices/orders?status=active'),
+                array('title'=>'Completed bookings',  'icon'=>'fa-dashboard', 'link'=>'devices/orders?status=completed'),
+                array('title'=>'Paid bookings',  'icon'=>'fa-dashboard', 'link'=>'devices/orders?status=paid'),
+                array('title'=>'Management',  'icon'=>'fa-dashboard', 'link'=>'devices/manage'),
 			]
 		),
-        array('title'=>'Produts', 'link'=>'', 'sub'=>
+        array('title'=>'Produts',  'icon'=>'fa-shopping-cart', 'link'=>'', 'sub'=>
             [
-                array('title'=>'Products list', 'link'=>'products/index'),
-                array('title'=>'Stock log', 'link'=>'stock/index'),
+                array('title'=>'Products list',  'icon'=>'fa-dashboard', 'link'=>'products/index'),
+                array('title'=>'Stock log',  'icon'=>'fa-dashboard', 'link'=>'stock/index'),
             ]
         ),
-        array('title'=>'Users', 'link'=>'', 'sub'=>
+        array('title'=>'Orders',  'icon'=>'fa-files-o', 'link'=>'', 'sub'=>
             [
-                array('title'=>'Administrators', 'link'=>'users/admin'),
-                array('title'=>'Managers', 'link'=>'users/managers'),
-                array('title'=>'Agents', 'link'=>'users/agents'),
+                array('title'=>'Orders',  'icon'=>'fa-dashboard', 'link'=>'orders/index'),
+                array('title'=>'Paid orders',  'icon'=>'fa-dashboard', 'link'=>'orders/index?status=paid'),
+                array('title'=>'Refund orders',  'icon'=>'fa-dashboard', 'link'=>'orders/index?status=refund'),
             ]
         ),
-        array('title'=>'Customers', 'link'=>'', 'sub'=>
+        array('title'=>'Payments',  'icon'=>'fa-money', 'link'=>'payments'),
+        // array('title'=>'Invoices',  'icon'=>'feather-user', 'link'=>'invoices'),
+        array('title'=>'Users',  'icon'=>'fa-users', 'link'=>'', 'sub'=>
             [
-                array('title'=>'Customers', 'link'=>'customers/index'),
-                array('title'=>'Create customer', 'link'=>'customers/create'),
+                // array('title'=>'Administrators',  'icon'=>'fa-dashboard', 'link'=>'users/admin'),
+                array('title'=>'Managers',  'icon'=>'fa-dashboard', 'link'=>'users/managers'),
+                // array('title'=>'Agents',  'icon'=>'fa-dashboard', 'link'=>'users/agents'),
             ]
         ),
 
-        array('title'=>'Invoices', 'link'=>'invoices'),
-        array('title'=>'Payments', 'link'=>'payments'),
-        array('title'=>'Tasks', 'link'=>'tasks'),
-        array('title'=>'Notifications', 'link'=>''),
-		array('title'=>'Settings', 'link'=>'settings'),
-		array('title'=>'Logout', 'link'=>'logout'),
+
+        // array('title'=>'Tasks',  'icon'=>'fa-dashboard', 'link'=>'tasks'),
+        // array('title'=>'Notifications',  'icon'=>'fa-bell-o', 'link'=>''),
+		array('title'=>'Settings',  'icon'=>'fa-cogs', 'link'=>'settings'),
+		array('title'=>'Logout',  'icon'=>'fa-sign-out', 'link'=>'logout'),
 	);
 
 	return $data;

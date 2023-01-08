@@ -16,11 +16,14 @@ class Settings extends CustomController
 
 
 	protected $fillable = [
+    	'provider_id',
     	'code',
-    	'value'
+    	'value',
+    	'model',
+    	'created_by',
 	];
 
-	public $timestamps = false;
+	// public $timestamps = false;
 
 
 	function __construct()

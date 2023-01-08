@@ -13,12 +13,15 @@ class SettingsController
 	*/
 	protected $repo;
 
+	public $app;
 
 
-	function __construct()
+
+	function __construct($app)
 	{
-	
-		$this->repo = new Repo\SettingsRepository();
+		$this->app = $app;
+
+		$this->repo = new Repo\SettingsRepository($app);
 
 	}
 
@@ -26,7 +29,7 @@ class SettingsController
 	 * Index settings page
 	 * 
 	 */
-	public function index($request, $app, $twig)
+	public function index($request, $app)
 	{
 
 		return render('views/admin/forms/settings_form.html.twig', [
@@ -60,7 +63,7 @@ class SettingsController
 
 		try {
 
-            if (isset($this->updateSettings($request, $app)->updated)) 
+            if (isset($this->updateSettings($params, $app)->updated)) 
             	return array('success'=>1, 'data'=>'Updated', 'reload'=>1);
 
         } catch (Exception $e) {
@@ -73,11 +76,9 @@ class SettingsController
 	/*
 	// Return the Settings
 	*/
-	public function updateSettings($request, $app) 
+	public function updateSettings($params, $app) 
 	{
 
-		$params = $request->get('params')['settings'];
-        
 		foreach ($params as $code => $value)
 		{
 
@@ -99,6 +100,9 @@ class SettingsController
 	{
 
 		$data = [
+			'provider_id' => $this->app->provider->id,
+			'created_by' => $this->app->auth->id,
+			'model' => '',
 			'code' => $code,
 			'value' => $value
 		];

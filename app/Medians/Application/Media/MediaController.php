@@ -21,13 +21,13 @@ class MediaController
 	}
 
 
-	public function media($type = 'media', $request, $app, $twig)
+	public function media($type = 'media', $request, $app)
 	{
 		return json_encode(['media'=> ($request->get('page') == 1) ? $this->repo->getList($type) : []]);
 
 	}
 
-	public function upload($request, $app, $twig)
+	public function upload($request, $app)
 	{
 		foreach ($request->files as $key => $value) {
 			$this->repo->upload($value);
@@ -36,7 +36,7 @@ class MediaController
 		
 	}
 
-	public function delete($request, $app, $twig)
+	public function delete($request, $app)
 	{
 	
 	    $items = $request->get('items');

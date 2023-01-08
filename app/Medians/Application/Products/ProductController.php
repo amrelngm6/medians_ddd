@@ -68,7 +68,7 @@ class ProductController
 	 * @param \Twig\Environment $twig
 	 * 
 	 */ 
-	public function pos(Int $deviceId, $app, $twig) 
+	public function pos(Int $deviceId, $app) 
 	{
 		
 	    return render('views/admin/products/pos.html.twig', [

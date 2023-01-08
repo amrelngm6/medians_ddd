@@ -306,6 +306,7 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
                 this.activeItem.duration_time = props.duration_time;
                 this.activeItem.products = props.products;
                 this.activeItem.currency = props.currency;
+                this.activeItem.payment_method = props.payment_method;
                 this.activeItem.subtotal = this.subtotal();
                 this.showNewEvent = true
 

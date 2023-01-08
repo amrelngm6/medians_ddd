@@ -52,7 +52,11 @@ class DevicesRepository
 	*/
 	public function getAll()
 	{
-		return  Device::with('category')->where('provider_id', $this->app->provider->id)->get();
+		return  Device::where('provider_id', $this->app->provider->id)
+		->with('category')
+		->with('prices')
+		->with('games')
+		->get();
 	}
 
 	/*
@@ -63,18 +67,36 @@ class DevicesRepository
 		return  Device::where('provider_id', $this->app->provider->id)
 		->with('prices')
 		->with('games')
+		->where('status', '!=', '0')
 		->limit($limit)
 		->get();
 	}
 
 
 
-	public function events($request,$limit)
+	public function events($params,$limit = 10)
 	{
-		$start = date('Y-m-d H:i:s', strtotime(date($request->get('start'))));
-		$end = date('Y-m-d H:i:s', strtotime(date($request->get('end'))));
+		$query = OrderDevice::with('game')->with('device')->with('user')->with('products')
+		->where('provider_id', $this->app->provider->id);
 
-		return OrderDevice::whereBetween('start_time' , [$start , $end] )->with('game')->with('device')->with('products')->get();
+		if (!empty($params->get('by')))
+		{
+			$query->where('created_by', $params->get('by'));
+		}
+
+		if (!empty($params->get('status')) && in_array($params->get('status'), ['active', 'completed', 'paid']) )
+		{
+			$query->where('status', $params->get('status'));
+		}
+
+		if (!empty($params->get('start')) && !empty($params->get('end')))
+		{
+			$start = date('Y-m-d H:i:s', strtotime(date($params->get('start'))));
+			$end = date('Y-m-d 00:00:00', strtotime(date($params->get('end'))));
+			$query->whereBetween('start_time', [$params->get('start'), $params->get('end')]);
+		}
+
+		return $query->limit($limit)->orderBy('id', 'DESC')->get();
 	}
 
 
@@ -195,8 +217,8 @@ class DevicesRepository
 		$data['device_id'] = $Device->id;
 		$data['order_code'] = null;
 		$data['break_time'] = 0;
-		$data['device_cost'] = $Device->price->single_price;
 		$data['booking_type'] = isset($data['booking_type']) ? $data['booking_type'] : 'single';
+		$data['device_cost'] = ($data['booking_type'] == 'multi') ? $Device->price->multi_price : $Device->price->single_price;
 		$data['break_time'] = 0;
 		$data['last_check'] = 0;
 		$data['status'] = 'active';
@@ -215,8 +237,9 @@ class DevicesRepository
      */
     public function updateOrder($data)
     {
-
 		$Object = OrderDevice::find($data['id']);
+
+		$Device = Device::with('prices')->find($Object->device_id);
 
 		$date = date('Y-m-d', strtotime(date($Object->created_at)));
 
@@ -225,6 +248,7 @@ class DevicesRepository
 		$newData['end_time'] = $date.' '.$data['end_time'];
 		$newData['game_id'] = isset($data['game_id']) ? $data['game_id'] : $Object->game_id;
 		$newData['booking_type'] = isset($data['booking_type']) ? $data['booking_type'] : $Object->booking_type;
+		$newData['device_cost'] = ($newData['booking_type'] == 'multi') ? $Device->price->multi_price : $Device->price->single_price;
 		$newData['status'] = $data['status'];
 		if ($data['status'] == 'completed')
 		{
@@ -237,6 +261,8 @@ class DevicesRepository
     	return $Object;
 
     } 
+
+
 
 
 }

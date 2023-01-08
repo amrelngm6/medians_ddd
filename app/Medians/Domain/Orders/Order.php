@@ -32,6 +32,7 @@ class Order  extends CustomController
 		'discount',
 		'total_cost',
 		'discount_code',
+		'payment_method',
 		'date',
 		'created_by',
 		'status'

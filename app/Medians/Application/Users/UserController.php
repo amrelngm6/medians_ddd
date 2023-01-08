@@ -28,7 +28,7 @@ class UserController
 	 * Index page
 	 * 
 	 */
-	public function index($list, $title, $app, $twig)
+	public function index($list, $title, $app)
 	{
 		return render('views/admin/users/list.html.twig', [
 			'items' =>  $list,
@@ -42,7 +42,7 @@ class UserController
 	 * Administrators page
 	 * 
 	 */
-	public function admins($request, $app, $twig)
+	public function admins($request, $app)
 	{
 		return $this->index( $this->queryByRole(1), 'Administrators', $app, $twig );
 	}
@@ -63,7 +63,7 @@ class UserController
 	 * Create page
 	 * 
 	 */
-	public function create($request, $app, $twig)
+	public function create($request, $app)
 	{
 		return render('views/admin/users/create.html.twig', [
 	        'title' => 'Users',
@@ -77,7 +77,7 @@ class UserController
 	 * Create page
 	 * 
 	 */
-	public function edit($id, $request, $app, $twig)
+	public function edit($id, $request, $app)
 	{
 		return render('views/admin/users/create.html.twig', [
 	        'title' => 'Users',

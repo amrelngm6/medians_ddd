@@ -118,7 +118,7 @@ class StockRepository
 
 
 	/**
-	* Save item to database
+	* Save item to Payments
 	* 
 	* @param Array $data
 	* @return Object 
@@ -126,16 +126,18 @@ class StockRepository
 	public function savePayment($Object, $data) 
 	{	
 
-		$save =  Payment::create([
+		$Payment = new Payment;
+
+		$data =  [
 			'name' => 'Purchase for products Stock',
 			'invoice_id' => $data['invoice_id'],
 			'amount' => $data['amount'],
-			'created_by' => $Object->created_by,
-		]);
+			'created_by' => $this->app->auth->id,
+		];
 
-		$Object->update(['model_type'=> Payment::class, 'model_id'=>$save->id]);
-		return $save;
+		return $Payment->addPayment($data);
 	}	
+
 
 	public function updateProductStock($Object)
 	{
@@ -162,12 +164,14 @@ class StockRepository
 			}
 		}	
 
+		$dataArray['created_by'] = $this->app->auth->id;
+		$dataArray['provider_id'] = $this->app->provider->id;
+		
 		// Return the FBUserInfo object with the new data
     	$Object = Stock::create($dataArray);
     	$Object->update($dataArray);
 
 		$this->savePayment($Object, $data['payment']);
-
 
 		$this->updateProductStock($Object);
 

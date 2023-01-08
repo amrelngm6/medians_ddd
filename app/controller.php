@@ -42,15 +42,15 @@ $app->post('/api/{type?}', function ($type) use ($app, $request)
         switch ($type) 
         {
             case 'create':
-                return (new apps\APIController)->create($request, $app);
+                return (new apps\APIController($app))->create($request, $app);
                 break;
             
             case 'update':          
-                return (new apps\APIController)->update($request, $app);
+                return (new apps\APIController($app))->update($request, $app);
                 break;
             
             case 'updateStatus':          
-                return (new apps\APIController)->updateStatus($request, $app);
+                return (new apps\APIController($app))->updateStatus($request, $app);
                 break;
 
             case 'checkout':          
@@ -59,7 +59,7 @@ $app->post('/api/{type?}', function ($type) use ($app, $request)
             
         }
 
-        return (new apps\APIController)->handle($request, $app);
+        return (new apps\APIController($app))->handle($request, $app);
         
     } catch (Exception $e) {
         return $e->getMessage();
@@ -82,7 +82,7 @@ $app->match('/api/{type?}', function ($type) use ($app, $request)
          
         }
 
-        return (new apps\APIController)->handle($request, $app);
+        return (new apps\APIController($app))->handle($request, $app);
 
     } catch (Exception $e) {
         return $e->getMessage();
@@ -92,15 +92,15 @@ $app->match('/api/{type?}', function ($type) use ($app, $request)
 /*
 // Return list of device 
 */
-$app->post('/media-library-api/{type?}', function ($type) use ($twig, $app, $request) 
+$app->post('/media-library-api/{type?}', function ($type) use ( $app, $request) 
 { 
     switch ($type) {
         case 'delete':
-            return (new apps\Media\MediaController())->delete($request, $app, $twig);
+            return (new apps\Media\MediaController())->delete($request, $app);
             break;
         
         default:
-            return (new apps\Media\MediaController())->upload($request, $app, $twig);
+            return (new apps\Media\MediaController())->upload($request, $app);
             break;
     }
 });
@@ -108,7 +108,7 @@ $app->post('/media-library-api/{type?}', function ($type) use ($twig, $app, $req
 /*
 // Return list of device 
 */
-$app->post('', function () use ($twig, $app, $request) 
+$app->post('', function () use ( $app, $request) 
 { 
 
     try {
@@ -160,11 +160,6 @@ $app->post('', function () use ($twig, $app, $request)
                 break;
             
 
-            case 'updateSettings':
-                
-                $returnData = (new apps\Settings\SettingsController)->update($request, $app); 
-
-                break;
 
             default:
 
@@ -187,17 +182,17 @@ $app->post('', function () use ($twig, $app, $request)
 /*
 // Return list of device 
 */
-$app->match('', function () use ($request, $twig, $app) 
+$app->match('', function () use ($request,  $app) 
 {
     try 
     {
         if (isset($app->auth->id))
         {
-            return (new apps\DashboardController)->index($request, $twig, $app);
+            return (new apps\DashboardController($app))->index($request,  $app);
 
         } else {
 
-            return (new apps\Auth\AuthService(new UserRepository))->loginPage($request, $app, $twig); 
+            return (new apps\Auth\AuthService(new UserRepository))->loginPage($request, $app); 
         }
 
     } catch (Exception $e) 
@@ -212,11 +207,11 @@ $app->match('', function () use ($request, $twig, $app)
 /**
  * @return  Login page in case if not authorized 
 */
-$app->match('login', function () use ($request, $app, $twig) 
+$app->match('login', function () use ($request, $app) 
 {   
     try {
         
-        return (new apps\Auth\AuthService(new UserRepository))->loginPage($request, $app, $twig); 
+        return (new apps\Auth\AuthService(new UserRepository))->loginPage($request, $app); 
     } catch (Exception $e) {
         return $e->getMessage();
     }
@@ -227,9 +222,9 @@ $app->match('login', function () use ($request, $app, $twig)
 /*
 // Return list of device 
 */
-$app->match('/dashboard', function () use ($request, $twig, $app) 
+$app->match('/dashboard', function () use ($request,  $app) 
 {
-    return (new apps\DashboardController)->index($request, $twig, $app);
+    return (new apps\DashboardController($app))->index($request,  $app);
 });
 
 
@@ -240,25 +235,30 @@ if (isset($app->auth->id))
     /**
     * @return properties
     */
-    $app->match('/devices/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
+    $app->match('/devices/{action?}/{id?}', function ($action, $id) use ($request, $app)  {
         try {
             
             if ($action == 'create')
             {
-                return (new apps\Devices\DeviceController($app))->create($request, $app, $twig);
+                return (new apps\Devices\DeviceController($app))->create($request, $app);
             }
 
             if ($action == 'edit')
             {
-                return (new apps\Devices\DeviceController($app))->edit($id, $request, $app, $twig);
+                return (new apps\Devices\DeviceController($app))->edit($id, $request, $app);
             }
 
             if ($action == 'manage')
             {
-                return (new apps\Devices\DeviceController($app))->manage($request, $app, $twig);
+                return (new apps\Devices\DeviceController($app))->manage($request, $app);
             }
 
-            return (new apps\Devices\DeviceController($app))->index($request, $app, $twig);
+            if ($action == 'orders')
+            {
+                return (new apps\Devices\DeviceController($app))->orders($request, $app);
+            }
+
+            return (new apps\Devices\DeviceController($app))->index($request, $app);
 
         } catch (Exception $e) {
             return $e->getMessage();
@@ -269,20 +269,20 @@ if (isset($app->auth->id))
     /**
     * @return Products
     */
-    $app->match('/products/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
+    $app->match('/products/{action?}/{id?}', function ($action, $id) use ($request, $app)  {
         try {
             
             if ($action == 'create')
             {
-                return (new apps\Products\ProductController($app))->create($request, $app, $twig);
+                return (new apps\Products\ProductController($app))->create($request, $app);
             }
 
             if ($action == 'edit')
             {
-                return (new apps\Products\ProductController($app))->edit($id, $request, $app, $twig);
+                return (new apps\Products\ProductController($app))->edit($id, $request, $app);
             }
 
-            return (new apps\Products\ProductController($app))->index($request, $app, $twig);
+            return (new apps\Products\ProductController($app))->index($request, $app);
 
         } catch (Exception $e) {
             return $e->getMessage();
@@ -292,20 +292,72 @@ if (isset($app->auth->id))
     /**
     * @return stock
     */
-    $app->match('/stock/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
+    $app->match('/stock/{action?}/{id?}', function ($action, $id) use ($request, $app)  {
         try {
             
             if ($action == 'create')
             {
-                return (new apps\Products\StockController($app))->create($request, $app, $twig);
+                return (new apps\Products\StockController($app))->create($request, $app);
             }
 
             if ($action == 'edit')
             {
-                return (new apps\Products\StockController($app))->edit($id, $request, $app, $twig);
+                return (new apps\Products\StockController($app))->edit($id, $request, $app);
             }
 
-            return (new apps\Products\StockController($app))->index($request, $app, $twig);
+            return (new apps\Products\StockController($app))->index($request, $app);
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    });
+
+
+    /**
+    * @return Payments
+    */
+    $app->match('/payments/{action?}/{id?}', function ($action, $id) use ($request, $app)  {
+        try {
+            
+            if ($action == 'create')
+            {
+                return (new apps\Payments\PaymentController($app))->create($request, $app);
+            }
+
+            if ($action == 'edit')
+            {
+                return (new apps\Payments\PaymentController($app))->edit($id, $request, $app);
+            }
+
+            return (new apps\Payments\PaymentController($app))->index($request, $app);
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    });
+
+    /**
+    * @return Orders
+    */
+    $app->match('/orders/{action?}/{id?}', function ($action, $id) use ($request, $app)  {
+        try {
+            
+            if ($action == 'create')
+            {
+                return (new apps\Orders\OrderController($app))->create($request, $app);
+            }
+
+            if ($action == 'show')
+            {
+                return (new apps\Orders\OrderController($app))->show($id, $request, $app);
+            }
+
+            if ($action == 'edit')
+            {
+                return (new apps\Orders\OrderController($app))->edit($id, $request, $app);
+            }
+
+            return (new apps\Orders\OrderController($app))->index($request, $app);
 
         } catch (Exception $e) {
             return $e->getMessage();
@@ -316,34 +368,34 @@ if (isset($app->auth->id))
     /**
     * @return Contacts
     */
-    $app->match('/users/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
+    $app->match('/users/{action?}/{id?}', function ($action, $id) use ($request, $app)  {
         $UserController = new apps\Users\UserController;
         try {
             
             if ($action == 'create')
             {
                 if ($action == 'agents')
-                    return $UserController->createAgent($request, $app, $twig);
+                    return $UserController->createAgent($request, $app);
 
                 if ($action == 'managers')
-                    return $UserController->createManager($request, $app, $twig);
+                    return $UserController->createManager($request, $app);
     
-                return $UserController->create($request, $app, $twig);
+                return $UserController->create($request, $app);
             }
 
             if ($action == 'edit')
             {
-                return $UserController->edit($id, $request, $app, $twig);
+                return $UserController->edit($id, $request, $app);
             }
 
             if ($action == 'agents')
-                return $UserController->index( $UserController->queryByRole(3), 'Agents', $app, $twig );
+                return $UserController->index( $UserController->queryByRole(3), 'Agents', $app );
 
             if ($action == 'managers')
-                return $UserController->index( $UserController->queryByRole(2), 'Managers', $app, $twig );
+                return $UserController->index( $UserController->queryByRole(2), 'Managers', $app );
 
             if ($app->auth->can('view_admins', $app))
-                return $UserController->index( $UserController->queryByRole(1), 'Administrators', $app, $twig );
+                return $UserController->index( $UserController->queryByRole(1), 'Administrators', $app );
 
 
             return '';
@@ -357,7 +409,7 @@ if (isset($app->auth->id))
     /**
     * @return Media items
     */
-    $app->match('/media-library-api/{type?}', function ($type) use ($request, $app, $twig)  {
+    $app->match('/media-library-api/{type?}', function ($type) use ($request, $app)  {
 
         try {
         
@@ -365,13 +417,13 @@ if (isset($app->auth->id))
             
             if ($type == 'media')
             {
-                return (new apps\Media\MediaController())->media($filter_type, $request, $app, $twig);
+                return (new apps\Media\MediaController())->media($filter_type, $request, $app);
             }
 
             if ($type == 'file')
             {
                 return true;
-                return (new apps\Media\MediaController())->media($filter_type, $request, $app, $twig);
+                return (new apps\Media\MediaController())->media($filter_type, $request, $app);
             }
 
         } catch (Exception $e) {
@@ -384,11 +436,11 @@ if (isset($app->auth->id))
     /**
     * @return Tasks
     */
-    $app->match('/tasks/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  {
+    $app->match('/tasks/{action?}/{id?}', function ($action, $id) use ($request, $app)  {
 
         try {
             
-            return (new apps\Tasks\TaskController)->index($request, $app, $twig);
+            return (new apps\Tasks\TaskController($app))->index($request, $app);
 
         } catch (Exception $e) {
             return $e->getMessage();
@@ -399,22 +451,22 @@ if (isset($app->auth->id))
     /**
     * @return Customers
     */
-    $app->match('/customers/{action?}/{id?}', function ($action, $id) use ($request, $app, $twig)  
+    $app->match('/customers/{action?}/{id?}', function ($action, $id) use ($request, $app)  
     {
 
         try {
             
             if ($action == 'create')
             {
-                return (new apps\Customers\CustomerController)->create($request, $app, $twig);
+                return (new apps\Customers\CustomerController($app))->create($request, $app);
             }
 
             if ($action == 'edit')
             {
-                return (new apps\Customers\CustomerController)->edit($id, $request, $app, $twig);
+                return (new apps\Customers\CustomerController($app))->edit($id, $request, $app);
             }
 
-            return (new apps\Customers\CustomerController)->index($request, $app, $twig);
+            return (new apps\Customers\CustomerController($app))->index($request, $app);
 
         } catch (Exception $e) {
             return $e->getMessage();
@@ -427,14 +479,14 @@ if (isset($app->auth->id))
     /**
     * @return Settings page
     */
-    $app->match('settings', function () use ($request, $app, $twig) 
+    $app->match('settings', function () use ($request, $app) 
     {
-        return (new apps\Settings\SettingsController)->index($request, $app, $twig); 
+        return (new apps\Settings\SettingsController($app))->index($request, $app); 
     });
 
 
     // Logout and remoce cookies and session
-    $app->match('logout', function () use ($twig, $request, $app) 
+    $app->match('logout', function () use ( $request, $app) 
     {
 
         (new apps\Auth\AuthService(new UserRepository))->unsetSession();
@@ -448,7 +500,7 @@ if (isset($app->auth->id))
 /*
 // Return list of device 
 */
-$app->match('/{page}', function ($page) use ($twig, $app) 
+$app->match('/{page}', function ($page) use ( $app) 
 {
 
     return  $twig->render('views/front/pages/page.html.twig', [

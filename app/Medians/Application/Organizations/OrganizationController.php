@@ -29,7 +29,7 @@ class OrganizationController
 	 * Index page
 	 * 
 	 */
-	public function index($request, $app, $twig)
+	public function index($request, $app)
 	{
 		return render('views/admin/organizations/list.html.twig', [
 			'items' =>  $this->repo->getModel()->with('Agent')->get(),
@@ -43,7 +43,7 @@ class OrganizationController
 	 * Create page
 	 * 
 	 */
-	public function create($request, $app, $twig)
+	public function create($request, $app)
 	{
 		return render('views/admin/organizations/create.html.twig', [
 	        'title' => 'Organizations',
@@ -57,7 +57,7 @@ class OrganizationController
 	 * Create page
 	 * 
 	 */
-	public function edit($id, $request, $app, $twig)
+	public function edit($id, $request, $app)
 	{
 		return render('views/admin/organizations/create.html.twig', [
 	        'title' => 'Organizations',

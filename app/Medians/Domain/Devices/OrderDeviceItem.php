@@ -26,6 +26,7 @@ class OrderDeviceItem extends CustomController
 		'model_type',	
 		'model_id',	
 		'qty',	
+		'price',	
 		'order_device_id',
 		'created_by',
 	];
@@ -45,7 +46,7 @@ class OrderDeviceItem extends CustomController
 
 	public function getSubtotalAttribute()
 	{
-		return isset($this->product->price) ? number_format($this->product->price) * $this->qty : 0;
+		return isset($this->price) ? number_format($this->price) * $this->qty : 0;
 	}
 
 

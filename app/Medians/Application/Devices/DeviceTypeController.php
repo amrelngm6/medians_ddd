@@ -37,7 +37,7 @@ class DeviceTypeController
 	 * @param \Twig\Environment $twig
 	 * 
 	 */ 
-	public function index( $app, $twig) 
+	public function index( $app) 
 	{
 	    return render('views/admin/devices/device_types.html.twig', [
 	        'title' => 'Device types',
@@ -51,7 +51,7 @@ class DeviceTypeController
 
 
 
-	public function edit(int $id , $app, $twig) 
+	public function edit(int $id , $app) 
 	{
 
 		return render('views/admin/forms/edit_device_type.html.twig', [

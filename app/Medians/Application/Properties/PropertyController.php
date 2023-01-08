@@ -28,7 +28,7 @@ class PropertyController
 	 * Index page
 	 * 
 	 */
-	public function index($request, $app, $twig)
+	public function index($request, $app)
 	{
 		$items = $this->repo->filterItems($request);
 
@@ -43,7 +43,7 @@ class PropertyController
 	 * Create page
 	 * 
 	 */
-	public function create($request, $app, $twig)
+	public function create($request, $app)
 	{
 		return render('views/admin/properties/create.html.twig', [
 	        'title' => 'Properties',
@@ -57,7 +57,7 @@ class PropertyController
 	 * Create page
 	 * 
 	 */
-	public function edit($id, $request, $app, $twig)
+	public function edit($id, $request, $app)
 	{
 		return render('views/admin/properties/create.html.twig', [
 	        'title' => 'Properties',

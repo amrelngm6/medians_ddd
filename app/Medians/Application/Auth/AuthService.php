@@ -59,7 +59,7 @@ class AuthService
 	 * Display login page 
 	 * 
 	 */
-	public function loginPage($request, $app, $twig)
+	public function loginPage($request, $app)
 	{
 
 
