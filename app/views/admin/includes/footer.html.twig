@@ -9,6 +9,7 @@
 
         <script type="text/javascript" src="{{app.CONF.url ? app.CONF.url : '/'}}assets/dist/alertify.min.js"></script>
 <script type="text/javascript" src="{{app.CONF.url ? app.CONF.url : '/'}}assets/dist/app.js"></script>
+<script type="text/javascript" src="{{app.CONF.url ? app.CONF.url : '/'}}assets/dist/sweetalert.min.js"></script>
 
 <script type="text/javascript">
 
@@ -20,6 +21,8 @@
             (html.reload) ? window.location.reload() : '';
 
             (html.redirect) ? (window.location.href = html.redirect) : '';
+
+            Swal.fire({ title: html.result, confirmButtonClass: "btn btn-primary", buttonsStyling: !1 })
 
         } else if (html.error) {
 

@@ -577,6 +577,10 @@ body .main-sidebar.activate.show .player-img img
 
 }
 
+body .swal2-container
+{
+  z-index: 999999;
+}
 .swal2-container.swal2-shown
 {
   z-index: 9999;
