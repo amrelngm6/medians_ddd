@@ -114,13 +114,6 @@ $app->post('', function () use ( $app, $request)
     try {
         switch ($request->get('type')) 
         {
-            case 'Device.create':
-                $returnData =  (new apps\Devices\DeviceController($app))->store($request, $app); 
-                break;
-
-            case 'Device.update':
-                $returnData =  (new apps\Devices\DeviceController($app))->update($request, $app); 
-                break;
 
             case 'User.create':
                 $returnData =  (new apps\Users\UserController())->store($request, $app); 

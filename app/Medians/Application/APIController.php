@@ -100,6 +100,9 @@ class APIController
 		$return = [];
 		switch ($request->get('type')) 
 		{
+			case 'Device.update':
+                $return =  (new Devices\DeviceController($app))->update($request, $app); 
+				break;
 			case 'Task.update':
 				$return = (new Tasks\TaskController)->update($request, $app);
 				break;
