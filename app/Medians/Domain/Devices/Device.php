@@ -6,7 +6,7 @@ use Shared\dbaser\CustomController;
 use Medians\Domain\Prices\Prices;
 use Medians\Domain\Games\Game;
 use Medians\Domain\Orders\OrderDevice;
-use Medians\Domain\Categories\category;
+use Medians\Domain\Categories\Category;
 
 
 class Device extends CustomController
