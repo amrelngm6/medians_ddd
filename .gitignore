@@ -1,4 +1,5 @@
 /node_modules
 /vendor
+/app/config/database.php
 .env
 cookie.txt
