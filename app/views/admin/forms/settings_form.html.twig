@@ -40,28 +40,6 @@
                                     <input name="params[settings][stock_alert]" type="number" class="h-10 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="Stock alert" required value="{{ app.Settings.stock_alert }}">
                                 </label>
 
-
-
-                                <div class="form-group">
-                                    <label>Address  <span class="star-red">*</span></label>
-                                    <input name="params[settings][address]" type="text" class="h-10 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="Enter Address Line 2" required value="{{ app.Settings.address }}">
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>City <span class="star-red">*</span></label>
-                                            <input name="params[settings][city]" type="text" class="h-10 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" required value="{{ app.Settings.city }}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Country </label>
-                                            <select class="select h-10 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600 " name="params[settings][country]">
-                                                <option {% if app.Settings.country == 'Egypt' %} selected {% endif %} value="Egypt">Egypt</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
