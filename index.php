@@ -3,6 +3,7 @@
 session_start(); error_reporting(E_ALL);
 date_default_timezone_set('Africa/Cairo');
 
+require_once __DIR__.'/app/config/databse.php';
 require_once __DIR__.'/vendor/autoload.php';
 
 spl_autoload_register(function ($name) {
@@ -33,10 +34,6 @@ $app = new Silex\Application();
 
 $app->currency = 'EGP';
     
-
-CONST db_name = 'ps';
-CONST db_username = 'root';
-CONST db_password = 'root';
 
 $capsule = new Capsule;
 

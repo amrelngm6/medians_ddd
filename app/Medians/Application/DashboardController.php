@@ -25,7 +25,7 @@ class DashboardController
 	 * Model object 
 	 * 
 	 */
-	public function index($request, $twig, $app)
+	public function index($request, $app)
 	{
 
         return  render('views/admin/dashboard/index.html.twig', [
