@@ -24,6 +24,7 @@ Vue.component('login-dashboard', () => import('./login-dashboard.vue'));
 Vue.component('side-menu', () => import('./side-menu.vue'));
 Vue.component('side_cart', () => import('./side_cart.vue'));
 Vue.component('customers_form', () => import('./customers_form.vue'));
+Vue.component('users_form', () => import('./users_form.vue'));
 
 
 Vue.component('user_modal', () => import('./user_modal.vue'));

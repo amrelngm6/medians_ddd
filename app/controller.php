@@ -122,30 +122,6 @@ $app->post('', function () use ( $app, $request)
                 $returnData =  (new apps\Devices\DeviceController($app))->update($request, $app); 
                 break;
 
-            case 'Lead.create':
-                $returnData =  (new apps\Leads\LeadController())->store($request, $app); 
-                break;
-
-            case 'Lead.update':
-                $returnData =  (new apps\Leads\LeadController())->update($request, $app); 
-                break;
-
-            case 'Contact.create':
-                $returnData =  (new apps\Contacts\ContactController())->store($request, $app); 
-                break;
-
-            case 'Contact.update':
-                $returnData =  (new apps\Contacts\ContactController())->update($request, $app); 
-                break;
-
-            case 'Organization.create':
-                $returnData =  (new apps\Organizations\OrganizationController())->store($request, $app); 
-                break;
-
-            case 'Organization.update':
-                $returnData =  (new apps\Organizations\OrganizationController())->update($request, $app); 
-                break;
-
             case 'User.create':
                 $returnData =  (new apps\Users\UserController())->store($request, $app); 
                 break;
@@ -158,15 +134,10 @@ $app->post('', function () use ( $app, $request)
                     
                     $returnData =  (new apps\Auth\AuthService( new AdminRepository() ))->userLogin($request, $app); 
                 break;
-            
-
 
             default:
-
                 print_r($_POST);
-
                 break;
-
         }
 
     } catch (Exception $e) {
@@ -369,7 +340,7 @@ if (isset($app->auth->id))
     * @return Contacts
     */
     $app->match('/users/{action?}/{id?}', function ($action, $id) use ($request, $app)  {
-        $UserController = new apps\Users\UserController;
+        $UserController = new apps\Users\UserController($app);
         try {
             
             if ($action == 'create')
@@ -394,8 +365,11 @@ if (isset($app->auth->id))
             if ($action == 'managers')
                 return $UserController->index( $UserController->queryByRole(2), 'Managers', $app );
 
-            if ($app->auth->can('view_admins', $app))
+            if ($app->auth->can('view_admins', $app) && $app->auth->role_id == 1)
                 return $UserController->index( $UserController->queryByRole(1), 'Administrators', $app );
+
+            if ($app->auth->can('view_admins', $app) && $app->auth->role_id == 3)
+                return $UserController->index( $UserController->queryByRole(3), 'Users', $app );
 
 
             return '';

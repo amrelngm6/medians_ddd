@@ -66,8 +66,8 @@ $mysqli->set_charset("utf8");
 $app->debug = true;
 
 
-$app->auth = (new apps\Auth\AuthService( new UserRepository() ))->checkSession();
-$app->provider = (new apps\Auth\AuthService( new UserRepository() ))->checkSession();
+$app->auth = (new apps\Auth\AuthService( new UserRepository($app) ))->checkSession();
+$app->provider = isset($app->auth) ? $app->auth : (object) [];
 
 // $app->providerSession = (isset($app->auth->providers) && isset(json_decode($app->auth->providers)[0])) ? json_decode($app->auth->providers)[0] : null;
 

@@ -100,6 +100,23 @@ class DevicesRepository
 	}
 
 
+
+	public function eventsByDate($params,$limit = 10)
+	{
+		$query = OrderDevice::with('game')->with('device')->with('user')->with('products')
+		->where('provider_id', $this->app->provider->id);
+
+		if (!empty($params['start']) && !empty($params['end']))
+		{
+			$start = date('Y-m-d H:i:s', strtotime(date($params['start'])));
+			$end = date('Y-m-d 23:59:59', strtotime(date($params['end'])));
+			$query->whereBetween('start_time', [$start, $end]);
+		}
+
+		return $query->limit($limit)->orderBy('id', 'DESC');
+	}
+
+
 	public function getGames($type,$limit = 50)
 	{
 		return Game::where('type' , $type )->limit($limit)->get();

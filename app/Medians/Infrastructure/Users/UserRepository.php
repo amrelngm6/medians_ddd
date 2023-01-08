@@ -10,8 +10,9 @@ class UserRepository
 	public $app;
 
 
-	function __construct()
+	function __construct($app)
 	{
+		$this->app = $app;
 	}
 
 	public function getModel()
@@ -21,13 +22,13 @@ class UserRepository
 
 	public function find($customerId)
 	{
-		return User::with('Role')->find($customerId);
+		return User::with('Role')->with('provider')->find($customerId);
 	}
 
 
 	public function get($limit = 100)
 	{
-		return User::with('Role')->limit($limit)->get();
+		return User::with('Role', 'provider')->where('provider_id', $this->app->provider->id)->limit($limit)->get();
 	}
 
 

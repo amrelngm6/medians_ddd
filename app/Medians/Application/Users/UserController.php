@@ -14,11 +14,12 @@ class UserController
 	*/
 	private $repo;
 
+	public $app;
 
-	function __construct()
+	function __construct($app)
 	{
-
-		$this->repo = new UserRepository;
+		$this->app = $app;
+		$this->repo = new UserRepository($app);
 	}
 
 
@@ -43,8 +44,13 @@ class UserController
 	 * 
 	 */
 	public function admins($request, $app)
-	{
-		return $this->index( $this->queryByRole(1), 'Administrators', $app, $twig );
+	{	
+		if ($app->auth->role_id == 1)
+		{
+			return $this->index( $this->queryByRole(1), 'Administrators', $app, $twig );
+		} else {
+			return $this->index( $this->queryByRole(3), 'Users', $app, $twig );
+		}
 	}
 
 
@@ -53,7 +59,7 @@ class UserController
 	 */
 	public function queryByRole($role_id)
 	{
-		return	$this->repo->getModel()->with('Role', 'properties')->where('role_id', $role_id)->get();
+		return	$this->repo->getModel()->with('Role')->where('role_id', $role_id)->get();
 
 	} 
 
@@ -99,6 +105,7 @@ class UserController
 
 		try {
 
+			$params['provider_id'] = isset($app->provider->id) ? $app->provider->id : 0;
 			$Property = $this->repo->store((array) $params);
 
         	return array('success'=>1, 'result'=>'Created');

@@ -2,10 +2,10 @@
 
 namespace Medians\Domain\Users;
 
-use Shared\dbaser\CustomController;
 
 use Medians\Domain\Properties\Property;
 
+use Shared\dbaser\CustomController;
 
 class User extends CustomController
 {
@@ -18,6 +18,7 @@ class User extends CustomController
 
 
 	protected $fillable = [
+    	'provider_id',
     	'first_name',
     	'last_name',
     	'email',
@@ -89,6 +90,12 @@ class User extends CustomController
 	public function properties()
 	{
 		return $this->HasMany(Property::class , 'agent_id');
+	}
+
+
+	public function provider()
+	{
+		return $this->hasOne(Provider::class , 'id', 'provider_id');
 	}
 
 

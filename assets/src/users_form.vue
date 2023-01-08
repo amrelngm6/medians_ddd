@@ -56,16 +56,6 @@
                                 <input type="password" class="h-auto py-1 w-full form-control border rounded-lg border-gray-200 px-2" v-model="User.password">
                             </div>
                         </div>
-
-                        <div class="gap gap-6 w-full flex py-2" v-if="organizations">
-                            <label class="w-full col-form-label">Organization</label>
-                            <div class="w-full">
-                                <select class="h-auto py-1 w-full form-control border rounded-lg border-gray-200 px-2" v-model="User.organization_id">
-                                    <option v-for="(value,i) in organizations" :value="value.id" v-text="value.name"></option>
-                                </select>
-                            </div>
-                        </div>
-
                         <div class="gap gap-6 w-full flex py-2">
                             <label class="w-full col-form-label">Status</label>
                             <div class="w-full">

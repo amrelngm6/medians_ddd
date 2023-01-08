@@ -7,8 +7,8 @@
                 <div class="card bg-gradient-danger card-img-holder text-white h-100">
                     <div class="card-body">
                         <img src="/uploads/img/circle.png" class="card-img-absolute" alt="circle-image">
-                        <h4 class="font-weight-normal mb-3">Properties</h4>
-                        <span class="text-2xl">{{properties_count}}</span>
+                        <h4 class="font-weight-normal mb-3">Active bookings</h4>
+                        <span class="text-2xl">{{active_order_devices_count}}</span>
                     </div>
                 </div>
             </div>
@@ -16,8 +16,8 @@
                 <div class="card bg-gradient-info card-img-holder text-white h-100">
                     <div class="card-body">
                         <img src="/uploads/img/circle.png" class="card-img-absolute" alt="circle-image">
-                        <h4 class="font-weight-normal mb-3">Leads</h4>
-                        <span class="text-2xl">{{leads_count}}</span>
+                        <h4 class="font-weight-normal mb-3">Today today Bookings  </h4>
+                        <span class="text-2xl">{{today_order_devices_count}}</span>
                     </div>
                 </div>
             </div>
@@ -25,8 +25,8 @@
                 <div class="card bg-gradient-success card-img-holder text-white h-100">
                     <div class="card-body">
                         <img src="/uploads/img/circle.png" class="card-img-absolute" alt="circle-image">
-                        <h4 class="font-weight-normal mb-3">Tasks</h4>
-                        <span class="text-2xl">{{tasks_count}}</span>
+                        <h4 class="font-weight-normal mb-3">Today Orders</h4>
+                        <span class="text-2xl">{{today_orders_count}}</span>
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@
     </div>
     <div class="w-full lg:flex gap gap-6 ">
         <div class="card mb-0 w-full">
-            <h4 class="p-4 ml-4">Latest Leads</h4>
+            <h4 class="p-4 ml-4">Latest unpaid Bookings</h4>
             <hr />
             <div class="card-body w-full">
                 <div class="col-md-12">
@@ -44,22 +44,21 @@
                                 <tr>
                                     <th class="w-10">ID</th>
                                     <th>Name</th>
-                                    <th>Phone</th>
-                                    <th>Agent</th>
+                                    <th>Duration</th>
+                                    <th>Game</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for item in leads %}
+                                {% for item in latest_unpaid_order_devices %}
                                 <tr class="text-center">
                                     <td>
                                         {{item.id}}
                                     </td>
                                     <td>
-                                        <a href="/leads/edit/{{item.id}}"><span class="person-circle-a person-circle">A</span></a>
-                                        <a href="/leads/edit/{{item.id}}" data-bs-toggle="modal" data-bs-target="#leads-details">{{item.name()}}</a>
+                                        <a href="/products/calendar" data-bs-toggle="modal" data-bs-target="#leads-details">{{item.device.name}}</a>
                                     </td>
-                                    <td>{{item.phone}}</td>
-                                    <td>{{item.Agent.name}}</td>
+                                    <td>{{item.duration_time}}</td>
+                                    <td>{{item.game.name}}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -69,7 +68,7 @@
             </div>
         </div>
         <div class="card mb-0 w-full">
-            <h4 class="p-4 ml-4">Latest Leads</h4>
+            <h4 class="p-4 ml-4">Latest Paid Bookings</h4>
             <hr />
             <div class="card-body w-full">
                 <div class="col-md-12">
@@ -79,63 +78,21 @@
                                 <tr>
                                     <th class="w-10">ID</th>
                                     <th>Name</th>
-                                    <th>Phone</th>
-                                    <th>Agent</th>
+                                    <th>Duration</th>
+                                    <th>Game</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for item in leads %}
+                                {% for item in latest_paid_order_devices %}
                                 <tr class="text-center">
                                     <td>
                                         {{item.id}}
                                     </td>
                                     <td>
-                                        <a href="/leads/edit/{{item.id}}"><span class="person-circle-a person-circle">A</span></a>
-                                        <a href="/leads/edit/{{item.id}}" data-bs-toggle="modal" data-bs-target="#leads-details">{{item.name()}}</a>
+                                        <a href="/products/calendar" data-bs-toggle="modal" data-bs-target="#leads-details">{{item.device.name}}</a>
                                     </td>
-                                    <td>{{item.phone}}</td>
-                                    <td>{{item.Agent.name}}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="block mt-6 w-full">
-        <div class="card mb-0 w-full">
-            <h4 class="p-4 ml-4">Latest properties</h4>
-            <hr />
-            <div class="card-body w-full">
-                <div class="col-md-12">
-                    <div class="table-responsive w-full">
-                        <table class="w-full table table-striped table-nowrap custom-table mb-0 datatable">
-                            <thead>
-                                <tr>
-                                    <th class="w-10">ID</th>
-                                    <th>Owner</th>
-                                    <th>Title</th>
-                                    <th>Type</th>
-                                    <th>Agent</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for item in properties %}
-                                <tr class="text-center">
-                                    <td>
-                                        {{item.id}}
-                                    </td>
-                                    <td>
-                                        <a href="/properties/user/{{item.id}}"><span class="person-circle-a person-circle">A</span></a>
-                                        <a href="/properties/user/{{item.id}}" data-bs-toggle="modal" data-bs-target="#leads-details">{{item.owner.name}}</a>
-                                    </td>
-                                    <td><a href="/properties/edit/{{item.id}}">{{item.name}}</a> </td>
-                                    <td>
-                                        {{item.type}}
-                                    </td>
-                                    <td>{{item.agent_info.name}}</td>
+                                    <td>{{item.duration_time}}</td>
+                                    <td>{{item.game.name}}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
