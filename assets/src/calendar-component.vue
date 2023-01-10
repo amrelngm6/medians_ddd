@@ -23,7 +23,7 @@
             
             <div class="left-0 right-0 fixed mx-auto w-full " style="max-width: 600px; z-index: 99;" >
                 <div v-if="showBooking " class="relative">
-                    <calendar_modal :modal="activeItem"></calendar_modal>
+                    <calendar_modal :products="products" :modal="activeItem"></calendar_modal>
                 </div>
                 <div v-if="showActiveBooking"  class="relative">
                     <calendar_active_item :games="games" :modal="activeItem"></calendar_active_item>
@@ -193,13 +193,15 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
             title: String,
             lang_str: String,
             startTime: String,
+            products: Array,
             endTime: String,
         },
         
         mounted() {
-
+            console.log(this.products)
         },
         methods: {
+
             addToCart(activeItem)
             {
                 let item = {};
@@ -240,7 +242,6 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
             },
             reloadEvents() 
             {
-                this.hidePopup()
                 this.$refs.calendar.getApi().refetchEvents();
             },
 
@@ -307,6 +308,7 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
                 this.activeItem.products = props.products;
                 this.activeItem.currency = props.currency;
                 this.activeItem.payment_method = props.payment_method;
+                this.activeItem.order_code = props.order_code;
                 this.activeItem.subtotal = this.subtotal();
                 this.showNewEvent = true
 
@@ -327,6 +329,7 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
                 this.showBooking = false;
                 this.showActiveBooking = false;
                 this.$refs.side_cart.showCart = false
+                this.reloadEvents()
 
             },
             /**

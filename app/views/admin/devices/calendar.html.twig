@@ -4,7 +4,11 @@
     <div class="w-full">
         <div class="px-2">
             
-            <calendar_component title="{{title}}" start-time="{{ '' | date('H:i') }}" lang_str="en">
+            <calendar_component 
+            :products="{{ products}}"
+            title="{{title}}" 
+            start-time="{{ '' | date('H:i') }}" 
+            lang_str="en">
             </calendar_component>
         </div>
     </div>

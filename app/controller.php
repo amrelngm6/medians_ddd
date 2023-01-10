@@ -49,6 +49,10 @@ $app->post('/api/{type?}', function ($type) use ($app, $request)
                 return (new apps\APIController($app))->update($request, $app);
                 break;
             
+            case 'delete':          
+                return (new apps\APIController($app))->delete($request, $app);
+                break;
+            
             case 'updateStatus':          
                 return (new apps\APIController($app))->updateStatus($request, $app);
                 break;

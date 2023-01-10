@@ -5,10 +5,12 @@ namespace Medians\Infrastructure\Devices;
 use Medians\Domain\Devices\Device;
 use Medians\Domain\Devices\OrderDevice;
 use Medians\Domain\Games\Game;
+use Medians\Domain\Products\Product;
 use Medians\Infrastructure\Orders\OrdersRepository;
 use Medians\Infrastructure\Orders\DeviceOrdersRepository;
 
 use Medians\Domain\Prices\Prices;
+use Medians\Domain\Devices\OrderDeviceItem;
 
 
 
@@ -274,6 +276,40 @@ class DevicesRepository
 
 		// Return the FBUserInfo object with the new data
     	$Object->update( (array) $newData);
+
+    	return $Object;
+
+    } 
+
+
+
+    /**
+     * Add Order Device product
+     */
+    public function removeProduct($id)
+    {
+    	return OrderDeviceItem::where('id', $id)->delete();
+    }
+
+    /**
+     * Add Order Device product
+     */
+    public function storeProduct($id, $data)
+    {
+		$Object = OrderDevice::find($id);
+
+		$date = date('Y-m-d', strtotime(date($Object->created_at)));
+
+		$newData = [];
+		$newData['order_device_id'] = isset($Object->id) ? $Object->id : 0;
+		$newData['model_type'] = Product::class;
+		$newData['model_id'] = $data['id'];
+		$newData['qty'] = $data['qty'];
+		$newData['price'] = $data['price'];
+		$newData['created_by'] = $this->app->auth->id;
+
+		// Return the FBUserInfo object with the new data
+    	OrderDeviceItem::create($newData);
 
     	return $Object;
 

@@ -31,23 +31,16 @@ class APIController
 		switch ($request->get('model')) 
 		{
 			case 'User':
-				$controller = (new Repo\Users\UserRepository);
+				$controller = (new Repo\Users\UserRepository($app));
 				break;
-			case 'Lead':
-				$controller = (new Repo\Leads\LeadRepository);
-				break;
-			case 'Task':
-				$controller = (new Repo\Tasks\TaskRepository);
-				break;
-			case 'Property.tasks':
-				$return = (new Repo\Properties\PropertyRepository)->find($request->get('id'));
-				return response(json_encode(isset($return->Tasks) ? $return->Tasks : []), $app);
+			case 'OrderDevice':
+				$controller = (new Repo\Devices\OrderDevicesRepository($app));
 				break;
 		}
 
-		$return = $controller->find($request->get('id'));
+		$return = isset($controller) ? $controller->find($request->get('id')) : $return;
 
-		return response(json_encode($return), $app);
+		return response(json_encode(['status'=>true, 'result'=>$return]), $app);
 	} 
 
 	/**
@@ -72,6 +65,9 @@ class APIController
 					break;
 				case 'Product.create':
 					$return = (new Products\ProductController($app))->store($request, $app);
+					break;
+				case 'OrderDevice.addProduct':
+					$return = (new Devices\DeviceController($app))->addProduct($request, $app);
 					break;
 				case 'Stock.create':
 					$return = (new Products\StockController($app))->store($request, $app);
@@ -124,6 +120,24 @@ class APIController
 		}
 
 		return response(json_encode($return), $app);
+	} 
+
+	/**
+	 * delete model 
+	 * 
+	 */
+	public function delete($request, $app)
+	{
+		$return = [];
+		switch ($request->get('type')) 
+		{
+			case 'OrderDevice.removeProduct':
+				$return = (new Devices\DeviceController($app))->removeProduct($request, $app);
+				break;
+
+		}
+
+		return response(json_encode(['status'=>true, 'result'=>$return]), $app);
 	} 
 
 	/**

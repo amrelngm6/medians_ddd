@@ -39,7 +39,6 @@ class ProductsRepository
 	*/
 	public function get($params = null) 
 	{
-
 		return Product::with('category')
 		->where('provider_id', $this->app->provider->id)->get();
 	}

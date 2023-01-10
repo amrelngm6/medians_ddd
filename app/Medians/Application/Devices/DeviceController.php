@@ -6,9 +6,6 @@ use Medians\Application as apps;
 
 use Medians\Infrastructure as Repo;
 
-use Medians\Domain\Devices as Devices;
-
-use Medians\Domain\Devices\Device;
 
 class DeviceController 
 {
@@ -37,9 +34,11 @@ class DeviceController
 	    // Set PricesModel
 	    // $this->PricesController = new Repo\Prices\PricesController();
 
-	    // Set PricesModel
-	    $this->CategoryRepo = new Repo\Categories\CategoryRepository();
+	    // Set Categories
+	    $this->CategoryRepo = new Repo\Categories\CategoryRepository($app);
 
+	    // Set Categories
+	    $this->productsRepo = new Repo\Products\ProductsRepository($app);
 	}
 
 
@@ -55,6 +54,7 @@ class DeviceController
 	    return render('views/admin/devices/calendar.html.twig', [
 	        'title' => 'Devices list',
 	        'app' => $app,
+	        'products' => $this->productsRepo->get(),
 	        'devicesList' => $this->repo->get(50),
 	        'typesList' => $this->CategoryRepo->categories(Device::class),
 	    ]);
@@ -205,6 +205,41 @@ class DeviceController
 	}
 
 
+	public function addProduct($request)
+	{
+
+		$product = (array)  json_decode($request->get('params')['product']);
+		$params = (array)  json_decode($request->get('params')['device']);
+
+		try {
+
+			$product['qty'] = 1;
+			$save = $this->repo->storeProduct($params['id'], $product);
+
+        	return array('success'=>1, 'result'=> $save);
+
+        } catch (Exception $e) {
+            return  array('error'=>$e->getMessage());
+        }
+	}
+
+
+	public function removeProduct($request)
+	{
+
+		$params = (array)  json_decode($request->get('params')['product']);
+
+		try {
+
+			$save = $this->repo->removeProduct($params['id']);
+
+        	return array('success'=>1, 'result'=> $save);
+
+        } catch (Exception $e) {
+            return  array('error'=>$e->getMessage());
+        }
+
+	}
 
 	public function calendar($request, $app)
 	{
