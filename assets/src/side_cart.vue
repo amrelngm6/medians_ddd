@@ -16,14 +16,26 @@
                 <div class="modal-body ">
                     <div class="mx-auto w-full">
                         <h1 class="font-semibold text-2xl border-b py-8">Order Summary</h1>
-                        <div v-if="Items">
-                            <div v-for="item in Items" class="flex justify-between mt-10 mb-5" v-if="item" >
-                                <span class="font-semibold text-sm" v-if="item.device"> 
-                                    <span v-text="item.device.name"></span><br /> 
-                                    <span class="text-xs text-gray-400 " v-if="item.game" v-text="item.game.name"></span>
-                                    <span class="text-xs text-red-400" @click="removeFromCart(item)">Remove</span>
-                                </span>
-                                <span class="font-semibold text-sm"><span v-text="item.subtotal"></span> <small class="text-xs" v-text="item.currency"></small> <br /> <span class="text-xs text-gray-400" v-text="item.duration_time"></span></span>
+                        <div v-if="Items" class="w-full">
+                            <div v-for="item in Items" class="w-full block" v-if="item" >
+                                <div  class="flex justify-between mt-10 mb-5" v-if="item" >
+                                    <span class="font-semibold text-sm" v-if="item.device"> 
+                                        <span v-text="item.device.name"></span><br /> 
+                                        <span class="text-xs text-gray-400 " v-if="item.game" v-text="item.game.name"></span>
+                                        <span class="text-xs text-red-400" @click="removeFromCart(item)">Remove</span>
+                                    </span>
+                                    <span class="font-semibold text-sm"><span v-text="item.subtotal"></span> <small class="text-xs" v-text="item.currency"></small> <br /> <span class="text-xs text-gray-400" v-text="item.duration_time"></span></span>
+                                </div>
+                                <div v-for="product in item.products" class="w-full block" v-if="item.products" >
+                                    <div  class="flex justify-between mt-10 mb-5" v-if="product" >
+                                        <span class="font-semibold text-sm" > 
+                                            <span v-text="product.name"></span><br /> 
+                                            <span class="text-xs text-gray-400 " v-if="product.qty" v-text="'X '+product.qty"></span>
+                                            <span class="text-xs text-red-400" @click="removeProduct(product)">Remove</span>
+                                        </span>
+                                        <span class="font-semibold text-sm"><span v-text="product.price"></span> <small class="text-xs" v-text="item.currency"></small> </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="py-10">
@@ -64,6 +76,7 @@ export default
         return {
             payment_method:'Cash',
             id:0,
+            activeItem: {},
             ItemsIds: [],
             Items: [],
             sub_total:0,
@@ -122,7 +135,6 @@ export default
          */
         checkDuplicate(item)
         {
-
             if (!(this.ItemsIds.indexOf(item.id) != -1))
             {
                 this.Items.push(item);
@@ -153,6 +165,31 @@ export default
                 this.$parent.reloadEvents()
             });
 
+        },
+
+        query(id, i = 0)
+        {
+            const params = new URLSearchParams([]);
+            params.append('type', 'OrderDevice');
+            params.append('model', 'OrderDevice');
+            params.append('id',  id);
+            this.showPopup = false
+            this.handleRequest(params, '/api').then(response => {
+                this.Items[i] = response
+                this.showPopup = true
+            })
+            this.showPopup = true
+        },
+        removeProduct(product, i = 0)
+        {
+            this.showLoader = true;
+            const params = new URLSearchParams([]);
+            params.append('type', 'OrderDevice.removeProduct');
+            params.append('params[product]', JSON.stringify(product));
+            this.handleRequest(params, '/api/delete').then(response => {
+                this.showLoader = false;
+                this.query(product.id, i)
+            })
         },
         async handleRequest(params, url = '/api') {
 

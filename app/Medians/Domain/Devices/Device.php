@@ -30,7 +30,7 @@ class Device extends CustomController
 	];
 
 
-	public $appends = ['price', 'name'];
+	public $appends = ['picture', 'name'];
  
 
  	/**
@@ -124,6 +124,10 @@ class Device extends CustomController
 
 	
 
+	public function getPictureAttribute()
+	{
+		return 'default.png';
+	}
 	public function getNameAttribute()
 	{
 		return $this->title;

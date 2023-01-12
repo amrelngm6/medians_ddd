@@ -298,7 +298,6 @@ class DeviceController
 
 		$event->id = $event->id;
 		$event->duration_minutes = $event->duration;
-		$event->duration_hours = round(number_format($event->duration)/60, 2);
 		$event->title = isset($event->game->name) ? $event->game->name : $event->device->name;
 		$event->resourceId = $event->device_id;
 		$event->start = $event->start_time;

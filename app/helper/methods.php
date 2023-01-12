@@ -13,7 +13,6 @@ $twig = new \Twig\Environment(new \Twig\Loader\FilesystemLoader('./app'),
 $twig->addFilter(new \Twig\TwigFilter('html_entity_decode', 'html_entity_decode'));
 
 
-
 /** 
  * Render function
  * @param String twig file path

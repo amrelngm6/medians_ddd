@@ -19,7 +19,6 @@
                 </div>
 
             </div>
-
             
             <div class="left-0 right-0 fixed mx-auto w-full " style="max-width: 600px; z-index: 99;" >
                 <div v-if="showBooking " class="relative">
@@ -95,10 +94,6 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
                         day:      'day',
                         list:     'list'
                     },
-                    monthNames: (this.lang_str == 'en') ? null : this.monthsNames,
-                    monthNamesShort: (this.lang_str == 'en') ? null : this.monthsNames,
-                    dayNames: (this.lang_str == 'en') ? null : this.daysNames,
-                    dayNamesShort: (this.lang_str == 'en') ? null : this.daysNames,
                     eventConstraint: "businessHours",
 
                     initialView: 'resourceTimeGridDay',
@@ -173,9 +168,6 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
                     },
                     eventMouseEnter(event, jsEvent, view) {
                         console.log('hover');
-                    },
-                    eventCreated(event) {
-                        console.log(event);
                     },
                     eventClassNames: function (arg) {
                         return [ 'background-event-element ' ];

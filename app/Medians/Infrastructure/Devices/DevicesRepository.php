@@ -74,6 +74,15 @@ class DevicesRepository
 		->get();
 	}
 
+	/*
+	// Find all items 
+	*/
+	public function getApi($limit = 20)
+	{
+		return  Device::where('provider_id', $this->app->provider->id)
+		->get();
+	}
+
 
 
 	public function events($params,$limit = 10)

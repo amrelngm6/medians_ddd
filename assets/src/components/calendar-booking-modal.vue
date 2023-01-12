@@ -58,11 +58,12 @@
                         </div>
                     </div>
 
+                    <!-- Purchased products -->
                     <div v-if="activeItem.products && activeItem.products.length" class=" pb-4">
                         <span class="text-md font-semibold w-full block py-4">Purchased Products</span>
                         <div v-for="product in activeItem.products" v-if="product" class="font-semibold w-full flex gap-4 py-2 border-b border-gray-200">
                             <label class="w-full text-purple-600" v-text="product.product_name"></label>
-                            <span class="w-40 text-md p-2 text-red-600"   @click="removeProduct(product)">Remove</span>
+                            <span class="w-40 text-md p-2 text-red-600" v-if="activeItem.status != 'paid'" @click="removeProduct(product)">Remove</span>
                             <span class="w-20 flex text-md p-2 text-right"> 
                                 <span v-text="product.price"></span>
                                 <span class="px-1 text-sm" @click="query(product)" v-text="activeItem.currency"></span>
@@ -74,6 +75,7 @@
                         </div>
                     </div>
 
+                    <!-- Applicable products -->
                     <div class="w-full block" >
                         
                         <div v-if="products && products.length" class=" pb-4">
@@ -92,19 +94,19 @@
                     <span class="text-md font-semibold w-full block py-4">Information</span>
                     <div class="w-full flex gap-4 py-2 border-b border-gray-200">
                         <label class="w-full">Start</label>
-                        <input disabled class="w-full p-2" type="time" v-model="activeItem.start_time">
+                        <span class="w-full text-md p-2 text-red-600" v-text='activeItem.start_time'></span>
                     </div>
                     <div class="w-full flex gap-4 py-2 border-b border-gray-200">
                         <label class="w-full">End</label>
-                        <input disabled class="w-full p-2" type="time" v-model="activeItem.end_time">
+                        <span class="w-full text-md p-2 text-red-600" v-text='activeItem.end_time'></span>
                     </div>
                     <div class="w-full flex gap-4 py-2 border-b border-gray-200">
                         <label class="w-full">Date</label>
-                        <input disabled class="w-full p-2" type="text" :value="$parent.dateText(activeItem.startStr)">
+                        <span class="w-full text-md p-2 text-red-600" v-text="$parent.dateText(activeItem.startStr)"></span>
                     </div>
                     <div class="w-full flex gap-4 py-2 border-b border-gray-200">
                         <label class="w-full">Type</label>
-                        <input disabled class="w-full p-2" type="text" :value="activeItem.booking_type">
+                        <span class="w-full text-md p-2 text-red-600 font-semibold" v-text="activeItem.booking_type"></span>
                     </div>
 
 

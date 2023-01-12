@@ -32,7 +32,6 @@ $app->currentPage = $request->getPathInfo();
 $app->request = $request;
 
 
-$app->provider = $app->auth;
 
 
 $app->post('/api/{type?}', function ($type) use ($app, $request) 

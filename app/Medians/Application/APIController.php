@@ -18,8 +18,8 @@ class APIController
 	function __construct()
 	{
 	
-
 	}
+
 
 	/**
 	 * Model object 
@@ -36,6 +36,10 @@ class APIController
 			case 'OrderDevice':
 				$controller = (new Repo\Devices\OrderDevicesRepository($app));
 				break;
+			case 'Devices':
+				return json_encode((new Repo\Devices\DevicesRepository($app))->getApi());
+				break;
+			
 		}
 
 		$return = isset($controller) ? $controller->find($request->get('id')) : $return;

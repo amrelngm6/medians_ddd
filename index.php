@@ -67,7 +67,7 @@ $app->debug = true;
 
 
 $app->auth = (new apps\Auth\AuthService( new UserRepository($app) ))->checkSession();
-$app->provider = isset($app->auth) ? $app->auth : (object) [];
+$app->provider = isset($app->auth) ? $app->auth : (object) ['id'=>1];
 
 // $app->providerSession = (isset($app->auth->providers) && isset(json_decode($app->auth->providers)[0])) ? json_decode($app->auth->providers)[0] : null;
 
