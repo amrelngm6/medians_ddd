@@ -63,6 +63,7 @@ class StockRepository
 		{
 			$query->whereBetween('date', [$params->get('start'), $params->get('end')]);
 		}
+	  	$query->orderBy('id', 'DESC')
 
 		return $query->get();
 	}
