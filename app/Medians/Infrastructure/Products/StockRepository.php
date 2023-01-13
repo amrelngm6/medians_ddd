@@ -41,29 +41,29 @@ class StockRepository
 
 		if (!empty($params->get('product')))
 		{
-			$query->where('product_id', $params->get('product'));
+			$query = $query->where('product_id', $params->get('product'));
 		}
 
 		if (!empty($params->get('by')))
 		{
-			$query->where('created_by', $params->get('by'));
+			$query = $query->where('created_by', $params->get('by'));
 		}
 
 		if (!empty($params->get('created_by')))
 		{
-			$query->where('created_by', $params->get('created_by'));
+			$query = $query->where('created_by', $params->get('created_by'));
 		}
 
 		if (!empty($params->get('type')) && in_array($params->get('type'), ['add', 'pull']) )
 		{
-			$query->where('type', $params->get('type'));
+			$query = $query->where('type', $params->get('type'));
 		}
 
 		if (!empty($params->get('start')) && !empty($params->get('end')))
 		{
-			$query->whereBetween('date', [$params->get('start'), $params->get('end')]);
+			$query = $query->whereBetween('date', [$params->get('start'), $params->get('end')]);
 		}
-		
+
 	  	return $query->orderBy('id', 'DESC')->get();
 	}
 
