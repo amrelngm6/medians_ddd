@@ -11,5 +11,10 @@
         "spatie/async": "^1.5",
         "chillerlan/php-qrcode": "^3.4",
         "tebazil/db-seeder": "^1.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "kylekatarnls/update-helper": true
+        }
     }
 }

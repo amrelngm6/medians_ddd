@@ -1,9 +1,9 @@
-<?php 
+<?php
 
 
-CONST db_name = 'ps';
+CONST db_name = 'mediaons_ps';
 
-CONST db_username = 'root';
+CONST db_username = 'mediaons_root';
 
-CONST db_password = 'root';
+CONST db_password = 'Medians@2020';
 
