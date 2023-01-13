@@ -16,14 +16,11 @@ class CustomerController
 	private $repo;
 
 
-	function __construct()
+	function __construct($app)
 	{
 
-		$this->repo = new Repo\Customers\CustomerRepository();
+		$this->repo = new Repo\Customers\CustomerRepository($app);
 
-		$this->LeadSourcesrepo = new Repo\Leads\LeadSourcesRepository();
-
-		$this->AgentRepo = new Repo\Users\UserRepository();
 
 	}
 
@@ -34,7 +31,6 @@ class CustomerController
 	 */
 	public function index($request, $app)
 	{
-		$this->AgentRepo->app = $app;
 		return render('views/admin/customers/list.html.twig', [
 			'items' =>  $this->repo->get(),
 	        'title' => 'Customers',
@@ -49,13 +45,9 @@ class CustomerController
 	 */
 	public function create($request, $app)
 	{
-		$this->AgentRepo->app = $app;
 		return render('views/admin/customers/create.html.twig', [
 	        'title' => 'Customers',
 	        'Model' => $this->repo->getModel(),
-	        'agents' => $this->AgentRepo->get(),
-	        'sources' => $this->LeadSourcesrepo->getModel()->get(),
-	        'stages' => $this->repo->getModel()->LoadStages(),
 	        'app' => $app,
 	    ]);
 	} 

@@ -68,7 +68,7 @@ function getMenuList()
             [
                 // array('title'=>'Administrators',  'icon'=>'fa-dashboard', 'link'=>'users/admin'),
                 array('title'=>'Managers',  'icon'=>'fa-dashboard', 'link'=>'users/managers'),
-                // array('title'=>'Agents',  'icon'=>'fa-dashboard', 'link'=>'users/agents'),
+                array('title'=>'Users',  'icon'=>'fa-dashboard', 'link'=>'users/agents'),
             ]
         ),
 

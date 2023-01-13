@@ -29,12 +29,12 @@ class CustomerRepository
 
 	public function find($customerId)
 	{
-		return Customer::with('Agent','Source', 'Stage', 'properties')->find($customerId);
+		return Customer::find($customerId);
 	}
 
 	public function get($limit = 100)
 	{
-		return Customer::with('Agent','Source', 'stage', 'properties')->limit($limit)->get();
+		return Customer::limit($limit)->get();
 	}
 
 	public function getByEmail($email)
