@@ -264,7 +264,8 @@ class DevicesRepository
 
 		$Object = new OrderDevice;
 		// Return the FBUserInfo object with the new data
-    	$Object = $Object->create( (array) $data)->save();
+    	$Object = $Object->create( (array) $data);
+    	$Object->update( $data);
 
     	return $Object;
     } 
