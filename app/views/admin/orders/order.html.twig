@@ -86,17 +86,17 @@
                                             </tr>
                                         </thead>
                                         <tbody class="text-center">
-                                            {% for device_order in order.order_devices %}
+                                            {% for orderdevice in order.order_devices %}
                                             <tr>
-                                                <td>{{device_order.device.name}}</td>
+                                                <td>{{orderdevice.device.name}}</td>
                                                 <td>Booking</td>
-                                                <td>{{device_order.device_cost}} {{app.currency}}</td>
-                                                <td>{{device_order.duration_hours}}</td>
-                                                <td class="text-end">{{device_order.subtotal}} {{app.currency}}</td>
+                                                <td>{{orderdevice.device_cost}} {{app.currency}}</td>
+                                                <td>{{orderdevice.duration_hours}}</td>
+                                                <td class="text-end">{{orderdevice.subtotal}} {{app.currency}}</td>
                                             </tr>
 
-                                            {% if device_order.products %}
-                                                {% for device_product in device_order.products %}
+                                            {% if orderdevice.products %}
+                                                {% for device_product in orderdevice.products %}
                                                 <tr>
                                                     <td>{{device_product.product.name}}</td>
                                                     <td>Product</td>
@@ -130,10 +130,9 @@
                             <div class="invoice-total-card">
                                 <div class="invoice-total-box">
                                     <div class="invoice-total-inner">
-                                        <p>Taxable <span>{{order.subtotal}} {{app.currency}}</span></p>
+                                        <p class="mb-0">Sub total <span>{{order.subtotal}} {{app.currency}}</span></p>
                                         <p>Tax <span>{{order.tax}} {{app.currency}}</span></p>
                                         <p>Discount <span>{{order.discount}} {{app.currency}}</span></p>
-                                        <p class="mb-0">Sub total <span>{{order.subtotal}} {{app.currency}}</span></p>
                                     </div>
                                     <div class="invoice-total-footer">
                                         <h4>Total Amount <span>{{order.total_cost}} {{app.currency}}</span></h4>

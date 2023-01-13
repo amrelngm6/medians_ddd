@@ -49,6 +49,11 @@ class StockRepository
 			$query->where('created_by', $params->get('by'));
 		}
 
+		if (!empty($params->get('created_by')))
+		{
+			$query->where('created_by', $params->get('created_by'));
+		}
+
 		if (!empty($params->get('type')) && in_array($params->get('type'), ['add', 'pull']) )
 		{
 			$query->where('type', $params->get('type'));
@@ -109,9 +114,13 @@ class StockRepository
 	/*
 	// Find count by month
 	*/
-	public function getByProduct($product ) 
+	public function getLatest($limit ) 
 	{
-	  	return Stock::where('product', $product)->get();
+	  	return Stock::where('provider_id', $this->app->provider->id)
+	  	->where('type', 'pull')
+	  	->with('product','user')
+	  	->limit($limit)
+	  	->orderBy('id', 'DESC');
 	}
 	
 

@@ -43,7 +43,7 @@ class OrderDevice extends CustomController
 	*/
 	// public $timestamps = null;
 
-	public $appends = ['duration', 'duration_time', 'currency', 'subtotal', 'duration_hours'];
+	public $appends = ['duration', 'duration_time', 'currency', 'subtotal', 'products_subtotal', 'duration_hours'];
 
 
 	public function getCurrencyAttribute() 
@@ -68,6 +68,15 @@ class OrderDevice extends CustomController
 	public function getSubtotalAttribute() 
 	{
         return round(number_format($this->device_cost) * $this->duration_hours, 2) ;
+	}
+
+
+	/**
+	 * Get subtotal for purchased products
+	 */ 
+	public function getProductsSubtotalAttribute() 
+	{
+        return round($this->products->sum('price'), 2) ;
 	}
 
 

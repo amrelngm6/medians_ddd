@@ -103,7 +103,7 @@ export default
             showList: true,
         }
     },
-    props: ['site_url', 'user', 'lang'],
+    props: ['site_url', 'user', 'lang', 'role_id'],
     mounted: function() 
     {
 
@@ -154,31 +154,30 @@ export default
         submit() {
 
             const params = new URLSearchParams([]);
-            params.append('type', this.User.id ?  'User.update' : 'User.create');
+            let type = this.User.id ?  'update' : 'create';
+            params.append('type', 'User.' + type);
             if (this.User.id)
             {
                 params.append('params[user][id]', this.User.id);
             }
 
-            params.append('params[user][first_name]', this.User.first_name);
-            params.append('params[user][last_name]', this.User.last_name);
-            params.append('params[user][phone]', this.User.phone);
-            params.append('params[user][email]', this.User.email);
-            params.append('params[user][role_id]', this.User.role_id);
-            params.append('params[user][active]', this.User.active);
-            this.handleRequest(params).then(data => { 
+            params.append('params[user][first_name]', this.User.first_name ? this.User.first_name : '');
+            params.append('params[user][last_name]', this.User.last_name ? this.User.last_name : '');
+            params.append('params[user][password]', this.User.password ? this.User.password : '');
+            params.append('params[user][phone]', this.User.phone ? this.User.phone : '');
+            params.append('params[user][email]', this.User.email ? this.User.email : '');
+            params.append('params[user][role_id]', this.User.role_id ? this.User.role_id : this.role_id);
+            params.append('params[user][active]', this.User.active ? this.User.active : 0);
+            this.handleRequest(params, '/api/'+type).then(data => { 
                 this.$alert(data.result);
             });
         },
-        async handleRequest(params) {
+        async handleRequest(params, url = '/') {
 
             // Demo json data
-            return await axios.post('/', params.toString()).then(response => 
+            return await axios.post(url, params.toString()).then(response => 
             {
-                if (response.data.status == true)
-                    return response.data.result;
-                else 
-                    return response.data;
+                return response.data;
             });
         }
     }

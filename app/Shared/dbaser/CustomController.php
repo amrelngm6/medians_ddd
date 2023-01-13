@@ -9,6 +9,11 @@ use Medians\Domain\Users\User;
 class CustomController extends Model
 {
 
+	function __construct()
+	{
+		$this->orderBy('id', 'DESC');
+	}
+
 	function can($permission, $app)
 	{
 	    if (isset($app->auth->role_id))

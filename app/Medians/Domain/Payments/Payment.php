@@ -36,6 +36,11 @@ class Payment extends CustomController
 
 
 
+	public function getFields()
+	{
+		return $this->fillable;
+	}
+
 	public function user()
 	{
 		return $this->hasOne(User::class, 'id', 'created_by');

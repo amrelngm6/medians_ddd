@@ -103,8 +103,8 @@ class DevicesRepository
 		if (!empty($params->get('start')) && !empty($params->get('end')))
 		{
 			$start = date('Y-m-d H:i:s', strtotime(date($params->get('start'))));
-			$end = date('Y-m-d 00:00:00', strtotime(date($params->get('end'))));
-			$query->whereBetween('start_time', [$params->get('start'), $params->get('end')]);
+			$end = date('Y-m-d 23:59:59', strtotime(date($params->get('end'))));
+			$query->whereBetween('start_time', [$start, $end]);
 		}
 
 		return $query->limit($limit)->orderBy('id', 'DESC')->get();
@@ -123,6 +123,16 @@ class DevicesRepository
 			$end = date('Y-m-d 23:59:59', strtotime(date($params['end'])));
 			$query->whereBetween('start_time', [$start, $end]);
 		}
+
+		return $query->limit($limit)->orderBy('id', 'DESC');
+	}
+
+
+	public function orderProducts($params,$limit = 10)
+	{
+		$query = OrderDevice::with('products')->whereHas('products', function($q){
+			})
+		->where('provider_id', $this->app->provider->id);
 
 		return $query->limit($limit)->orderBy('id', 'DESC');
 	}
@@ -280,8 +290,10 @@ class DevicesRepository
 		$newData['status'] = $data['status'];
 		if ($data['status'] == 'completed')
 		{
-			$newData['end_time'] = date('Y-m-d H:i:s');
+			$bookingDay = date('Ymd', strtotime($data['startStr']));
+			$newData['end_time'] = (date('Ymd') > $bookingDay) ? date('Y-m-d 23:59:59', strtotime($data['startStr'])) : date('Y-m-d H:i:s');
 		}
+
 
 		// Return the FBUserInfo object with the new data
     	$Object->update( (array) $newData);
@@ -318,7 +330,7 @@ class DevicesRepository
 		$newData['created_by'] = $this->app->auth->id;
 
 		// Return the FBUserInfo object with the new data
-    	OrderDeviceItem::create($newData);
+    	OrderDeviceItem::create($newData)->update($newData);
 
     	return $Object;
 

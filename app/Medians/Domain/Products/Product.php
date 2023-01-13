@@ -57,6 +57,7 @@ class Product extends CustomController
 	public function pullStock($qty)
 	{
 		$this->stock = !empty($this->stock) ? (number_format($this->stock) - number_format($qty)) : 0;
+		
 		return $this;
 	}
 

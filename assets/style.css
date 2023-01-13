@@ -585,3 +585,7 @@ body .swal2-container
 {
   z-index: 9999;
 }
+body .mx-datepicker-popup
+{
+  z-index: 999999;
+}

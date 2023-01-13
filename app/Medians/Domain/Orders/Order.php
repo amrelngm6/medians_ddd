@@ -44,6 +44,24 @@ class Order  extends CustomController
 	// public $timestamps = null;
 
 
+	public $appends = ['products_subtotal'];
+
+	public function getProductsSubtotalAttribute()
+	{
+		$cost = 0;
+
+		if ($this->order_devices)
+		{
+			foreach ($this->order_devices as $key => $value) 
+			{
+				$cost = $cost + $value->products_subtotal;
+			}
+		}
+
+		return $cost;
+	}
+
+	
 	public function getFields()
 	{
 		return $this->fillable;

@@ -4,11 +4,13 @@
         <div class="relative w-full h-full" v-if="!showLoader && activeItem && !$parent.showConfirm && (!activeItem.status || activeItem.status == 'active')">
             
             <!-- Event modal -->
-            <div class="top-20 relative mx-auto w-full bg-white p-6 rounded-lg" style="max-width: 600px;" >
-                <div class="w-full block gap-4 py-2 border-b  border-gray-200">
+            <div class="top-20 relative mx-auto w-full bg-white p-6 rounded-lg overflow-y-auto" style="max-width: 600px; max-height: 500px;" >
 
+                <div class="w-full block gap-4 py-2 border-b  border-gray-200">
                     <div @click="$parent.showConfirm = true" v-if="activeItem.id" class="cursor-pointer absolute right-4 top-4 ">
-                        <span class="text-lg font-semibold text-red-600">Finish</span>
+                        <div class="w-full flex gap gap-4">
+                            <span class="text-lg font-semibold text-red-600">Finish</span>                            
+                        </div>
                     </div>
                     <label class="w-full">Game</label>
 
@@ -26,6 +28,39 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Purchased products -->
+                <div v-if="activeItem.products && activeItem.products.length" class=" pb-4">
+                    <span class="text-md font-semibold w-full block py-4">Purchased Products</span>
+                    <div v-for="product in activeItem.products" v-if="product" class="font-semibold w-full flex gap-4 py-2 border-b border-gray-200">
+                        <label class="w-full text-purple-600" v-text="product.product_name"></label>
+                        <span class="w-40 text-md p-2 text-red-600" v-if="activeItem.status != 'paid'" @click="removeProduct(product)">Remove</span>
+                        <span class="w-20 flex text-md p-2 text-right"> 
+                            <span v-text="product.price"></span>
+                            <span class="px-1 text-sm" @click="query(product)" v-text="activeItem.currency"></span>
+                        </span>
+                    </div>
+                    <div class="font-semibold w-full flex gap-4 py-2 border-b border-gray-200 ">
+                        <label class="w-full text-purple-600" ></label>
+                        <input disabled class="w-full text-lg p-2 text-red-600 text-right" :value="products_subtotal()+' '+activeItem.currency">
+                    </div>
+                </div>
+
+                <!-- Applicable products -->
+                <div class="w-full block" v-if="activeItem.id" >
+                    <div v-if="products && products.length" class=" pb-4">
+                        <span class="text-red-600 text-md font-semibold w-full block my-4 cursor-pointer py-2 px-4 rounded-lg border border-gray-200" @click="viwMoreProducts()">Add More Products</span>
+                        <div v-for="product in products" v-if="product && showMoreProducts" class="font-semibold w-full flex gap-4 py-2 border-b border-gray-200">
+                            <label class="w-full text-purple-600" v-text="product.name"></label>
+                            <span class="w-40 text-md p-2 text-purple-600"   @click="addProduct(product)">Add to cart</span>
+                            <span class="w-20 flex text-md p-2 text-right"> 
+                                <span v-text="product.price"></span>
+                                <span class="px-1 text-sm" @click="query(product)" v-text="activeItem.currency"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="w-full flex gap-4 py-2 border-b border-gray-200">
                     <label class="w-full">Start</label>
                     <input @change="updateInfo(activeItem)" class="w-full" type="time" v-model="activeItem.start_time">
@@ -59,13 +94,14 @@ export default {
         return {
                 
                 showLoader: false,
-                
+                showMoreProducts: false,
                 activeItem: {},
 
             };
         },
         props: [
             'modal',
+            'products',
             'games'
         ],
         
@@ -77,11 +113,87 @@ export default {
         },
         methods: {
 
+            products_subtotal()
+            {
+                let subtotal = 0;
+
+                if (this.activeItem.products)
+                {
+                    for (var i = this.activeItem.products.length - 1; i >= 0; i--) {
+                        if (this.activeItem.products[i])
+                        {
+                            subtotal =   (Number(this.activeItem.products[i].subtotal) + Number(subtotal));
+                        }
+                    }
+                }
+                return subtotal;
+            },
+
+
+            /**
+             * View more products
+             */
+            viwMoreProducts()
+            {
+                this.showMoreProducts = !this.showMoreProducts;
+            },
+
             updateInfo(activeItem)
             {
                 this.showLoader = true
                 this.$parent.updateInfo(activeItem)
                 this.showLoader = false
+            },
+
+            query()
+            {
+                const params = new URLSearchParams([]);
+                params.append('type', 'OrderDevice');
+                params.append('model', 'OrderDevice');
+                params.append('id',  this.activeItem.id);
+                this.handleRequest(params, '/api').then(response => {
+                    this.activeItem = response
+                    this.activeItem.start_time = this.$parent.dateTime(response.start_time);
+                    this.activeItem.end_time = this.$parent.dateTime(response.end_time);
+                })
+            },
+            addProduct(product)
+            {
+                const params = new URLSearchParams([]);
+                params.append('type', 'OrderDevice.addProduct');
+                params.append('model', 'OrderDevice');
+                params.append('params[product]', JSON.stringify(product));
+                params.append('params[device]', JSON.stringify(this.activeItem));
+                this.handleRequest(params, '/api/create').then(response => {
+                    this.query()
+                    this.$alert(response)
+                })
+            },
+            removeProduct(product)
+            {
+                const params = new URLSearchParams([]);
+                params.append('type', 'OrderDevice.removeProduct');
+                params.append('params[product]', JSON.stringify(product));
+                this.handleRequest(params, '/api/delete').then(response => {
+                    this.query()
+                })
+            },
+
+            async handleRequest(params, url='/') {
+
+                var t = this;
+                t.showLoader = true
+                // Demo json data
+                return await axios.post(url, params.toString()).then(response => 
+                {
+                    t.showLoader = false
+
+                    if (response.data.status)
+                        return response.data.result;
+                    else 
+                        return response.data;
+                 
+                });
             }
         }
     }

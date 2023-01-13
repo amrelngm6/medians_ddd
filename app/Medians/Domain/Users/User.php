@@ -22,7 +22,6 @@ class User extends CustomController
     	'first_name',
     	'last_name',
     	'email',
-    	'password',
     	'phone',
     	'profile_image',
     	'role_id',
@@ -106,4 +105,15 @@ class User extends CustomController
 	{
 		return $this->hasOne(Role::class, 'id', 'role_id');
 	}
+
+	
+	/**
+	 * Password encryption method
+	 * @param $value String 
+	 */ 	
+	public static function encrypt(String $value ) : String 
+	{
+		return sha1(md5($value));
+	}
+
 }

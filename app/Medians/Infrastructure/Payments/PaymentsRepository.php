@@ -43,7 +43,9 @@ class PaymentsRepository
 	{
 
 		return Payment::with('user')
-		->where('provider_id', $this->app->provider->id)->get();
+		->where('provider_id', $this->app->provider->id)
+		->orderBy('id', 'DESC')
+		->get();
 	}
 
 

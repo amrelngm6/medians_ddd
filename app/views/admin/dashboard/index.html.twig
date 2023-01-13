@@ -3,7 +3,7 @@
 <div class="w-full overflow-y-auto" >
     <div class="mb-6">
         <div class="row pt-2">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card bg-gradient-danger card-img-holder text-white h-100">
                     <div class="card-body">
                         <img src="/uploads/img/circle.png" class="card-img-absolute" alt="circle-image">
@@ -12,7 +12,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card bg-gradient-info card-img-holder text-white h-100">
                     <div class="card-body">
                         <img src="/uploads/img/circle.png" class="card-img-absolute" alt="circle-image">
@@ -21,12 +21,21 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card bg-gradient-success card-img-holder text-white h-100">
                     <div class="card-body">
                         <img src="/uploads/img/circle.png" class="card-img-absolute" alt="circle-image">
-                        <h4 class="font-weight-normal mb-3">Today Orders</h4>
-                        <span class="text-2xl">{{today_orders_count}}</span>
+                        <h4 class="font-weight-normal mb-3">Today Sold products</h4>
+                        <span class="text-2xl">{{today_order_products_count}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-gradient-danger card-img-holder text-white h-100">
+                    <div class="card-body">
+                        <img src="/uploads/img/circle.png" class="card-img-absolute" alt="circle-image">
+                        <h4 class="font-weight-normal mb-3">Active bookings</h4>
+                        <span class="text-2xl">{{active_order_devices_count}}</span>
                     </div>
                 </div>
             </div>
@@ -98,6 +107,40 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mb-0 w-full">
+        <h4 class="p-4 ml-4">Latest sold products</h4>
+        <hr />
+        <div class="card-body w-full">
+            <div class="col-md-12">
+                <div class="table-responsive w-full">
+                    <table class="w-full table table-striped table-nowrap custom-table mb-0 datatable">
+                        <thead>
+                            <tr>
+                                <th class="w-10">ID</th>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Date</th>
+                                <th>By</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in latest_order_products %}
+                            <tr class="text-center">
+                                <td>{{item.product.id}}</td>
+                                <td>
+                                    <a href="/products/edit/{{item.product.id}}">{{item.product.name}}</a>
+                                </td>
+                                <td class="text-red-500">{{item.product.price}} {{app.currency}}</td>
+                                <td>{{item.created_at | date('Y-m-d H:i a')}}</td>
+                                <td>{{item.user.name}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

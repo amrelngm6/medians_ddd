@@ -54,7 +54,7 @@ class DeviceController
 	    return render('views/admin/devices/calendar.html.twig', [
 	        'title' => 'Devices list',
 	        'app' => $app,
-	        'products' => $this->productsRepo->get(),
+	        'products' => $this->productsRepo->getItems(['status'=>true, 'stock'=>true]),
 	        'devicesList' => $this->repo->get(50),
 	        'typesList' => $this->CategoryRepo->categories(Device::class),
 	    ]);
@@ -216,10 +216,10 @@ class DeviceController
 			$product['qty'] = 1;
 			$save = $this->repo->storeProduct($params['id'], $product);
 
-        	return array('success'=>1, 'result'=> $save);
+        	return array('status'=>'success', 'result'=> 'Added '. $save->product_name);
 
         } catch (Exception $e) {
-            return  array('error'=>$e->getMessage());
+            return  $e->getMessage();
         }
 	}
 
@@ -233,7 +233,7 @@ class DeviceController
 
 			$save = $this->repo->removeProduct($params['id']);
 
-        	return array('success'=>1, 'result'=> $save);
+        	return array('status'=>success, 'result'=> $save);
 
         } catch (Exception $e) {
             return  array('error'=>$e->getMessage());

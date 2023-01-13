@@ -25,6 +25,14 @@ class UserRepository
 		return User::with('Role')->with('provider')->find($customerId);
 	}
 
+	public function checkDuplicate($param)
+	{
+		if (User::where('email', $param['email'])->first())
+		{
+			return 'Email already found';
+		}
+	}
+
 
 	public function get($limit = 100)
 	{
@@ -36,13 +44,20 @@ class UserRepository
 	/**
 	* Save item to database
 	*/
-	public static function store($data) 
+	public function store($data) 
 	{
 
 		$Model = new User();
-		
+
+		$Model = $Model->firstOrCreate($data);
+
+    	$Model->update($data);
+    	
+    	$data['id'] = $Model->id;
+    	$this->checkUpdatePassword($data);
+
 		// Return the FBUserInfo object with the new data
-    	return $Model->firstOrCreate( (array) $data);
+    	return $Model;
 
 	}
 	
@@ -50,14 +65,37 @@ class UserRepository
 	/**
 	* Update item to database
 	*/
-	public static function update($data) 
+	public function update($data) 
 	{
 		$Object = User::find($data['id']);
 		
 		// Return the FBUserInfo object with the new data
     	$Object->update( (array) $data);
     	
+    	$data['id'] = $Object->id;
+    	$this->checkUpdatePassword($data);
+
     	return $Object;	
+	}
+
+	/**
+	* Update item to database
+	*/
+	public static function checkUpdatePassword($data) 
+	{
+		if (isset($data['id']))
+		{
+			$Object = User::find($data['id']);
+		}
+
+		if (!empty($data['password']))
+		{
+			// Return the FBUserInfo object with the new data
+    		$Object->password =  User::encrypt($data['password']);
+    		$Object->save();
+		}
+    	
+    	return isset($Object) ? $Object : null;	
 	}
 
 

@@ -21,11 +21,11 @@
             </div>
             
             <div class="left-0 right-0 fixed mx-auto w-full " style="max-width: 600px; z-index: 99;" >
-                <div v-if="showBooking " class="relative">
+                <div v-if="showBooking " class="relative h-full ">
                     <calendar_modal :products="products" :modal="activeItem"></calendar_modal>
                 </div>
-                <div v-if="showActiveBooking"  class="relative">
-                    <calendar_active_item :games="games" :modal="activeItem"></calendar_active_item>
+                <div v-if="showActiveBooking"  class="relative h-full ">
+                    <calendar_active_item :games="games" :products="products" :modal="activeItem"></calendar_active_item>
                 </div>
             </div>
         </div>
@@ -206,6 +206,7 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
                     item.duration_hours = activeItem.duration_hours;
                     item.subtotal = activeItem.subtotal;
                     item.game = activeItem.game;
+                    item.products = activeItem.products;
                 }
                 this.$refs.side_cart.showCart = true
                 this.$refs.side_cart.addToCart(item);
@@ -279,14 +280,14 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
                     this.showBooking = true
 
                 }
-
                 this.games = this.activeEvent.event.extendedProps.games
                 this.activeItem.id = this.activeEvent.event.id;
                 this.activeItem.startStr = this.activeEvent.event.startStr
-                this.activeItem.start = this.dateTime(this.activeEvent.event.start)
-                this.activeItem.end = this.dateTime(this.activeEvent.event.end)
+                this.activeItem.created_at = this.activeEvent.event.startStr
                 this.activeItem.end_time = props.end_time;
                 this.activeItem.start_time = props.start_time;
+                this.activeItem.start = this.dateTime(this.activeEvent.event.start)
+                this.activeItem.end = this.dateTime(this.activeEvent.event.end)
                 this.activeItem.break_time = props.break_time;
                 this.activeItem.status = props.status;
                 this.activeItem.device = props.device;

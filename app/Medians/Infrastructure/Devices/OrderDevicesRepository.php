@@ -24,7 +24,7 @@ class OrderDevicesRepository
 	public function find($id)
 	{
 
-		return OrderDevice::with('products','game','user')->where('provider_id', $this->app->provider->id)->find($id);
+		return OrderDevice::with('products','game','user','device')->where('provider_id', $this->app->provider->id)->find($id);
 
 	}
 

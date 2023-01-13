@@ -44,6 +44,22 @@ class PaymentController
 	 * @param \Twig\Environment $twig
 	 * 
 	 */ 
+	public function create($request, $app) 
+	{
+		return render('views/admin/payments/create.html.twig', [
+	        'title' => 'New Payment',
+	        'app' => $app,
+	    ]);
+	}
+
+
+	/**
+	 * Admin index items
+	 * 
+	 * @param Silex\Application $app
+	 * @param \Twig\Environment $twig
+	 * 
+	 */ 
 	public function edit($id, $request, $app) 
 	{
 		return render('views/admin/payments/payment.html.twig', [

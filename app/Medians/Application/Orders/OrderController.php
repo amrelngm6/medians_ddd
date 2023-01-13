@@ -32,26 +32,11 @@ class OrderController
 	public function index($request, $app) 
 	{
 
-	    switch ($request->get('filter')) 
-	    {
-	        case 'lastweek':
-	            $query = $this->repo->getByDate(date('Y-m-d',strtotime('-1 week')), date('Y-m-d', strtotime('+1 day')));
-	            break;
 
-	        case 'month':
-	            $query = $this->repo->getByDate(date('Y-m-01', strtotime(date($request->get('month')))), date('Y-m-31', strtotime(date($request->get('month')))));
-	            break;
-
-	        case 'date':
-	        	$start = $request->get('start') ? date('Y-m-d', strtotime(date($request->get('start')))) : date('Y-m-d');
-	        	$end = $request->get('end') ? date('Y-m-d', strtotime(date($request->get('end')))) : date('Y-m-d');
-	        	$query = $this->repo->getByDate($start, $end);
-	        	break;	
-	        default:
-	        	$query = $this->repo->getByDate(date('Y-m-d'), date('Y-m-d', strtotime('+1 day')));
-	        	break;	
-	    }
-
+    	$params['start'] = $request->get('start') ? date('Y-m-d', strtotime(date($request->get('start')))) : date('Y-m-d');
+    	$params['end'] = ($request->get('end') && $request->get('start')) ? date('Y-m-d', strtotime(date($request->get('end')))) : date('Y-m-d');
+    	$params['created_by'] = $request->get('created_by') ? $request->get('created_by') : null;
+    	$params['status'] = $request->get('status') ? $request->get('status') : null;
 
 	    $app->currentPage = '/orders';
 
@@ -59,10 +44,10 @@ class OrderController
 	    return render('views/admin/orders/orders.html.twig', [
 	        'title' => 'Orders list',
 	        'app' => $app,
-	        'orders' => $query,
-	        'todayOrders' => count($this->repo->getByDate(date('Y-m-d' ), date('Y-m-d', strtotime('+1 day') )  )),
-	        'lastWeekOrders' => count($this->repo->getByDate(date('Y-m-d',strtotime('-1 week')), date('Y-m-d', strtotime('+1 day')))),
-	        'lastMonthOrders' => count($this->repo->getByDate(date('Y-m'), date('Y-m', strtotime('+1 month')))),
+	        'orders' => $this->repo->getByDate($params)->get(),
+	        'todayOrders' => $this->repo->getByDate(['start'=>date('Y-m-d' ), 'end'=>date('Y-m-d', strtotime('+1 day') )])->count(),
+	        'lastWeekOrders' => $this->repo->getByDate(['start'=>date('Y-m-d',strtotime('-1 week')), 'end'=>date('Y-m-d', strtotime('+1 day'))])->count(),
+	        'lastMonthOrders' => $this->repo->getByDate(['start'=>date('Y-m'), 'end'=>date('Y-m', strtotime('+1 month'))])->count(),
 
 	    ]);
 
@@ -121,8 +106,8 @@ class OrderController
 			$data['discount'] = '0';
 			$data['discount_code'] = '';
 			$data['code'] = $this->genrateCode();
-			$data['subtotal'] = $cost;
-			$data['total_cost'] = $cost;
+			$data['subtotal'] = $this->getSubTotal($params);
+			$data['total_cost'] = $this->getSubTotal($params) ;
 			$data['date'] = date('Y-m-d');
 			$data['created_by'] = $app->auth->id;
 			$data['status'] = 'paid';
@@ -133,7 +118,6 @@ class OrderController
         	return isset($save->id) ? 'Order Created' : '' ;
 
         } catch (Exception $e) {
-            echo $e->getMessage();
             return  array('error'=>$e->getMessage());
         }
 
@@ -156,6 +140,29 @@ class OrderController
 
 	}	
 
+
+	public function getSubTotal($params)  
+	{
+		$cost = 0;
+		if (!empty($params))
+		{
+			foreach ($params as $key => $value) 
+			{
+				$cost = round(((float) $value->subtotal) + ((float) $cost), 2);
+
+				if (!empty($value->products))
+				{
+					foreach ($value->products as $product) 
+					{
+						$cost = round(((float) $product->subtotal) + ((float) $cost), 2);
+					}		
+				}
+			}
+		}
+
+
+		return $cost;
+	}
 
 	public function calculateCost($item)  
 	{

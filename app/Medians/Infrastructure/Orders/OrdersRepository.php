@@ -3,7 +3,9 @@
 namespace Medians\Infrastructure\Orders;
 
 use Medians\Domain\Orders\Order;
+use Medians\Domain\Products\Stock;
 use Medians\Domain\Devices\OrderDevice;
+use Medians\Domain\Devices\OrderDeviceItem;
 
 class OrdersRepository
 {
@@ -50,61 +52,7 @@ class OrdersRepository
 
 	}
 
-	/*
-	// Find item by `code` 
-	*/
-	public function getByCode($code) 
-	{
 
-		return  Order::with('device')
-			->with('items')
-			->where('code', $code)
-			->first();
-
-	}
-
-	/*
-	// Find item by `discountCode` 
-	*/
-	public function getByDiscountCode($discountCode) 
-	{
-		return  Order::with('device')
-			->with('items')
-			->where('discountCode', $discountCode)
-			->get();
-	}
-
-	/*
-	// Find all items 
-	*/
-	public function getAll($providerId, $limit = null)
-	{
-		return  Order::where('providerId', $providerId)
-		->with('items')
-		->with('device')
-		->limit($limit)
-		->get();
-	}
-
-
-	/*
-	// Find all items by month & provider
-	*/
-	public function getByMonth($providerId, $month, $nextmonth )
-	{
-		
-
-	  	return  Order::where('providerId' , $providerId)
-	  			->with('items')
-	  			->with(['device_order'=>function($q)
-	  			{
-	  				return $q->with(['device']);
-	  			}])
-	  			->whereBetween('updated_at' , [date('Y-m-d H:i:s', strtotime(date($month))) , date('Y-m-d H:i:s', strtotime(date($nextmonth)))])
-	  			->get(); 
-	}
-	
-	
 	/*
 	// Find all items by month
 	*/
@@ -151,12 +99,26 @@ class OrdersRepository
 	/*
 	// Find all items between two days By ProviderId
 	*/
-	public function getByDate($date1, $date2 )
+	public function getByDate($params )
 	{
 
-	  	return  Order::where('provider_id' , $this->app->provider->id)
-  			->whereBetween('date' , [date('Y-m-d', strtotime(date($date1))) , date('Y-m-d', strtotime(date($date2)))])
-			->get();
+	  	$check = Order::where('provider_id' , $this->app->provider->id);
+
+	  	if (!empty($params["created_by"]))
+	  	{
+	  		$check = $check->where('created_by', $params['created_by']);
+	  	}
+
+	  	if (!empty($params["status"]))
+	  	{
+	  		$check = $check->where('status', $params['status']);
+	  	}
+	  	if (!empty($params["start"]))
+	  	{
+	  		$check = $check->whereBetween('date' , [$params['start'] , $params['end']]);
+	  	}
+  		
+  		return $check->orderBy('id', 'DESC');
 	}
 
 	/*
@@ -197,6 +159,8 @@ class OrdersRepository
 	 	
 	    	$this->updateOrderDevice($Object, $items);
 
+	    	$this->updateOrderProducts($Object, $items);
+
 	    	return $Object;
 
 		} catch (Exception $e) {
@@ -214,6 +178,41 @@ class OrdersRepository
     	}
 
 
+    }
+
+
+    public function updateOrderProducts($Object, $items)
+    {
+
+    	foreach ($items as $key => $value) 
+    	{
+    		foreach ($value->products as $product) {
+	    		$item = OrderDeviceItem::with('product')->find($product->id);
+	    		$item->update(['order_code' => $Object->code, 'status' => 'paid']);
+	    		$updateStock = $item->product->pullStock($item->qty)->save();
+	    		$updateStock = $this->pullStock($item, $Object);
+    		}
+    	}
+    }
+
+
+    public function pullStock($item, $Object)
+    {
+
+		$stocklog = [
+	    	'product_id' => $item->product->id,
+	    	'provider_id' => $item->product->provider_id,
+	    	'stock' => $item->qty,
+	    	'type' =>'pull',
+	    	'date' => date('Y-m-d'),
+			'model_type' => Order::class,	
+			'model_id' => $Object->id,	
+	    	'created_by' => $Object->created_by,
+		];
+
+		$updateStock = Stock::create($stocklog)->update($stocklog);
+
+		return $updateStock;
     }
 
 

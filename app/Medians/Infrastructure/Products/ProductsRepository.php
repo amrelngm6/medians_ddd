@@ -43,6 +43,20 @@ class ProductsRepository
 		->where('provider_id', $this->app->provider->id)->get();
 	}
 
+	/**
+	 * Find items by `params` 
+	*/
+	public function getItems($params = null) 
+	{
+		$query = Product::with('category');
+
+		$query = isset($params['status']) ? $query->where('status', '!=', '0') : $query;
+
+		$query = isset($params['stock']) ? $query->where('stock','>',0) : $query;
+		
+		return $query->where('provider_id', $this->app->provider->id)->get();
+	}
+
 
 
 	/**

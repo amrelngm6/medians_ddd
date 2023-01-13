@@ -118,14 +118,6 @@ $app->post('', function () use ( $app, $request)
         switch ($request->get('type')) 
         {
 
-            case 'User.create':
-                $returnData =  (new apps\Users\UserController())->store($request, $app); 
-                break;
-
-            case 'User.update':
-                $returnData =  (new apps\Users\UserController())->update($request, $app); 
-                break;
-
             case 'userLogin':
                     
                     $returnData =  (new apps\Auth\AuthService( new AdminRepository() ))->userLogin($request, $app); 
@@ -191,7 +183,13 @@ $app->match('login', function () use ($request, $app)
 */
 $app->match('/dashboard', function () use ($request,  $app) 
 {
-    return (new apps\DashboardController($app))->index($request,  $app);
+    try {
+
+        return (new apps\DashboardController($app))->index($request,  $app);
+
+    } catch (Exception $e) {
+        return $e->getMessage();
+    }
 });
 
 
@@ -342,12 +340,12 @@ if (isset($app->auth->id))
             if ($action == 'create')
             {
                 if ($action == 'agents')
-                    return $UserController->createAgent($request, $app);
+                    return $UserController->create($request, $app, 3);
 
                 if ($action == 'managers')
-                    return $UserController->createManager($request, $app);
+                    return $UserController->createManager($request, $app, 3);
     
-                return $UserController->create($request, $app);
+                return $UserController->create($request, $app, 3);
             }
 
             if ($action == 'edit')
@@ -365,7 +363,7 @@ if (isset($app->auth->id))
                 return $UserController->index( $UserController->queryByRole(1), 'Administrators', $app );
 
             if ($app->auth->can('view_admins', $app) && $app->auth->role_id == 3)
-                return $UserController->index( $UserController->queryByRole(3), 'Users', $app );
+                return $UserController->index( $UserController->queryByRole(3), 'Users',  $app );
 
 
             return '';

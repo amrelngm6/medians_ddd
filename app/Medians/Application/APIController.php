@@ -76,12 +76,19 @@ class APIController
 				case 'Stock.create':
 					$return = (new Products\StockController($app))->store($request, $app);
 					break;
+				case 'Payment.create':
+					$return = (new Payments\PaymentController($app))->store($request, $app);
+					break;
 				case 'Event.create':
-
 					$params = (array)  json_decode($request->get('params')['event']);
 					$check = (new Repo\Devices\DevicesRepository($app))->storeOrder($params);
 					$return = isset($check->id) ? ['result'=>'Created'] : ['result'=>'Error'];
 					break;
+
+	            case 'User.create':
+	                $return =  (new Users\UserController($app))->store($request, $app); 
+	                break;
+
 			}
 
 			return response(json_encode($return), $app);
@@ -119,6 +126,10 @@ class APIController
 				break;
             case 'Settings.update':
                 $returnData = (new Settings\SettingsController($app))->update($request, $app); 
+                break;
+
+            case 'User.update':
+                $return =  (new Users\UserController($app))->update($request, $app); 
                 break;
 
 		}

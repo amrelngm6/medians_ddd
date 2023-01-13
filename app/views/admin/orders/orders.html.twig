@@ -5,8 +5,12 @@
         <!-- today tab 1 -->
         <!-- New releases -->
         <div class="px-4 mb-6 py-4 rounded-lg shadow-lg bg-white dark:bg-gray-700 ">
-            <h1 class="font-bold text-lg ">{{title}}</h1>
-            <hr class="mt-2" />
+            <div class="w-full flex">
+                <h1 class="font-bold text-lg w-full">{{title}}</h1>
+                <div class="w- relative" style="z-index:9">
+                    <date-picker @change="openPageByDate('{{app.request.uri }}', $event)" placeholder="{{startdate}} - {{enddate}}" range format="YYYY-MM-DD"></date-picker>
+                </div>
+            </div>
         </div>
         <div class="row ">
             <div class="col-md-8">
@@ -102,13 +106,6 @@
                         </div>
                     </div>
 
-                    <form action="{{formAction}}" method="POST" data-refresh="1" id="redirect-form" data-redirect="orders/month/" class="action p-8 py-0 m-auto rounded-lg  pb-10">
-                        <h1 class="m-auto  text-2xl mb-10 text-center">Filter by month</h1>
-                        <input type="month" id="redirect-value" class="h-12 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" >
-
-                        <button class="uppercase h-12 mt-3 text-white w-full rounded bg-red-700 hover:bg-red-800">Update</button>
-                    </form>
-                    
                 </div>
 
             </div>
@@ -117,10 +114,6 @@
     </main>
     
 
-    <script type="text/javascript">
-        function openOrderPage(code) {
-            window.location.href =  '{{app.CONF.url}}order/' + code;
-        }
-    </script>
+
 
 {% include 'views/admin/includes/footer.html.twig' %}

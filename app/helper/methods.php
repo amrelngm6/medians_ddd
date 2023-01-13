@@ -22,6 +22,11 @@ function render($path, $data)
 {
     global $twig;
 
+    $app = $data['app'];
+
+    $data['startdate'] = !empty($app->request->get('start')) ? $app->request->get('start') : date('Y-m-d');
+    $data['enddate'] = !empty($app->request->get('end')) ? $app->request->get('end') : date('Y-m-d');
+    
     return $twig->render($path, $data);
 } 
 

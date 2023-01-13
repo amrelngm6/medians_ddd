@@ -3,6 +3,7 @@
 
 
 <div class=" w-full overflow-y-auto h-full">
+
     <div class="crms-title flex bg-white mb-6 gap gap-6">
         <div class="w-full">
             <h3 class="gap gap-6 flex page-title m-0">
@@ -13,12 +14,11 @@
             </h3>
         </div>
         <div class="">
-            <ul class="breadcrumb text-right bg-white float-end m-0 ps-0 pe-0 flex gap gap-6">
-                <li class="breadcrumb-item"><a href="{{app.CONF.url}}dashboard">Dashboard</a></li>
-                <li class="breadcrumb-item active">{{title}}</li>
-            </ul>
+            <div class="relative" style="z-index:9">
+                <date-picker @change="openPageByDate('{{app.request.uri }}', $event)" placeholder="{{startdate}} - {{enddate}}" range format="YYYY-MM-DD"></date-picker>
+            </div>
         </div>
-        <a href="{{app.CONF.url}}devices/calendar" class="w-28 px-3 py-2 text-center rounded-lg bg-gradient-primary text-white">Add new </a>
+        <a href="{{app.CONF.url}}devices/calendar" class="w-32 px-3 py-2 text-center rounded-lg bg-gradient-primary text-white">Add new </a>
     </div>
     <div class="w-full">
         <div class="card mb-0">
@@ -39,7 +39,7 @@
                                 <th>Duration</th>
                                 <th>Status</th>
                                 <th>Order</th>
-                                <th>Cost</th>
+                                <th>Subtotal</th>
                                 <th>By</th>
                             </tr>
                         </thead>
@@ -60,7 +60,7 @@
                                 <td>
                                     <a class="text-purple-600" href="/orders/show/{{item.order_code}}">{{item.order_code}}</a>
                                 </td>
-                                <td><b class="text-red-500">{{item.subtotal}} {{item.currency}}</b></td>
+                                <td><b class="text-red-500">{{item.subtotal + item.products_subtotal}} {{item.currency}}</b></td>
                                 <td>{{item.user.name}}</td>
                             </tr>
                             {% endfor %}

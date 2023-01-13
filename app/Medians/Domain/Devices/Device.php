@@ -30,7 +30,7 @@ class Device extends CustomController
 	];
 
 
-	public $appends = ['picture', 'name'];
+	public $appends = ['picture', 'price', 'name'];
  
 
  	/**

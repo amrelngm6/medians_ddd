@@ -69,12 +69,12 @@ class UserController
 	 * Create page
 	 * 
 	 */
-	public function create($request, $app)
+	public function create($request, $app, $role_id = 3)
 	{
 		return render('views/admin/users/create.html.twig', [
 	        'title' => 'Users',
 	        'Model' => $this->repo->getModel(),
-	        '' => '',
+	        'role_id' => $role_id,
 	        'app' => $app,
 	    ]);
 	} 
@@ -101,18 +101,46 @@ class UserController
 	public function store($request, $app) 
 	{
 
-		$params = $request->get('params')['user'];
+		$params = (array)  $request->get('params')['user'];
 
 		try {
 
-			$params['provider_id'] = isset($app->provider->id) ? $app->provider->id : 0;
-			$Property = $this->repo->store((array) $params);
+			if ($this->validate($params))
+				return $this->validate($params);
 
-        	return array('success'=>1, 'result'=>'Created');
+			$params['role_id'] = !empty($params['role_id']) ? $params['role_id'] : 3;
+			$params['provider_id'] = isset($app->provider->id) ? $app->provider->id : 0;
+
+			$save = $this->repo->store($params);
+
+        	return array('status'=>1, 'result'=>'Created');
 
         } catch (Exception $e) {
-            return  array('error'=>$e->getMessage());
+            return  $e->getMessage();
         }
+	}
+
+
+
+	/**
+	*  Store item
+	*/
+	public function validate($params) 
+	{
+		$check = $this->repo->checkDuplicate($params);
+
+		if (empty($params['first_name']))
+			return ['result'=> 'Name required'];
+
+		if (empty($params['email']))
+			return ['result'=> 'Email required'];
+
+		if (empty($params['password']))
+			return ['result'=> 'Password required'];
+
+		if ($check)
+			return ['result'=>$check];
+
 	}
 
 
@@ -123,16 +151,17 @@ class UserController
 	public function update($request, $app) 
 	{
 
-		$params = $request->get('params')['user'];
+		$params = (array)  $request->get('params')['user'];
 
 		try {
 
-			$Property = $this->repo->update((array) $params);
+			$params['provider_id'] = isset($app->provider->id) ? $app->provider->id : 0;
+			$save = $this->repo->update($params);
 
-        	return array('success'=>1, 'result'=>'Updated');
+        	return array('status'=>true, 'result'=>'Updated');
 
         } catch (Exception $e) {
-            return  array('error'=>$e->getMessage());
+            return  $e->getMessage();
         }
 	}
 
