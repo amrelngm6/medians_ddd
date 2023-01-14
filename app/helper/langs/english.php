@@ -922,6 +922,7 @@ class Langs
 	} 
 
 
+
 	public static function vueLang()
 	{
 		$data = [];
@@ -937,6 +938,7 @@ class Langs
 		$data['type'] = Langs::__('type');
 		$data['apply'] = Langs::__('apply');
 		$data['subtotal'] = Langs::__('Subtotal');
+		$data['total_amount'] = Langs::__('TOTAL');
 		$data['game'] = Langs::__('Game');
 		$data['order_summary'] = Langs::__('Order Summary');
 		$data['start_playing'] = Langs::__('Start Playing');
@@ -949,8 +951,20 @@ class Langs
 		$data['single'] = Langs::__('Single');
 		$data['multi'] = Langs::__('Multi');
 		$data['update'] = Langs::__('update');
+		$data['duration'] = Langs::__('duration');
+		$data['information'] = Langs::__('info');
+		$data['price'] = Langs::__('price');
+		$data['cost'] = Langs::__('cost');
+		$data['alert'] = Langs::__('Alert');
+		$data['payment_method'] = Langs::__('PAYMENT_METHOD');
+		$data['order_status_is'] = Langs::__('order_status_is');
+		$data['promo_code'] = Langs::__('DISCOUNT_CODE');
+		$data['confirm_complete_booking'] = Langs::__('Are your sure you want to finish this booking');
+		$data['confirm'] = Langs::__('confirm');
+		$data['confirmation'] = Langs::__('confirmation');
 
 		return $data;
 	}
+
 }
 
