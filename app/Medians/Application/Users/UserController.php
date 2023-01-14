@@ -47,9 +47,9 @@ class UserController
 	{	
 		if ($app->auth->role_id == 1)
 		{
-			return $this->index( $this->queryByRole(1), 'Administrators', $app, $twig );
+			return $this->index( $this->queryByRole(1, $app), 'Administrators', $app, $twig );
 		} else {
-			return $this->index( $this->queryByRole(3), 'Users', $app, $twig );
+			return $this->index( $this->queryByRole(3, $app), 'Users', $app, $twig );
 		}
 	}
 
@@ -57,9 +57,9 @@ class UserController
 	/** 
 	 * Query users
 	 */
-	public function queryByRole($role_id)
+	public function queryByRole($role_id, $app = null)
 	{
-		return	$this->repo->getModel()->with('Role')->where('role_id', $role_id)->get();
+		return	$this->repo->getModel()->where('provider_id', $app->provider->id)->with('Role')->where('role_id', $role_id)->get();
 
 	} 
 
