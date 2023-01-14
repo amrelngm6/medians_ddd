@@ -72,7 +72,7 @@ class UserController
 	public function create($request, $app, $role_id = 3)
 	{
 		return render('views/admin/users/create.html.twig', [
-	        'title' => 'Users',
+	        'title' => __('Users'),
 	        'Model' => $this->repo->getModel(),
 	        'role_id' => $role_id,
 	        'app' => $app,
@@ -86,7 +86,7 @@ class UserController
 	public function edit($id, $request, $app)
 	{
 		return render('views/admin/users/create.html.twig', [
-	        'title' => 'Users',
+	        'title' => __('Users'),
 	        'Model' => $this->repo->find($id),
 	        'app' => $app,
 	    ]);
@@ -113,7 +113,7 @@ class UserController
 
 			$save = $this->repo->store($params);
 
-        	return array('status'=>1, 'result'=>'Created');
+        	return array('status'=>1, 'result'=>__('Created'));
 
         } catch (Exception $e) {
             return  $e->getMessage();
@@ -130,13 +130,13 @@ class UserController
 		$check = $this->repo->checkDuplicate($params);
 
 		if (empty($params['first_name']))
-			return ['result'=> 'Name required'];
+			return ['result'=> __('Name required')];
 
 		if (empty($params['email']))
-			return ['result'=> 'Email required'];
+			return ['result'=> __('Email required')];
 
 		if (empty($params['password']))
-			return ['result'=> 'Password required'];
+			return ['result'=> __('Password required')];
 
 		if ($check)
 			return ['result'=>$check];

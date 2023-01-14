@@ -7,12 +7,13 @@
             <div class="top-20 relative mx-auto w-full bg-white p-6 rounded-lg overflow-y-auto" style="max-width: 600px; max-height: 500px;" >
 
                 <div class="w-full block gap-4 py-2 border-b  border-gray-200">
-                    <div @click="$parent.showConfirm = true" v-if="activeItem.id" class="cursor-pointer absolute right-4 top-4 ">
+                    <div @click="$parent.showConfirm = true" v-if="activeItem.id" class="cursor-pointer absolute left-4 top-4 ">
                         <div class="w-full flex gap gap-4">
-                            <span class="text-lg font-semibold text-red-600">Finish</span>                            
+                            <span class="text-lg font-semibold text-red-600 border-red-600 border rounded-lg py-2 px-4" v-text="__('finish')"></span>
+
                         </div>
                     </div>
-                    <label class="w-full">Game</label>
+                    <label class="block w-full mt-10" v-text="__('game')"></label>
 
                     <div  class="w-full block gap-4 my-2 text-gray-600 overflow-x-auto">
                         <div class="overflow-x-auto" v-if="games" :style='{"min-width": games.length*35+"%"}' >
@@ -31,10 +32,10 @@
 
                 <!-- Purchased products -->
                 <div v-if="activeItem.products && activeItem.products.length" class=" pb-4">
-                    <span class="text-md font-semibold w-full block py-4">Purchased Products</span>
+                    <span class="text-md font-semibold w-full block py-4" v-text="__('purchased_products')"></span>
                     <div v-for="product in activeItem.products" v-if="product" class="font-semibold w-full flex gap-4 py-2 border-b border-gray-200">
                         <label class="w-full text-purple-600" v-text="product.product_name"></label>
-                        <span class="w-40 text-md p-2 text-red-600" v-if="activeItem.status != 'paid'" @click="removeProduct(product)">Remove</span>
+                        <span class="w-40 text-md p-2 text-red-600" v-if="activeItem.status != 'paid'" @click="removeProduct(product)" v-text="__('remove')"></span>
                         <span class="w-20 flex text-md p-2 text-right"> 
                             <span v-text="product.price"></span>
                             <span class="px-1 text-sm" @click="query(product)" v-text="activeItem.currency"></span>
@@ -49,10 +50,10 @@
                 <!-- Applicable products -->
                 <div class="w-full block" v-if="activeItem.id" >
                     <div v-if="products && products.length" class=" pb-4">
-                        <span class="text-red-600 text-md font-semibold w-full block my-4 cursor-pointer py-2 px-4 rounded-lg border border-gray-200" @click="viwMoreProducts()">Add More Products</span>
+                        <span class="text-red-600 text-md font-semibold w-full block my-4 cursor-pointer py-2 px-4 rounded-lg border border-gray-200" @click="viwMoreProducts()" v-text="__('add_products')"></span>
                         <div v-for="product in products" v-if="product && showMoreProducts" class="font-semibold w-full flex gap-4 py-2 border-b border-gray-200">
                             <label class="w-full text-purple-600" v-text="product.name"></label>
-                            <span class="w-40 text-md p-2 text-purple-600"   @click="addProduct(product)">Add to cart</span>
+                            <span class="w-40 text-md p-2 text-purple-600"   @click="addProduct(product)" v-text="__('add_cart')"></span>
                             <span class="w-20 flex text-md p-2 text-right"> 
                                 <span v-text="product.price"></span>
                                 <span class="px-1 text-sm" @click="query(product)" v-text="activeItem.currency"></span>
@@ -62,22 +63,22 @@
                 </div>
 
                 <div class="w-full flex gap-4 py-2 border-b border-gray-200">
-                    <label class="w-full">Start</label>
+                    <label class="w-full" v-text="__('start')"></label>
                     <input @change="updateInfo(activeItem)" class="w-full" type="time" v-model="activeItem.start_time">
                 </div>
                 <div class="w-full flex gap-4 py-2 border-b border-gray-200">
-                    <label class="w-full">End</label>
+                    <label class="w-full"  v-text="__('end')"></label>
                     <input @change="updateInfo(activeItem)"  class="w-full" type="time" v-model="activeItem.end_time">
                 </div>
                 <div class="w-full flex gap-6 my-2 text-gray-600">
-                    <label @click="activeItem.booking_type = 'single';  updateInfo(activeItem)" for="single"  class="cursor-pointer py-2 w-full mx-2 rounded-2xl text-center font-semibold" :class="activeItem.booking_type == 'single' ? 'bg-purple-600 text-white' : ''" >Single <input id="signle" v-model="activeItem.booking_type" value="single" type="radio" name="booking_type" class="hidden"></label>
-                    <label @click="activeItem.booking_type = 'multi'; updateInfo(activeItem)"  for="multi" class="cursor-pointer py-2 w-full mx-2 rounded-2xl text-center font-semibold" :class="activeItem.booking_type == 'multi' ? 'bg-purple-600 text-white' : ''"  >Multi <input id="multi"  v-model="activeItem.booking_type" value="multi" type="radio" name="booking_type"  class="hidden"></label>
+                    <label @click="activeItem.booking_type = 'single';  updateInfo(activeItem)" for="single"  class="cursor-pointer py-2 w-full mx-2 rounded-2xl text-center font-semibold" :class="activeItem.booking_type == 'single' ? 'bg-purple-600 text-white' : ''"   v-text="__('single')"> <input id="signle" v-model="activeItem.booking_type" value="single" type="radio" name="booking_type" class="hidden"></label>
+                    <label @click="activeItem.booking_type = 'multi'; updateInfo(activeItem)"  for="multi" class="cursor-pointer py-2 w-full mx-2 rounded-2xl text-center font-semibold" :class="activeItem.booking_type == 'multi' ? 'bg-purple-600 text-white' : ''"   v-text="__('multi')"> <input id="multi"  v-model="activeItem.booking_type" value="multi" type="radio" name="booking_type"  class="hidden"></label>
                 </div>
                 <div v-if="!activeItem.id" class="mt-10 w-32 block mx-auto text-white  font-semibold py-2 border-b border-gray-200">
-                    <label @click="$parent.storeInfo(activeItem)" class="cursor-pointer px-4 py-2 rounded-lg bg-gradient-primary block">Start Playing</label>
+                    <label @click="$parent.storeInfo(activeItem)" class="cursor-pointer px-4 py-2 rounded-lg bg-gradient-primary block"  v-text="__('start_playing')"></label>
                 </div>
                 <div v-if="activeItem.id && $parent.showUpdate" class="mt-10 w-32 block mx-auto text-white text-center font-semibold py-2 border-b border-gray-200">
-                    <label @click="$parent.submit('Event.update')" class="cursor-pointer px-4 py-2 rounded-lg bg-gradient-primary ">Update</label>
+                    <label @click="$parent.submit('Event.update')" class="cursor-pointer px-4 py-2 rounded-lg bg-gradient-primary" v-text="__('update')"></label>
                 </div>
             </div>
 
@@ -194,6 +195,10 @@ export default {
                         return response.data;
                  
                 });
+            },
+            __(i)
+            {
+                return this.$parent.__(i);
             }
         }
     }

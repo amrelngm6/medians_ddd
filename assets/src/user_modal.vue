@@ -149,6 +149,10 @@ export default
                 else 
                     return response.data;
             });
+        },
+        __(i)
+        {
+            return this.$parent.__(i);
         }
     }
 };

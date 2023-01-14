@@ -119,13 +119,16 @@ class APIController
 			case 'Product.update':
 				$return = (new Products\ProductController($app))->update($request, $app);
 				break;
+			case 'Payment.update':
+				$return = (new Payments\PaymentController($app))->update($request, $app);
+				break;
 			case 'Event.update':
 				$params = (array)  json_decode($request->get('params')['event']);
 				$check = (new Repo\Devices\DevicesRepository($app))->updateOrder($params);
 				$return = isset($check->id) ? ['result'=>'Updated'] : ['result'=>'Error'];
 				break;
             case 'Settings.update':
-                $returnData = (new Settings\SettingsController($app))->update($request, $app); 
+                $return = (new Settings\SettingsController($app))->update($request, $app); 
                 break;
 
             case 'User.update':

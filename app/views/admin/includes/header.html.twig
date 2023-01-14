@@ -12,8 +12,20 @@
     <link rel="stylesheet" type="text/css" href="{{app.CONF.url ? app.CONF.url : '/'}}assets/theme.css">
     <!-- External Theem  -->
     <link rel="stylesheet" type="text/css" href="{{app.CONF.url ? app.CONF.url : '/'}}assets/theme.min.css">
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp|Cairo:wght@300;500;700;900">
     <style>
+        body span,
+        body div,
+        body tr, body td, body th,
+        body h1,  body h2, body h4, body h5,
+        body a,
+        body p {
+            font-family: 'Cairo' !important;
+        }
+        body label {
+            font-weight: 600;
+        }
+        body th, body td { text-align:center }
         .bg-orange{
   background: #fc5a03;
 }
@@ -53,7 +65,7 @@
 </head>
 
 <body>
-    <div class=" ">
+    <div class=" " style="direction: {{lang.__('DIR')}}">
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
         <!-- component -->
         {% if app.auth.id %}
@@ -110,6 +122,7 @@
 
         <div class="w-full " id="app">
 
+            <span :set="__langs = {{lang.vueLang()|json_encode}}"></span>
     
             <div class="relative modal right fade w-full h-full top-0 " id="modal-details" style="position:fixed; background: rgba(0, 0, 0, .4);" v-if="showModal" >
                 <div class="modal-dialog bg-white" role="document">

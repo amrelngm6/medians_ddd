@@ -15,11 +15,11 @@
                             <thead class="dark:bg-gray-800 bg-white text-gray-500">
                                 <tr>
                                     <th class="p-2">Code / Max </th>
-                                    <th class="p-2 text-left">Value</th>
+                                    <th class="p-2 text-left">{{lang.__('Value')}}</th>
                                     <th class="p-2 text-left">Use Limit</th>
                                     <th class="p-2 text-left">Min Cost</th>
                                     <th class="p-2 text-left">Expiry Time</th>
-                                    <th class="p-2 text-left">Action</th>
+                                    <th class="p-2 text-left">{{lang.__('Action')}}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -61,7 +61,7 @@
                     <div class="px-4 mb-6 py-4 rounded-lg shadow-lg bg-white dark:bg-gray-700 ">
 
                         <form action="{{formAction}}" method="POST" data-refresh="1" id="add-device-form" class="action p-8 py-0 m-auto rounded-lg max-w-xl pb-10">
-                            <h1 class="m-auto max-w-xl text-2xl mb-10 text-center">Add new discount</h1>
+                            <h1 class="m-auto max-w-xl text-2xl mb-10 text-center">{{lang.__('Add new')}} discount</h1>
                             <input name="type"  type="hidden" value="add_discount" > 
 
                             <input name="params[code]" required="" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Code.. Leavae to generate one"> 
@@ -76,7 +76,7 @@
                             
                             <input name="params[endTime]" required="" type="datetime-local" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Minimum order cost"> 
                             
-                            <button class="uppercase h-12 mt-3 text-white w-full rounded bg-red-700 hover:bg-red-800">Save</button>
+                            <button class="uppercase h-12 mt-3 text-white w-full rounded bg-red-700 hover:bg-red-800">{{lang.__('Save')}}</button>
                         </form>
                         
                     </div>

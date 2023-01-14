@@ -40,14 +40,13 @@ class OrderController
 
 	    $app->currentPage = '/orders';
 
-
 	    return render('views/admin/orders/orders.html.twig', [
-	        'title' => 'Orders list',
+	        'title' => __('Orders list'),
 	        'app' => $app,
 	        'orders' => $this->repo->getByDate($params)->get(),
 	        'todayOrders' => $this->repo->getByDate(['start'=>date('Y-m-d' ), 'end'=>date('Y-m-d', strtotime('+1 day') )])->count(),
 	        'lastWeekOrders' => $this->repo->getByDate(['start'=>date('Y-m-d',strtotime('-1 week')), 'end'=>date('Y-m-d', strtotime('+1 day'))])->count(),
-	        'lastMonthOrders' => $this->repo->getByDate(['start'=>date('Y-m'), 'end'=>date('Y-m', strtotime('+1 month'))])->count(),
+	        'lastMonthOrders' => $this->repo->getByDate(['start'=>date('Y-m-01'), 'end'=>date('Y-m-01', strtotime('+1 month'))])->count(),
 
 	    ]);
 
@@ -65,7 +64,7 @@ class OrderController
 	public function show($code, $request, $app) 
 	{
 	    return render('views/admin/orders/order.html.twig', [
-	        'title' => 'Invoice',
+	        'title' => __('Invoice'),
 	        'app' => $app,
 	        'order' => $this->repo->code($code),
 	        // 'qrcode' => $qrcode,
@@ -115,7 +114,7 @@ class OrderController
 
 			$save = $this->repo->store($data, $params);
 
-        	return isset($save->id) ? 'Order Created' : '' ;
+        	return isset($save->id) ? __('Order Created') : '' ;
 
         } catch (Exception $e) {
             return  array('error'=>$e->getMessage());
@@ -194,7 +193,7 @@ class OrderController
 
 		if (count($this->checkDiscountUsed($this->discountCodeObject->code())) >= $this->discountCodeObject->useCount())
 		{
-			throw new \Exception("Error: This code usage limit has exceeded", 1);
+			throw new \Exception(__("Error: This code usage limit has exceeded"), 1);
 		}
 
         $this->OrderModel->setDiscountCode($this->discountCodeObject->code());

@@ -18,7 +18,7 @@
                 <li class="breadcrumb-item active">{{title}}</li>
             </ul>
         </div>
-        <span @click="viewSide('task')" class="cursor-pointer w-28 px-3 py-2 text-center rounded-lg bg-gradient-primary text-white">Add new </span>
+        <span @click="viewSide('task')" class="cursor-pointer w-28 px-3 py-2 text-center rounded-lg bg-gradient-primary text-white">{{lang.__('Add new')}} </span>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -35,14 +35,14 @@
                                         </label>
                                     </th>
                                     <th class="w-10">ID</th>
-                                    <th>Name</th>
+                                    <th>{{lang.__('Name')}}</th>
                                     <th>Priority</th>
-                                    <th>Time</th>
-                                    <th>Duration</th>
+                                    <th>{{lang.__('Time')}}</th>
+                                    <th>{{lang.__('duration')}}</th>
                                     <th>Owner</th>
                                     <th>Users</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
+                                    <th>{{lang.__('Status')}}</th>
+                                    <th>{{lang.__('actions')}}</th>
                                 </tr>
                             </thead>
                             <tbody>

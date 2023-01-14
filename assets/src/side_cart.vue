@@ -15,14 +15,14 @@
 
                 <div class="modal-body ">
                     <div class="mx-auto w-full">
-                        <h1 class="font-semibold text-2xl border-b py-8">Order Summary</h1>
+                        <h1 class="font-semibold text-2xl border-b py-8" v-text="__('order_summary')"></h1>
                         <div v-if="Items" class="w-full">
                             <div v-for="(item, i) in Items" class="w-full block" v-if="item" >
                                 <div  class="flex justify-between mt-10 mb-5" v-if="item" >
                                     <span class="font-semibold text-sm" v-if="item.device"> 
                                         <span v-text="item.device.name"></span><br /> 
                                         <span class="text-xs text-gray-400 " v-if="item.game" v-text="item.game.name"></span>
-                                        <span class="text-xs text-red-400" @click="removeFromCart(item)">Remove</span>
+                                        <span class="text-xs text-red-400" @click="removeFromCart(item)" v-text="__('remove')"></span>
                                     </span>
                                     <span class="font-semibold text-sm"><span v-text="item.subtotal"></span> <small class="text-xs" v-text="currency"></small> <br /> <span class="text-xs text-gray-400" v-text="item.duration_time"></span></span>
                                 </div>
@@ -39,27 +39,27 @@
                             </div>
                         </div>
                         <div class="py-10">
-                            <label for="promo" class="font-semibold inline-block mb-3 text-sm uppercase">Promo Code</label>
+                            <label for="promo" class="font-semibold inline-block mb-3 text-sm uppercase"  v-text="__('promo_code')"></label>
                             <div class="flex w-full gap gap-1">
                                 <input type="text" id="promo" placeholder="Enter your code" class="p-2 text-sm w-full">
-                                <button class="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase">Apply</button>
+                                <button class="bg-red-500 hover:bg-red-600 px-5 py-2 text-sm text-white uppercase"  v-text="__('apply')"></button>
                             </div>
                         </div>
                         <div class="w-full flex gap-1">
-                            <label class="font-medium inline-block w-full my-3 text-sm uppercase">Payment</label>
+                            <label class="font-medium inline-block w-full my-3 text-sm uppercase" v-text="__('payment_method')"></label>
                             <select class="block p-2 text-gray-600 w-full text-sm" v-model="payment_method">
                                 <option value="Cash">Cash</option>
                             </select>
                         </div>
                         <div class="border-t mt-8 w-full">
                             <div class="flex font-semibold justify-between py-6 text-sm uppercase">
-                                <span class="w-full">Total cost</span>
+                                <span class="w-full" v-text="__('total_amount')"></span>
                                 <span class="flex w-full text-right text-lg gap gap-1 text-red-400">
                                     <span v-text="subtotal()"></span>
                                     <span v-text="currency"></span>
                                 </span>
                             </div>
-                            <button class="bg-gradient-primary font-semibold hover:bg-purple-600 py-3 text-sm text-white uppercase w-32 mx-auto block rounded-lg my-6 " @click="checkout">Checkout</button>
+                            <button class="bg-gradient-primary font-semibold hover:bg-purple-600 py-3 text-sm text-white uppercase w-32 mx-auto block rounded-lg my-6 " @click="checkout" v-text="__('checkout')"></button>
                         </div>
                     </div>
 
@@ -230,6 +230,10 @@ export default
                 else 
                     return response.data;
             });
+        },
+        __(i)
+        {
+            return this.$parent.__(i);
         }
     }
 };

@@ -7,12 +7,12 @@
                         <div class="p-2 lg:p-8 bg-white dark:bg-gray-700 rounded-lg  flex-auto">
                             <div class="lg:p-8 p-2 bg-white dark:bg-gray-700 rounded-lg max-w-6xl ">
                                 <form @submit="sendData" disabled="true" action="#!" class="disable p-8 py-0 m-auto rounded-lg max-w-xl pb-10">
-                                    <h1 class="m-auto max-w-xl text-center" v-text="title"></h1>
+                                    <h1 class="m-auto max-w-xl text-center" v-text="__('login_page')"></h1>
                                     <input v-model="form.type" name="type" type="hidden" value="userLogin">
                                     <input v-model="form.request_type" name="request_type" type="hidden" value="json">
-                                    <input v-model="form.email" name="params[email]" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Email">
-                                    <input v-model="form.password" name="params[password]" type="password" class="h-12 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="Password">
-                                    <button class="uppercase h-12 mt-3 text-white w-full rounded bg-red-700 hover:bg-red-800">Login</button>
+                                    <input v-model="form.email" name="params[email]" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" :placeholder="__('email')">
+                                    <input v-model="form.password" name="params[password]" type="password" class="h-12 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" :placeholder="__('password')">
+                                    <button class="uppercase h-12 mt-3 text-white w-full rounded bg-red-700 hover:bg-red-800" v-text="__('login')"></button>
                                 </form>
                             </div>
                         </div>
@@ -77,6 +77,10 @@ export default {
                     return response.data;
 
             });
+        },
+        __(i)
+        {
+            return this.$parent.__(i);
         }
     }
 };

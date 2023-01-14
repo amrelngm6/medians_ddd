@@ -3,10 +3,10 @@
         
         <!-- Purchased products -->
         <div v-if="activeItem && activeItem.products && activeItem.products.length" class=" pb-4">
-            <span class="text-md font-semibold w-full block py-4">Purchased Products</span>
+            <span class="text-md font-semibold w-full block py-4" v-text="__('purchased_products')"></span>
             <div v-for="product in activeItem.products" v-if="product" class="font-semibold w-full flex gap-4 py-2 border-b border-gray-200">
                 <label class="w-full text-purple-600" v-text="product.product_name"></label>
-                <span class="w-40 text-md p-2 text-red-600" v-if="activeItem.status != 'paid'" @click="removeProduct(product)">Remove</span>
+                <span class="w-40 text-md p-2 text-red-600" v-if="activeItem.status != 'paid'" @click="removeProduct(product)" v-text="__('remove')"></span>
                 <span class="w-20 flex text-md p-2 text-right"> 
                     <span v-text="product.price"></span>
                     <span class="px-1 text-sm" v-text="activeItem.currency"></span>
@@ -87,6 +87,10 @@ export default {
                     else 
                         return response.data;
                 });
+            },
+            __(i)
+            {
+                return this.$parent.__(i);
             }
         }
     }

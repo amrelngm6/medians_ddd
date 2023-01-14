@@ -24,11 +24,19 @@ class StockController
 
 	public function index($request, $app) 
 	{	
+		$params = [];
+    	$params['start'] = $request->get('start') ? date('Y-m-d', strtotime(date($request->get('start')))) : date('Y-m-d');
+    	$params['end'] = ($request->get('end') && $request->get('start')) ? date('Y-m-d', strtotime(date($request->get('end')))) : date('Y-m-d');
+    	$params['created_by'] = $request->get('created_by') ? $request->get('created_by') : null;
+    	$params['status'] = $request->get('status') ? $request->get('status') : null;
+    	$params['product'] = $request->get('product') ? $request->get('product') : null;
+    	$params['by'] = $request->get('by') ? $request->get('by') : null;
+    	$params['type'] = $request->get('type') ? $request->get('type') : null;
 
 	    return render('views/admin/products/stock.html.twig', [
-	        'title' => 'Products Stock',
+	        'title' => __('Products Stock'),
 	        'app' => $app,
-	        'stockList' => $this->repo->get($request),
+	        'stockList' => $this->repo->get($params),
 	        'products' => $this->ProductsRepo->get(),
 	    ]);
 	}
@@ -54,8 +62,8 @@ class StockController
             $params['date'] = date('Y-m-d');
 
             return !empty($this->repo->store($params)) 
-            ? array('success'=>1, 'data'=>'Added', 'reload'=>1)
-            : array('success'=>0, 'data'=>'Error', 'error'=>1);
+            ? array('success'=>1, 'result'=>__('Added'), 'reload'=>1)
+            : array('success'=>0, 'result'=>__('Error'), 'error'=>1);
 
 
         } catch (Exception $e) {
@@ -107,8 +115,8 @@ class StockController
         	$check = $this->getItem($params['id']);
 
            	$returnData =  $this->repo->delete($params['id'])
-           	? array('success'=>1, 'data'=>'Deleted', 'reload'=>1)
-           	: array('error'=>'Not allowed');
+           	? array('success'=>1, 'result'=>__('Deleted'), 'reload'=>1)
+           	: array('error'=>__('Not allowed'));
 
 
         } catch (Exception $e) {

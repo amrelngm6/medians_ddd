@@ -32,7 +32,7 @@ class ProductController
 	public function index($request, $app) 
 	{
 		return render('views/admin/products/products.html.twig', [
-	        'title' => 'Products list',
+	        'title' => __('Products list'),
 	        'app' => $app,
 	        'products' => $this->repo->get($request),
 	        'typesList' => $this->repo->getModel()->categoriesList(),
@@ -51,7 +51,7 @@ class ProductController
 	public function edit($id, $request, $app) 
 	{
 		return render('views/admin/products/product.html.twig', [
-	        'title' => 'Products list',
+	        'title' => __('Products list'),
 	        'app' => $app,
 	        'product' => $this->repo->find($id),
 	        'typesList' => $this->repo->getModel()->categoriesList(),
@@ -72,7 +72,7 @@ class ProductController
 	{
 		
 	    return render('views/admin/products/pos.html.twig', [
-	        'title' => 'Products list',
+	        'title' => __('Products list'),
 	        'app' => $app,
 	        'device' => (new DeviceController)->getItem($deviceId),
 	        'products' => $this->getByProvider($app->provider->id),
@@ -99,8 +99,8 @@ class ProductController
         	$params['provider_id'] = $app->provider->id;
         	$params['created_by'] = $app->auth->id;
             return ($this->repo->store($params))
-            ? array('success'=>1, 'data'=>'Added', 'reload'=>1)
-            : array('success'=>0, 'data'=>'Error', 'error'=>1);
+            ? array('success'=>1, 'result'=>__('Added'), 'reload'=>1)
+            : array('success'=>0, 'result'=>__('Error'), 'error'=>1);
 
 
         } catch (Exception $e) {
@@ -127,7 +127,7 @@ class ProductController
 
 
            	$returnData =  ($this->repo->update($params))
-           	? array('success'=>1, 'data'=>'Updated', 'redirect'=>$app->CONF['url'].'products/index')
+           	? array('success'=>1, 'result'=>__('Updated'), 'redirect'=>$app->CONF['url'].'products/index')
            	: array('error'=>'Not allowed');
 
 
@@ -183,8 +183,8 @@ class ProductController
         	$check = $this->getItem($params['id']);
 
            	$returnData =  (($app->providerSession->id == $check->providerId) && $this->repo->delete($params['id']))
-           	? array('success'=>1, 'data'=>'Deleted', 'reload'=>1)
-           	: array('error'=>'Not allowed');
+           	? array('success'=>1, 'result'=>__('Deleted'), 'reload'=>1)
+           	: array('error'=>__('Not allowed'));
 
 
         } catch (Exception $e) {

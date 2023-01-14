@@ -18,7 +18,7 @@
                 <date-picker @change="openPageByDate('{{app.request.uri }}', $event)" placeholder="{{startdate}} - {{enddate}}" range format="YYYY-MM-DD"></date-picker>
             </div>
         </div>
-        <a href="{{app.CONF.url}}devices/calendar" class="w-32 px-3 py-2 text-center rounded-lg bg-gradient-primary text-white">Add new </a>
+        <a href="{{app.CONF.url}}devices/calendar" class="w-32 px-3 py-2 text-center rounded-lg bg-gradient-primary text-white">{{lang.__('Add new')}} </a>
     </div>
     <div class="w-full">
         <div class="card mb-0">
@@ -34,13 +34,13 @@
                                     </label>
                                 </th>
                                 <th class="w-10">ID</th>
-                                <th>Device/Game</th>
-                                <th>Start time</th>
-                                <th>Duration</th>
-                                <th>Status</th>
-                                <th>Order</th>
-                                <th>Subtotal</th>
-                                <th>By</th>
+                                <th>{{lang.__('Device')}}/{{lang.__('Game')}}</th>
+                                <th>{{lang.__('Start time')}}</th>
+                                <th>{{lang.__('duration')}}</th>
+                                <th>{{lang.__('Status')}}</th>
+                                <th>{{lang.__('Order')}}</th>
+                                <th>{{lang.__('Subtotal')}}</th>
+                                <th>{{lang.__('By')}}</th>
                             </tr>
                         </thead>
                         <tbody>

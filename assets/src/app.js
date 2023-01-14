@@ -44,10 +44,13 @@ const VueApp = new Vue(
 
     data() {
         return {
+            __langs:{},
             date: '',
             activeModal:'',
             showModal:false,
             showSide:false,
+            showTab:true,
+            activeTab:'step1',
         };
     },
 
@@ -61,6 +64,19 @@ const VueApp = new Vue(
 
     }, 
     methods: {
+        /**
+         * Switch between tabs
+         */
+        setTab(tab)
+        {
+            this.activeTab = null; 
+            this.showTab = false;  
+            this.activeTab = tab; 
+            var t = this;
+            setTimeout(function(){
+               t.showTab = true; 
+           }, 100)
+        } ,
         openPageByDate(url, event)
         {
 
@@ -132,6 +148,14 @@ const VueApp = new Vue(
                 if (response.data)
                     return response.data;
             });
+        },
+        setLangs(langs)
+        {
+            this.__langs = langs;
+        },
+        __(i)
+        {
+            return this.__langs[i];
         }
     }
 });

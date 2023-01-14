@@ -66,10 +66,10 @@ class SettingsRepository
 	/*
 	// Delet item from database
 	*/
-	public function delete($object) 
+	public function delete($code) 
 	{
 
-		return $object->delete();
+		return Settings::where('provider_id', $this->app->provider->id)->where('code', $code)->delete();
 
 	}
 

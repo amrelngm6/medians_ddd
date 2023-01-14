@@ -17,12 +17,12 @@
                         <input value="0" name="params[product][status]" type="hidden">
                         <input name="params[product][id]"  type="hidden" value="{{product.id}}" > 
                         <div class="w-full flex gap gap-2">
-                            <label class="w-40 mt-6 ">Name</label>
+                            <label class="w-40 mt-6 ">{{lang.__('name')}}</label>
                             <input name="params[product][name]" required="" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" value="{{product.name}}"> 
                         </div>
 
                         <div class="w-full flex gap gap-2">
-                            <label class="w-40 mt-6  ">Price</label>
+                            <label class="w-40 mt-6  ">{{lang.__('Price')}}</label>
                             <input name="params[product][price]" required="" type="number" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" value="{{product.price}}"> 
                         </div>
 
@@ -32,12 +32,12 @@
                         </div>
                         
                         <div class="w-full flex gap gap-2">
-                            <label class="w-40 mt-6 ">Description</label>
+                            <label class="w-40 mt-6 ">{{lang.__('duration')}}</label>
                             <textarea name="params[product][description]" required="" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Device description" >{{product.description}}</textarea> 
                         </div>
 
                         <div class="w-full flex gap gap-2">
-                            <label class="w-40 mt-6 ">Category</label>
+                            <label class="w-40 mt-6 ">{{lang.__('Category')}}</label>
 
                             <select name="params[product][type]" required="" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="">
                                 <option value="0">Default</option>
@@ -51,7 +51,7 @@
                             <input name="params[product][status]" type="checkbox" class="form-checkbox h-5 w-5 text-orange-600" {% if product.status %} checked  {% endif %}><span class="ml-2 text-gray-700">publish</span>
                         </label>
                         
-                        <button class="uppercase h-12 mt-3 text-white w-full rounded bg-red-700 hover:bg-red-800">Save</button>
+                        <button class="uppercase h-12 mt-3 text-white w-full rounded bg-red-700 hover:bg-red-800">{{lang.__('Save')}}</button>
                     </form>
                 </div>
             </div>

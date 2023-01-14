@@ -30,7 +30,7 @@ class PaymentController
 	public function index($request, $app) 
 	{
 		return render('views/admin/payments/list.html.twig', [
-	        'title' => 'Payments list',
+	        'title' => __('Payments list'),
 	        'app' => $app,
 	        'items' => $this->repo->get($request),
 	    ]);
@@ -47,7 +47,7 @@ class PaymentController
 	public function create($request, $app) 
 	{
 		return render('views/admin/payments/create.html.twig', [
-	        'title' => 'New Payment',
+	        'title' => __('New Payment'),
 	        'app' => $app,
 	    ]);
 	}
@@ -63,7 +63,7 @@ class PaymentController
 	public function edit($id, $request, $app) 
 	{
 		return render('views/admin/payments/payment.html.twig', [
-	        'title' => 'Edit Payment',
+	        'title' => __('Edit Payment'),
 	        'app' => $app,
 	        'payment' => $this->repo->find($id),
 	    ]);
@@ -89,8 +89,8 @@ class PaymentController
         	$params['created_by'] = $app->auth->id;
         	
             return ($this->repo->store($params))
-            ? array('success'=>1, 'data'=>'Added', 'reload'=>1)
-            : array('success'=>0, 'data'=>'Error', 'error'=>1);
+            ? array('success'=>1, 'result'=>__('Added'), 'reload'=>1)
+            : array('success'=>0, 'result'=>__('Error'), 'error'=>1);
 
 
         } catch (Exception $e) {
@@ -117,8 +117,8 @@ class PaymentController
 
 
            	$returnData =  ($this->repo->update($params))
-           	? array('success'=>1, 'data'=>'Updated', 'redirect'=>$app->CONF['url'].'payments/index')
-           	: array('error'=>'Not allowed');
+           	? array('success'=>1, 'result'=>__('Updated'), 'redirect'=>$app->CONF['url'].'payments/index')
+           	: array('error'=>__('Not allowed'));
 
 
         } catch (Exception $e) {
@@ -145,8 +145,8 @@ class PaymentController
         try {
 
            	$returnData =  $this->repo->delete($params['id'])
-           	? array('success'=>1, 'data'=>'Deleted', 'reload'=>1)
-           	: array('error'=>'Not allowed');
+           	? array('success'=>1, 'result'=>__('Deleted'), 'reload'=>1)
+           	: array('error'=>__('Not allowed'));
 
 
         } catch (Exception $e) {

@@ -11,7 +11,7 @@
                                     <input name="params[id]"  type="hidden" value="{{deviceType.id()}}" > 
                                     <input name="params[title]" required="" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Device Title" value="{{ deviceType.title() }}"> 
 
-                                    <button class="uppercase h-12 mt-3 text-white w-full rounded bg-red-700 hover:bg-red-800">Update</button>
+                                    <button class="uppercase h-12 mt-3 text-white w-full rounded bg-red-700 hover:bg-red-800">{{lang.__('update')}}</button>
                                 </form>
                             
                                 <a data-ajax="true" data-confirm="true" data-request-id="{{deviceType.id}}" data-request-type="delete_device_type" data-type="post" href="#!" class="uppercase block text-center pt-3 pb-3 mt-3 text-white w-full rounded text-gray-700 hover:bg-red-800 hover:text-white">Remove this type</a>

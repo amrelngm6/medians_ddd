@@ -66,7 +66,7 @@ class AuthService
 		if (isset($app->auth->id)) { return $app->redirect('/'); }
 
 	    return  render('views/admin/forms/login.html.twig', [
-	        'title' => 'Login page ',
+	        'title' => __('Login page'),
 	        'app' => $app,
 	        // 'facebook_login_url' => (new FBApp(new Repo\FaceBook\FBRepository))->loginBtn($app),
 	        'formAction' => '/',
@@ -95,7 +95,7 @@ class AuthService
             	exit;
             };
 
-            return array('success'=>1, 'result'=>'Logged in', 'redirect'=>$app->CONF['url']);
+            return array('success'=>1, 'result'=>__('Logged in'), 'redirect'=>$app->CONF['url']);
 
         } catch (Exception $e) {
             throw new \Exception($e->getMessage());
@@ -110,12 +110,12 @@ class AuthService
 
 		if (empty($checkLogin->id))
 		{
-			throw new \Exception("User credentials not valid", 1);
+			throw new \Exception(__("User credentials not valid"), 1);
 		}
 
 		if (empty($checkLogin->active))
 		{
-			throw new \Exception("User account is not active", 1);
+			throw new \Exception(__("User account is not active"), 1);
 			
 		}
 
@@ -132,7 +132,7 @@ class AuthService
 		// Validate if email already found 
 		if (!empty($checkEmail->id()))
 		{
-			throw new \Exception("Email already found", 1);
+			throw new \Exception(__('Email already found'), 1);
 		}
 
 		// Validate the password 

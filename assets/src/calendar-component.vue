@@ -10,12 +10,12 @@
             <div class="top-20 relative mx-auto w-full bg-white p-6 rounded-lg" style="max-width: 600px; z-index: 99;" v-if="showConfirm">
                 
                 <div class="bg-blue-200 rounded-md py-2 px-4" role="alert">
-                    <strong>Confirm!</strong> Are your sure you want to finish this booking.
+                    <strong v-text="__('confirm')"></strong> <span v-text="__('confirm_complete_booking')"></span> 
                     <button @click="showConfirm = false" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
 
                 <div  class="my-2 cursor-pointer w-full text-white  font-semibold py-2 border-b border-gray-200">
-                    <label @click="activeItem.status = 'completed'; submit('Event.update')" class="w-32 mx-auto py-2 rounded-lg bg-gradient-primary block text-center cursor-pointer">Confirm</label>
+                    <label @click="activeItem.status = 'completed'; submit('Event.update')" class="w-32 mx-auto py-2 rounded-lg bg-gradient-primary block text-center cursor-pointer" v-text="__('confirm')"></label>
                 </div>
 
             </div>
@@ -366,6 +366,10 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
                     else 
                         return response.data;
                 });
+            },
+            __(i)
+            {
+                return this.$parent.__(i);
             }
 
 

@@ -64,7 +64,7 @@ class SettingsController
 		try {
 
             if (isset($this->updateSettings($params, $app)->updated)) 
-            	return array('success'=>1, 'data'=>'Updated', 'reload'=>1);
+            	return array('success'=>1, 'result'=>__('Updated'), 'reload'=>1);
 
         } catch (Exception $e) {
             return  array('error'=>$e->getMessage());
@@ -115,7 +115,7 @@ class SettingsController
 	public function deleteItem($code) 
 	{
 
-		return $this->repo->delete($this->repo->getByCode($code));
+		return $this->repo->delete($code);
 	}
 
 

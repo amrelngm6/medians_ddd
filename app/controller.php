@@ -170,7 +170,7 @@ $app->match('login', function () use ($request, $app)
 {   
     try {
         
-        return (new apps\Auth\AuthService(new UserRepository))->loginPage($request, $app); 
+        return (new apps\Auth\AuthService(new UserRepository($app)))->loginPage($request, $app); 
     } catch (Exception $e) {
         return $e->getMessage();
     }

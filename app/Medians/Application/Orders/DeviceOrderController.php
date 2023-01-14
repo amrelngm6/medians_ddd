@@ -63,7 +63,7 @@ class DeviceOrderController
             $this->devicesRepo->find($this->repo->deviceId)->update(['playing'=> 1, 'publish'=>1]);
 
         	$returnData = (!empty($this->repo->status) && $this->repo->status == 'active') 
-	        	? array('success'=>1, 'reload'=>1, 'data'=>'Done') 
+	        	? array('success'=>1, 'reload'=>1, 'result'=>'Done') 
 	        	: array('error'=>$e->getMessage());
 	        
         } catch (Exception $e) {

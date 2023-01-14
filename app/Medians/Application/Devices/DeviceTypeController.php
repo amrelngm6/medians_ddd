@@ -98,8 +98,8 @@ class DeviceTypeController
     		]; 
 
             $returnData = ((!$this->validate($params)) && !empty($this->repo->store($data))) 
-            ? array('success'=>1, 'data'=>'Added', 'reload'=>1)
-            : array('success'=>0, 'data'=>'Error', 'error'=>1);
+            ? array('success'=>1, 'result'=>'Added', 'reload'=>1)
+            : array('success'=>0, 'result'=>'Error', 'error'=>1);
 
         } catch (Exception $e) {
 
@@ -125,7 +125,7 @@ class DeviceTypeController
 
                 if ($this->repo->edit($params))
                 {
-                    return array('success'=>1, 'data'=>'Deleted', 'reload'=>1);
+                    return array('success'=>1, 'result'=>'Deleted', 'reload'=>1);
                 }
             
             }
@@ -148,7 +148,7 @@ class DeviceTypeController
             {
                 if ($this->repo->delete($params['id']))
                 {
-                    return array('success'=>1, 'data'=>'Deleted', 'reload'=>1);
+                    return array('success'=>1, 'result'=>'Deleted', 'reload'=>1);
                 }
             
             }

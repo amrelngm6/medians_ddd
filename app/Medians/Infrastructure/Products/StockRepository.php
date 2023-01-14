@@ -39,29 +39,29 @@ class StockRepository
 
 		->where('provider_id', $this->app->provider->id);
 
-		if (!empty($params->get('product')))
+		if (!empty($params['product']))
 		{
-			$query = $query->where('product_id', $params->get('product'));
+			$query = $query->where('product_id', $params['product']);
 		}
 
-		if (!empty($params->get('by')))
+		if (!empty($params['by']))
 		{
-			$query = $query->where('created_by', $params->get('by'));
+			$query = $query->where('created_by', $params['by']);
 		}
 
-		if (!empty($params->get('created_by')))
+		if (!empty($params['created_by']))
 		{
-			$query = $query->where('created_by', $params->get('created_by'));
+			$query = $query->where('created_by', $params['created_by']);
 		}
 
-		if (!empty($params->get('type')) && in_array($params->get('type'), ['add', 'pull']) )
+		if (!empty($params['type']) && in_array($params['type'], ['add', 'pull']) )
 		{
-			$query = $query->where('type', $params->get('type'));
+			$query = $query->where('type', $params['type']);
 		}
 
-		if (!empty($params->get('start')) && !empty($params->get('end')))
+		if (!empty($params['start']) && !empty($params['end']))
 		{
-			$query = $query->whereBetween('date', [$params->get('start'), $params->get('end')]);
+			$query = $query->whereBetween('date', [$params['start'], $params['end']]);
 		}
 
 	  	return $query->orderBy('id', 'DESC')->get();

@@ -18,12 +18,12 @@
                     <table class="table dark:text-gray-400 text-gray-800 border-separate space-y-6 text-sm w-full">
                         <thead class="dark:bg-gray-800 bg-white text-gray-500">
                             <tr>
-                                <th class="p-2">Device</th>
-                                <th class="p-2 text-left">Code</th>
-                                <th class="p-2 text-left">Cost</th>
-                                <th class="p-2 text-left">Time</th>
-                                <th class="p-2 text-left">Status</th>
-                                <th class="p-2 text-left">Action</th>
+                                <th class="p-2">{{lang.__('Device')}}</th>
+                                <th class="p-2 text-left">{{lang.__('Code')}}</th>
+                                <th class="p-2 text-left">{{lang.__('Cost')}}</th>
+                                <th class="p-2 text-left">{{lang.__('Time')}}</th>
+                                <th class="p-2 text-left">{{lang.__('Status')}}</th>
+                                <th class="p-2 text-left">{{lang.__('Action')}}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -76,7 +76,7 @@
                                 </p>
                             </div>
                             <p class="text-3xl font-semibold text-center text-gray-800">{{todayOrders}}</p>
-                            <p class="text-lg text-center text-gray-500">Today orders</p>
+                            <p class="text-lg text-center text-gray-500">{{lang.__('Today orders')}}</p>
                         </div>
                     </div>
         
@@ -89,7 +89,7 @@
                                 </p>
                             </div>
                             <p class="text-3xl font-semibold text-center text-gray-800">{{lastWeekOrders}}</p>
-                            <p class="text-lg text-center text-gray-500">Last week orders</p>
+                            <p class="text-lg text-center text-gray-500">{{lang.__('Last week orders')}}</p>
                         </div>
                     </div>
 
@@ -102,7 +102,7 @@
                                 </p>
                             </div>
                             <p class="text-3xl font-semibold text-center text-gray-800">{{lastMonthOrders}}</p>
-                            <p class="text-lg text-center text-gray-500">Last 30 Days</p>
+                            <p class="text-lg text-center text-gray-500">{{lang.__('Last 30 Days')}}</p>
                         </div>
                     </div>
 

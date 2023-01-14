@@ -53,7 +53,7 @@ class DeviceController
 	public function index($request, $app) 
 	{
 	    return render('views/admin/devices/calendar.html.twig', [
-	        'title' => 'Devices list',
+	        'title' => __('Devices list'),
 	        'app' => $app,
 	        'products' => $this->productsRepo->getItems(['status'=>true, 'stock'=>true]),
 	        'devicesList' => $this->repo->get(50),
@@ -72,7 +72,7 @@ class DeviceController
 	public function orders($request, $app) 
 	{
 	    return render('views/admin/devices/orders.html.twig', [
-	        'title' => 'Devices bookings',
+	        'title' => __('Devices bookings'),
 	        'app' => $app,
 	        'events' => $this->repo->events($request, 10),
 	    ]);
@@ -90,7 +90,7 @@ class DeviceController
 	{
 
 	    return render('views/admin/devices/devices_manage.html.twig', [
-	        'title' => 'Devices list',
+	        'title' => __('Devices list'),
 	        'app' => $app,
 	        'devicesList' => $this->repo->getAll(100),
 	        'typesList' => $this->CategoryRepo->categories(Device::class),
@@ -104,7 +104,7 @@ class DeviceController
 	{
 
 	    return render('views/admin/devices/device.html.twig', [
-	        'title' => 'Edit device',
+	        'title' => __('Edit device'),
 	        'typesList' => $this->DeviceTypeController->getAll(),
 	        'app' => $app,
 	        'device' => $this->repo->find($id)
@@ -117,7 +117,7 @@ class DeviceController
 	{
 
 	    return render('views/admin/forms/edit_device.html.twig', [
-	        'title' => 'Edit device',
+	        'title' => __('Edit device'),
 	        'typesList' => $this->CategoryRepo->categories(Device::class),
 	        'app' => $app,
 	        'device' => $this->repo->find($id)
@@ -138,7 +138,7 @@ class DeviceController
 			$params['provider_id'] = $app->provider->id;
 			$Property = $this->repo->store($params);
 
-        	return array('success'=>1, 'result'=>'Created');
+        	return array('success'=>1, 'result'=>__('Created'), 'reload'=>2);
 
         } catch (Exception $e) {
             return  array('error'=>$e->getMessage());
@@ -161,7 +161,7 @@ class DeviceController
 			$params['status'] = !empty($params['status']) ? 1 : 0;
 			$Property = $this->repo->update($params);
 
-        	return array('success'=>1, 'result'=>'Updated');
+        	return array('success'=>1, 'result'=>__('Updated'));
 
         } catch (Exception $e) {
             return  array('error'=>$e->getMessage());
@@ -181,7 +181,7 @@ class DeviceController
 
 			$Property = $this->repo->destroy($params);
 
-        	return array('success'=>1, 'result'=>'Deleted');
+        	return array('success'=>1, 'result'=>__('Deleted'));
 
         } catch (Exception $e) {
             return  array('error'=>$e->getMessage());
@@ -195,12 +195,12 @@ class DeviceController
 
 		if (empty($params['title']))
 		{
-			throw new \Exception("Empty title", 1);
+			throw new \Exception(__("Empty title"), 1);
 		}
 
 		if (empty($params['type']))
 		{
-			throw new \Exception("Empty type", 1);
+			throw new \Exception(__("Empty type"), 1);
 		}
 
 	}
@@ -217,7 +217,7 @@ class DeviceController
 			$product['qty'] = 1;
 			$save = $this->repo->storeProduct($params['id'], $product);
 
-        	return array('status'=>'success', 'result'=> 'Added '. $save->product_name);
+        	return array('status'=>'success', 'result'=> __('Added').' '. $save->product_name);
 
         } catch (Exception $e) {
             return  $e->getMessage();
