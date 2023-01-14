@@ -5,12 +5,12 @@
                     <span class="text-left">
                         <i class="fa" :class="menu.icon"></i>
                     </span>
-                    <span class="mx-4 text-sm font-normal"> {{menu.title}}  </span>
+                    <span class="mx-4 text-sm font-semibold"> {{menu.title}}  </span>
                 </a>
                 <ul v-if="menu.sub && checkMenu(i)" class="pb-4" >
                     <li v-for="submenu in menu.sub">
                         <a class="" :class="same_page ? 'hover:text-blue-800 bg-gradient-to-r from-white  text-blue-500  border-blue-500 to-blue-100  border-r-4' : ''" :href="url+submenu.link">
-                            <span class="mx-4 text-sm font-normal" v-text="submenu.title"> </span>
+                            <span class="mx-4 text-sm font-normal text-purple-800" v-text="submenu.title"> </span>
                         </a>
                     </li>
                 </ul>
