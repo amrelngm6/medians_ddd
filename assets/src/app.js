@@ -132,7 +132,6 @@ const VueApp = new Vue(
 
         showSidebar()
         {
-            var t = ;
             this.showSide = !this.showSide;
         },  
 
