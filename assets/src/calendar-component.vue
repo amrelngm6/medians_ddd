@@ -1,5 +1,5 @@
 <template>
-    <div class="container calendar">
+    <div class="w-full calendar">
 
         <div class="fixed top-0 left-0 w-full h-full" style="z-index: 9;" v-if="showPopup && activeItem">
 
@@ -241,8 +241,8 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
             headerViewsProvidersMethod() 
             {
                 return {
-                    left: this.title,
-                    right: 'this.headerViewsProviders',
+                    left: '',
+                    right: '',
                     center: 'prev,today,title,next',
                 };
             },

@@ -112,7 +112,7 @@ const VueApp = new Vue(
             var t = this;
             setTimeout(function() {
                 console.log(t.$refs[t.activeModal].checkById(id))
-            }, 1000);
+            }, 500);
             return t;
         },
 
@@ -129,6 +129,14 @@ const VueApp = new Vue(
             });
 
         },
+
+        showSidebar()
+        {
+            var t = this;
+            setTimeout(function() {
+                t.showSide = !t.showSide;
+            }, 500);
+        },  
 
         async handleRequest(params, url = '/api') {
 
@@ -149,13 +157,14 @@ const VueApp = new Vue(
                     return response.data;
             });
         },
+
         setLangs(langs)
         {
             this.__langs = langs;
         },
         __(i)
         {
-            return this.__langs[i];
+            return this.$data.__langs[i];
         }
     }
 });

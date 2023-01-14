@@ -72,23 +72,22 @@
         <nav id="header" class="flex  w-full bg-white shadow-lg border-b border-gray-300 relative" style="z-index:99999">
             <div class="w-full flex items-center justify-between mt-0 px-6 py-0">
                 <div class=" md:flex md:items-center md:w-auto w-full order-3 md:order-1" id="menu">
-                    <div class="inline-flex">
+                    <div class="inline-flex mx-4">
                         <!-- Logo -->
-                        <div class="mx-auto h-16  pt-4 w-auto px-10">
+                        <div class="mx-auto h-16  py-2 w-auto ">
                             <img style="max-height: 100%" src="{{app.CONF.url ? app.CONF.url : '/'}}assets/img/Logo.png" height="40">
                             <!--end logo -->
                         </div>
                     </div>
-                    <div class="inline-flex">
-                        <ul class="md:flex items-center justify-center text-base text-gray-400  md:pt-0">
+                    <div class="inline-flex ">
+                        <ul class="md:flex items-center justify-center text-base text-gray-400  md:pt-0 ">
                             <li>
-                                <a href="#!" class="ToggleItem" data-toggle-target="#side-navbar" data-toggle-class="openmenu">{{app.Settings.sitename}}</a>
+                                <a href="{{app.CONF.url}}" >{{app.Settings.sitename}}</a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa fa-bars"></i></a>
             <!-- <ul class="nav user-menu w-96 flex"> -->
             <ul class="nav user-menu w-64 flex">
                 <li class="hidden nav-item dropdown w-20">
@@ -114,13 +113,12 @@
                     </ul>
                 </li>
             </ul>
-            <div class="dropdown mobile-user-menu">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-            </div>
         </nav>
         {% endif %}
 
         <div class="w-full " id="app">
+
+            <a  href="javascript:;" class="w-6 text-lg fixed top-4 right-4 block" style="z-index:99999" @click="showSide = !showSide"><i class="fa fa-bars"></i></a>
 
             <span :set="__langs = {{lang.vueLang()|json_encode}}"></span>
     
@@ -143,7 +141,7 @@
             </div>
             <div class="gap gap-6 h-full flex w-full overflow-hidden py-4 pb-10 ">
                 {% if app.auth.id %}    
-                <div class="sidebar" id="sidebar">
+                <div class="sidebar" id="sidebar" v-if="showSide" style="z-index:9999">
                     <div class="sidebar-inner slimscroll">
                         <div id="sidebar-menu" class="sidebar-menu">
                             <ul>
@@ -165,4 +163,4 @@
                     </div>
                 </div>
                 {% endif %}
-                <div class="w-full flex" style="height: 85vh; z-index: 9999;">
+                <div class="w-full flex" style="height: 85vh; z-index: 999;">

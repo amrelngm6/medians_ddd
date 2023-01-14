@@ -589,3 +589,7 @@ body .mx-datepicker-popup
 {
   z-index: 999999;
 }
+body .fc-theme-standard .fc-view-harness-active
+{
+  min-height: 500px;
+}
