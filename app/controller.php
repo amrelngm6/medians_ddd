@@ -354,16 +354,16 @@ if (isset($app->auth->id))
             }
 
             if ($action == 'agents')
-                return $UserController->index( $UserController->queryByRole(3), 'Agents', $app );
+                return $UserController->index( $UserController->queryByRole(3, $app), 'Agents', $app );
 
             if ($action == 'managers')
-                return $UserController->index( $UserController->queryByRole(2), 'Managers', $app );
+                return $UserController->index( $UserController->queryByRole(2, $app), 'Managers', $app );
 
             if ($app->auth->can('view_admins', $app) && $app->auth->role_id == 1)
-                return $UserController->index( $UserController->queryByRole(1), 'Administrators', $app );
+                return $UserController->index( $UserController->queryByRole(1, $app), 'Administrators', $app );
 
             if ($app->auth->can('view_admins', $app) && $app->auth->role_id == 3)
-                return $UserController->index( $UserController->queryByRole(3), 'Users',  $app );
+                return $UserController->index( $UserController->queryByRole(3, $app), 'Users',  $app );
 
 
             return '';
