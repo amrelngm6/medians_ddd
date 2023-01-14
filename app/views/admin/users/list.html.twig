@@ -56,7 +56,7 @@
                                     <td> <a href="javascript:;" @click="viewModal('user', {{item.id}})">{{item.name()}} </a></td>
                                     <td>{{item.phone}}</td>
                                     <td>{{item.email}}</td>
-                                    <td><a href="/orders/index?created_by={{item.id}}">{{lang.__('Show')}} ( {{item.properties | length }} )</a> </td>
+                                    <td><a href="/orders/index?created_by={{item.id}}">{{lang.__('Show orders')}}</a> </td>
                                     <td>{{item.status}}</td>
                                     <td>
                                         {% if item.can('edit_contct', app) %}

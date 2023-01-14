@@ -980,6 +980,7 @@ class Langs
 		,'order_status_is' => 'حالة هذا الطلب'
 		,'Are your sure you want to finish this booking' => 'هل أنت متاكد من إكتمال الحجز'
 		,'order created' => 'تم تأكيد الطلب'
+		,'Show orders' => 'عرض الفواتير'
 		,'' => ''
 
 		,'COPYRIGHTS' => 'Copyrights are reserved'
