@@ -71,7 +71,7 @@
         {% if app.auth.id %}
         <nav id="header" class="flex  w-full bg-white shadow-lg border-b border-gray-300 relative" style="z-index:99999">
             <div class="w-full flex items-center justify-between mt-0 px-6 py-0">
-                <div class=" md:flex md:items-center md:w-auto w-full order-3 md:order-1" id="menu">
+                <div class=" md:flex flex lg:flex  md:w-auto w-full order-3 md:order-1" id="menu">
                     <div class="inline-flex mx-4">
                         <!-- Logo -->
                         <div class="mx-auto h-16  py-2 w-auto ">
@@ -79,8 +79,8 @@
                             <!--end logo -->
                         </div>
                     </div>
-                    <div class="inline-flex ">
-                        <ul class="md:flex items-center justify-center text-base text-gray-400  md:pt-0 ">
+                    <div class="lg:inline-flex ">
+                        <ul class="md:flex items-center justify-center text-base text-gray-400  pt-4 md:pt-0 lg:pt-0  ">
                             <li>
                                 <a href="{{app.CONF.url}}" >{{app.Settings.sitename}}</a>
                             </li>

@@ -132,10 +132,8 @@ const VueApp = new Vue(
 
         showSidebar()
         {
-            var t = this;
-            setTimeout(function() {
-                t.showSide = !t.showSide;
-            }, 500);
+            var t = ;
+            this.showSide = !this.showSide;
         },  
 
         async handleRequest(params, url = '/api') {
@@ -164,7 +162,7 @@ const VueApp = new Vue(
         },
         __(i)
         {
-            return this.$data.__langs[i];
+            return this.__langs[i];
         }
     }
 });
