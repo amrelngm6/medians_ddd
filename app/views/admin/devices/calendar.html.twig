@@ -35,7 +35,7 @@
                                                 <input name="type" type="hidden" value="Device.create" > 
                                                 <input name="params[device][status]"  type="hidden" value="1" > 
                                                 <label class="block pt-5">{{lang.__('device name')}}</label>
-                                                <input name="params[device][title]" required="" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Device Title"> 
+                                                <input name="params[device][title]" required="" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Device Title" value="First device"> 
 
 
                                                 <label class="block pt-5">{{lang.__('type')}}</label>
@@ -54,68 +54,14 @@
                                         <div class="m-t-40">
                                             
                                             <label class="block pt-5">{{lang.__('Single price')}}</label>
-                                            <input name="params[device][prices][single_price]" type="number" class="h-12 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="Single price" value="{{device.price.single_price}}">
+                                            <input name="params[device][prices][single_price]" type="number" class="h-12 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="Single price" value="{{device.price.single_price}}" required>
 
                                             <label class="block pt-5">{{lang.__('Multi price')}}</label>
-                                            <input name="params[device][prices][multi_price]" type="number" class="h-12 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="Multi price" value="{{device.price.multi_price}}">
+                                            <input name="params[device][prices][multi_price]" type="number" class="h-12 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="Multi price" value="{{device.price.multi_price}}" required>
 
                                             <button type="submit"  class="uppercase h-12 mt-3 text-white w-full rounded bg-red-700 hover:bg-red-800">{{lang.__('save')}}</button>
 
                                         </div>
-                                    </li>
-                                    <li v-if="activeTab == 'step3'" class='selected'>
-                                        <h3><small>Title 03</small></h3>
-                                        <p class="m-t-40">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                        </p>
-                                    </li>
-                                    <li data-date="20/05/2014">
-                                        <h3><small>Title 04</small></h3>
-                                        <p class="m-t-40">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                        </p>
-                                    </li>
-                                    <li data-date="09/07/2014">
-                                        <h3><small>Title 05</small></h3>
-                                        <p class="m-t-40">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                        </p>
-                                    </li>
-                                    <li data-date="30/08/2014">
-                                        <h3> <small>Title 06</small></h3>
-                                        <p class="m-t-40">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                        </p>
-                                    </li>
-                                    <li data-date="15/09/2014">
-                                        <h3><small>Title 07</small></h3>
-                                        <p class="m-t-40">
-                                               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                        </p>
-                                    </li>
-                                    <li data-date="01/11/2014">
-                                        <h3> <small>Event List</small></h3>
-                                        <p class="m-t-40">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                        </p>
-                                    </li>
-                                    <li data-date="10/12/2014">
-                                        <h3><small>Event Item</small></h3>
-                                        <p class="m-t-40">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                        </p>
-                                    </li>
-                                    <li data-date="19/01/2015">
-                                        <h3><small>Event title</small></h3>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                        </p>
-                                    </li>
-                                    <li data-date="03/03/2015">
-                                        <h3><small>Event title</small></h3>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
-                                        </p>
                                     </li>
                                 </ol>
                             </div>
