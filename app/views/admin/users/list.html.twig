@@ -14,7 +14,7 @@
         </div>
         <div class="">
             <ul class="breadcrumb text-right bg-white float-end m-0 ps-0 pe-0 flex gap gap-6">
-                <li class="breadcrumb-item"><a href="{{app.CONF.url}}dashboard">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{app.CONF.url}}dashboard">{{lang.__('Dashboard')}}</a></li>
                 <li class="breadcrumb-item active">{{title}}</li>
             </ul>
         </div>
@@ -38,7 +38,7 @@
                                     <th>{{lang.__('Name')}}</th>
                                     <th>{{lang.__('phone')}}</th>
                                     <th>{{lang.__('email')}}</th>
-                                    <th>Assigned Items</th>
+                                    <th>{{lang.__('Orders')}}</th>
                                     <th>{{lang.__('Status')}}</th>
                                     <th>{{lang.__('actions')}}</th>
                                 </tr>
@@ -56,11 +56,11 @@
                                     <td> <a href="javascript:;" @click="viewModal('user', {{item.id}})">{{item.name()}} </a></td>
                                     <td>{{item.phone}}</td>
                                     <td>{{item.email}}</td>
-                                    <td><a href="/properties/index?agent_id={{item.id}}">Show ( {{item.properties | length }} )</a> </td>
+                                    <td><a href="/orders/index?created_by={{item.id}}">{{lang.__('Show')}} ( {{item.properties | length }} )</a> </td>
                                     <td>{{item.status}}</td>
                                     <td>
                                         {% if item.can('edit_contct', app) %}
-                                        <a href="/users/edit/{{item.id}}" class="font-bold"> Edit</a>
+                                        <a href="/users/edit/{{item.id}}" class="font-bold"> {{lang.__('Edit')}}</a>
                                         {% endif %}
                                     </td>
                                 </tr>
