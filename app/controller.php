@@ -366,7 +366,7 @@ if (isset($app->auth->id))
                 return $UserController->index( $UserController->queryByRole(3, $app), __('Users'),  $app );
 
 
-            return '';
+            return $UserController->index( $UserController->queryByRole(3, $app), __('Users'), $app );
 
         } catch (Exception $e) {
             return $e->getMessage();
