@@ -69,23 +69,11 @@ $app->post('/api/{type?}', function ($type) use ($app, $request)
     }
 });
 
-$app->match('/api/{type?}', function ($type) use ($app, $request) 
+$app->match('/api/{model?}/{type?}', function ($model, $type) use ($app, $request) 
 {   
     try {
-        
-        switch ($type) 
-        {
-            case 'calendar':
-                return (new apps\Devices\DeviceController($app))->calendar($request, $app);
-                break;
-            
-            case 'calendar_events':          
-                return (new apps\Devices\DeviceController($app))->events($request, $app);
-                break;
-         
-        }
 
-        return (new apps\APIController($app))->handle($request, $app);
+        return (new apps\APIController($app))->handle($request, $model, $type);
 
     } catch (Exception $e) {
         return $e->getMessage();

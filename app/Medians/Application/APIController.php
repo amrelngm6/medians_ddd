@@ -9,15 +9,20 @@ class APIController
 {
 
 	/**
+	 * @var Object
+	 */ 
+	public $app;
+
+	/**
 	* @var Object
 	*/
 	protected $repo;
 
 
 
-	function __construct()
+	function __construct($app )
 	{
-	
+		$this->app = $app;
 	}
 
 
@@ -25,13 +30,13 @@ class APIController
 	 * Model object 
 	 * 
 	 */
-	public function handle($request, $app)
+	public function handle($request, $model)
 	{
 		$return = [];
-		switch ($request->get('model')) 
+		switch ($model) 
 		{
-			case 'User':
-				$controller = (new Repo\Users\UserRepository($app));
+			case 'home':
+				return $this->home();
 				break;
 			case 'OrderDevice':
 				$controller = (new Repo\Devices\OrderDevicesRepository($app));
@@ -44,7 +49,7 @@ class APIController
 
 		$return = isset($controller) ? $controller->find($request->get('id')) : $return;
 
-		return response(json_encode(['status'=>true, 'result'=>$return]), $app);
+		return json_encode(['status'=>true, 'result'=>$return]);
 	} 
 
 	/**
@@ -181,4 +186,14 @@ class APIController
 		return response(json_encode($return), $app);
 	} 
 
+	public function home()
+	{
+		$data = [
+			['id' => 1, 'title'=>'Hole 2','picture'=>'uploads/images/image.jpg'],
+			['id' => 2, 'title'=>'Hola 2','picture'=>'uploads/images/image.jpg'],
+			['id' => 3, 'title'=>'Hola 3','picture'=>'uploads/images/image.jpg']
+		];
+
+		return json_encode($data);
+	}
 }
