@@ -72,7 +72,7 @@ $app->provider = isset($app->auth->provider) ? $app->auth->provider : null;
 // $app->providerSession = (isset($app->auth->providers) && isset(json_decode($app->auth->providers)[0])) ? json_decode($app->auth->providers)[0] : null;
 
 // Set Settings options
-$app->Settings = (new apps\Settings\SettingsController($app))->getAll();
+// $app->Settings = (new apps\Settings\SettingsController($app))->getAll();
 
 
 include('app/config/routing.php');
