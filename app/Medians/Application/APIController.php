@@ -30,13 +30,21 @@ class APIController
 	 * Model object 
 	 * 
 	 */
-	public function handle($request, $model)
+	public function handle($request, $model, $type)
 	{
 		$return = [];
 		switch ($model) 
 		{
 			case 'home':
 				return $this->home();
+			case 'sections':
+				return $this->sections();
+				break;
+			case 'section':
+				return $this->section($type);
+				break;
+			case 'quiz':
+				return json_encode([$this->quiz($type)]);
 				break;
 			case 'OrderDevice':
 				$controller = (new Repo\Devices\OrderDevicesRepository($app));
@@ -189,9 +197,45 @@ class APIController
 	public function home()
 	{
 		$data = [
-			['id' => 1, 'title'=>'Hole 2','picture'=>'uploads/images/image.jpg'],
-			['id' => 2, 'title'=>'Hola 2','picture'=>'uploads/images/image.jpg'],
-			['id' => 3, 'title'=>'Hola 3','picture'=>'uploads/images/image.jpg']
+			['id' => 1, 'title'=>'Hole 2','sub_title'=>'Hole 2','picture'=>'uploads/images/quiz-1.png'],
+			['id' => 2, 'title'=>'Hole 2','sub_title'=>'Hola 2','picture'=>'uploads/images/quiz-2.png'],
+			['id' => 3, 'title'=>'Hole 2','sub_title'=>'Hola 3','picture'=>'uploads/images/quiz-3.png']
+		];
+
+		return json_encode($data);
+	}
+
+	public function quiz($id)
+	{
+		return [
+				'id' => (Int) $id, 'title'=>'Çfarë duhet të bëjë Klejdi?','picture'=>'uploads/images/quiz-'.$id.'.png','video_bg'=>'uploads/images/video-bg.png','video_url'=>'https://medianssolutions.com/assets/1.mp4', 'text'=>'Test',
+				'options' => [
+					['id' => 1, 'letter'=>'A', 'text'=>'Të bashkohet dhe postojë emoji-t në bisedë në kanalin e videos tjetër.', 'selected'=>false, 'is_correct'=>false],
+					['id' => 2, 'letter'=>'B', 'text'=>'Të injorojë udhëzimin', 'selected'=>false, 'is_correct'=>false],
+					['id' => 3, 'letter'=>'C', 'text'=>"T’i dërgojë mesazh privatisht YouTuberit të tij të preferuar për t'i bërë të ditur se kjo nuk është në rregull", 'selected'=>false, 'is_correct'=>true]
+				],
+				'next_id' => ($id + 1)
+			];
+	}
+
+	public function section($id)
+	{
+
+		$data = [
+			$this->quiz(1),
+			$this->quiz(2),
+			$this->quiz(3)
+		];
+
+		return json_encode($data);
+	}
+
+	public function sections()
+	{
+		$data = [
+			['id' => 1, 'title'=>'Grupmosha','sub_title'=>'8-10 vjeç','picture'=>'uploads/images/quiz-section1.png', 'section_bg' => 'uploads/images/section1-bg.png'],
+			['id' => 2, 'title'=>'Grupmosha','sub_title'=>'11-14 vjeç','picture'=>'uploads/images/quiz-section2.png', 'section_bg' => 'uploads/images/section2-bg.png'],
+			['id' => 3, 'title'=>'Grupmosha','sub_title'=>'15-18 vjeç','picture'=>'uploads/images/quiz-section3.png', 'section_bg' => 'uploads/images/section3-bg.png']
 		];
 
 		return json_encode($data);
