@@ -44,7 +44,7 @@ class APIController
 				return $this->section($type);
 				break;
 			case 'quiz':
-				return json_encode([$this->quiz($type)]);
+				return json_encode($this->quiz($type));
 				break;
 			case 'OrderDevice':
 				$controller = (new Repo\Devices\OrderDevicesRepository($app));
