@@ -214,7 +214,7 @@ class APIController
 			'video_bg'=>'uploads/images/video-bg.png',
 			'video_url'=>'https://medianssolutions.com/assets/1.mp4', 
 			'text'=>'Test', 
-			'options_img'=>'uploads/images/options/quiz-2-'.rand(1,3).'.png',
+			'options_img'=>'uploads/images/options/quiz-2-'.rand(1,5).'.png',
 			'level'=> rand(1,2),
 			'options' => [
 				['id' => 1, 'letter'=>'A', 'text'=>'Të bashkohet dhe postojë emoji-t në bisedë në kanalin e videos tjetër.','selected'=>false,'is_correct'=>($id == 3 ? true : false)],
