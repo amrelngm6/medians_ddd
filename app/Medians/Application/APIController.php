@@ -212,7 +212,7 @@ class APIController
 			'options' => [
 				['id' => 1, 'letter'=>'A', 'text'=>'Të bashkohet dhe postojë emoji-t në bisedë në kanalin e videos tjetër.','selected'=>false,'is_correct'=>($id == 3 ? true : false)],
 				['id' => 2, 'letter'=>'B', 'text'=>'Të injorojë udhëzimin', 'selected'=>false, 'is_correct'=>($id == 1 ? true : false)],
-				['id' => 3, 'letter'=>'C', 'text'=>"T’i dërgojë mesazh privatisht YouTuberit të tij të preferuar për t'i bërë të ditur se kjo nuk është në rregull", 'selected'=>false, 'is_correct'=> ($id == 2 ? true : false)]
+				['id' => 3, 'letter'=>'C', 'text'=>"T’i dërgojë mesazh privatisht YouTuberit të tij të preferuar ", 'selected'=>false, 'is_correct'=> ($id == 2 ? true : false)]
 			],
 			'next_id' => ($id + 1)
 		];
