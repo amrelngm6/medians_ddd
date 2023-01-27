@@ -24,6 +24,13 @@ class QuizOptions extends CustomController
 		'status',
 	];
 
+	public $appends = ['selected'];
+
+	public function getSelectedAttribute()
+	{
+		return false;
+	}
+
 	/**
 	 * Disable create & update times fields
 	 */ 

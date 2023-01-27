@@ -210,32 +210,28 @@ class APIController
 	public function quiz($id)
 	{
 
-		print_r(quiz::byCategory($id));
-		return [
-			'id' => (Int) $id, 
-			'title'=>'Çfarë duhet të bëjë Klejdi?',
-			'picture'=>'uploads/images/quiz-'.$id.'.png',
-			'video_bg'=>'uploads/images/video-bg.png',
-			'video_url'=>'https://medianssolutions.com/assets/1.mp4', 
-			'options_img'=>'uploads/images/options/quiz-'.rand(1,5).'-'.rand(1,3).'.png',
-			'level'=> rand(1,3),
-			'options' => [
-				['id' => 1, 'letter'=>'A', 'text'=>'Të bashkohet dhe postojë emoji-t në bisedë në kanalin e videos tjetër.','selected'=>false,'is_correct'=>($id == 3 ? true : false)],
-				['id' => 2, 'letter'=>'B', 'text'=>'Të injorojë udhëzimin', 'selected'=>false, 'is_correct'=>($id == 1 ? true : false)],
-				['id' => 3, 'letter'=>'C', 'text'=>"T’i dërgojë mesazh privatisht YouTuberit të tij të preferuar ", 'selected'=>false, 'is_correct'=> (($id != 1 && $id != 3) ? true : false)]
-			],
-			'next_id' => ($id + 1)
-		];
+		return quiz::byCategory($id);
+		// return [
+		// 	'id' => (Int) $id, 
+		// 	'title'=>'Çfarë duhet të bëjë Klejdi?',
+		// 	'picture'=>'uploads/images/quiz-'.$id.'.png',
+		// 	'video_bg'=>'uploads/images/video-bg.png',
+		// 	'video_url'=>'https://medianssolutions.com/assets/1.mp4', 
+		// 	'options_img'=>'uploads/images/options/quiz-'.rand(1,5).'-'.rand(1,3).'.png',
+		// 	'level'=> rand(1,3),
+		// 	'options' => [
+		// 		['id' => 1, 'letter'=>'A', 'text'=>'Të bashkohet dhe postojë emoji-t në bisedë në kanalin e videos tjetër.','selected'=>false,'is_correct'=>($id == 3 ? true : false)],
+		// 		['id' => 2, 'letter'=>'B', 'text'=>'Të injorojë udhëzimin', 'selected'=>false, 'is_correct'=>($id == 1 ? true : false)],
+		// 		['id' => 3, 'letter'=>'C', 'text'=>"T’i dërgojë mesazh privatisht YouTuberit të tij të preferuar ", 'selected'=>false, 'is_correct'=> (($id != 1 && $id != 3) ? true : false)]
+		// 	],
+		// 	'next_id' => ($id + 1)
+		// ];
 	}
 
 	public function section($id)
 	{
 
-		$data = [
-			$this->quiz(1),
-			$this->quiz(2),
-			$this->quiz(3)
-		];
+		$data = Quiz::byCategory($id);
 
 		return json_encode($data);
 	}
