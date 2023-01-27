@@ -209,6 +209,8 @@ class APIController
 
 	public function quiz($id)
 	{
+
+		print_r(quiz::byCategory($id));
 		return [
 			'id' => (Int) $id, 
 			'title'=>'Çfarë duhet të bëjë Klejdi?',

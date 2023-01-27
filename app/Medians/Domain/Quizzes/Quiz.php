@@ -21,6 +21,8 @@ class Quiz extends CustomController
 		'video_url',
 		'options_style',
 		'options_img',
+		'quote_title',
+		'quote_text',
 		'next_id',
 		'status',
 	];
@@ -36,10 +38,14 @@ class Quiz extends CustomController
 		return $this->fillable;
 	}
 
-	public static function byCategorya($category_id)
+	public static function byCategory($category_id)
 	{
 		return Quiz::with('options')->where('category_id', $category_id)->where('status', 1)->get();
 	}
 
 
+	public function options()
+	{
+		return $this->HasMany(QuizOptions::class, 'quiz_id', 'id');
+	}
 }

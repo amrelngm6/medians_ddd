@@ -5,23 +5,22 @@ namespace Medians\Domain\Quizzes;
 use Shared\dbaser\CustomController;
 
 
-class Quiz extends CustomController
+class QuizOptions extends CustomController
 {
 
 	/*
 	/ @var String
 	*/
-	protected $table = 'quizzes';
+	protected $table = 'quiz_options';
 
 	public $fillable = [
-		'title',
-		'pciture',
-		'category_id',
-		'video_bg',
-		'video_url',
-		'options_style',
-		'options_img',
-		'next_id',
+		'text',
+		'letter',
+		'picture',
+		'quiz_id',
+		'style',
+		'is_correct',
+		'created_by',
 		'status',
 	];
 
@@ -34,11 +33,6 @@ class Quiz extends CustomController
 	public function getFields()
 	{
 		return $this->fillable;
-	}
-
-	public static function byCategorya($category_id)
-	{
-		return Quiz::with('options')->where('category_id', $category_id)->where('status', 1)->get();
 	}
 
 
