@@ -19,16 +19,21 @@ class QuizOptions extends CustomController
 		'picture',
 		'quiz_id',
 		'style',
-		'is_correct',
+		'correct',
 		'created_by',
 		'status',
 	];
 
-	public $appends = ['selected'];
+	public $appends = ['selected', 'is_correct'];
 
 	public function getSelectedAttribute()
 	{
 		return false;
+	}
+
+	public function getIsCorrectAttribute()
+	{
+		return $this->correct ? true : false;
 	}
 
 	/**
