@@ -243,7 +243,6 @@ class Langs
 		,'SUCC_PURCHASE' => 'تم الدفع بنجاح. تم التاكيد على طلبك.'
 		,'NO_ITEM_DOWNLOAD' => 'You have no items to download.'
 		,'LOG_FIRST' => 'يرجى تسجيل الدخول اولا'
-		,'LOG_AS_USER_FIRST' => 'يرجى  <a href="'.$CONF['url'].'login">تسجيل الدخول</a> اولا'
 		,'LOG_AS_PROVIDER_FIRST' => 'Please login First as Provider'
 		,'NO_LIKES' => "No Likes here yet"
 		,'NO_COMMENTS' => "No comments here"

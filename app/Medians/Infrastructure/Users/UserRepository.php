@@ -22,7 +22,7 @@ class UserRepository
 
 	public function find($customerId)
 	{
-		return User::with('Role')->with('provider')->find($customerId);
+		return User::with('Role')->find($customerId);
 	}
 
 	public function checkDuplicate($param)
@@ -36,7 +36,7 @@ class UserRepository
 
 	public function get($limit = 100)
 	{
-		return User::with('Role', 'provider')->where('provider_id', $this->app->provider->id)->limit($limit)->get();
+		return User::with('Role')->limit($limit)->get();
 	}
 
 

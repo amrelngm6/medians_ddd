@@ -3,6 +3,8 @@
 namespace Medians\Application;
 
 use Medians\Infrastructure as Repo;
+use Medians\Domain\Quizzes\Quiz;
+use Medians\Domain\Categories\Category;
 
 
 class APIController
@@ -213,9 +215,8 @@ class APIController
 			'picture'=>'uploads/images/quiz-'.$id.'.png',
 			'video_bg'=>'uploads/images/video-bg.png',
 			'video_url'=>'https://medianssolutions.com/assets/1.mp4', 
-			'text'=>'Test', 
-			'options_img'=>'uploads/images/options/quiz-2-'.rand(1,5).'.png',
-			'level'=> rand(1,2),
+			'options_img'=>'uploads/images/options/quiz-'.rand(1,5).'-'.rand(1,3).'.png',
+			'level'=> rand(1,3),
 			'options' => [
 				['id' => 1, 'letter'=>'A', 'text'=>'Të bashkohet dhe postojë emoji-t në bisedë në kanalin e videos tjetër.','selected'=>false,'is_correct'=>($id == 3 ? true : false)],
 				['id' => 2, 'letter'=>'B', 'text'=>'Të injorojë udhëzimin', 'selected'=>false, 'is_correct'=>($id == 1 ? true : false)],
@@ -239,11 +240,7 @@ class APIController
 
 	public function sections()
 	{
-		$data = [
-			['id' => 1, 'title'=>'Grupmosha','sub_title'=>'8-10 vjeç','picture'=>'uploads/images/quiz-section1.png', 'section_bg' => 'uploads/images/section1-bg.png'],
-			['id' => 2, 'title'=>'Grupmosha','sub_title'=>'11-14 vjeç','picture'=>'uploads/images/quiz-section2.png', 'section_bg' => 'uploads/images/section2-bg.png'],
-			['id' => 3, 'title'=>'Grupmosha','sub_title'=>'15-18 vjeç','picture'=>'uploads/images/quiz-section3.png', 'section_bg' => 'uploads/images/section3-bg.png']
-		];
+		$data = Category::byModel(Quiz::class);
 
 		return json_encode($data);
 	}
