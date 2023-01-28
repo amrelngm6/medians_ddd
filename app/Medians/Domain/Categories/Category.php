@@ -25,7 +25,7 @@ class Category extends CustomController
 		'status',
 	];
 
-	public $appends = ['title', 'sub_title', 'picture', 'section_bg'];
+	public $appends = ['title', 'sub_title', 'picture', 'section_bg', 'quiz_id'];
 
 	/**
 	 * Disable create & update times fields
@@ -34,6 +34,10 @@ class Category extends CustomController
 
 
 
+	public function getQuizIdAttribute()
+	{
+		return isset($this->quiz->id) ? $this->quiz->id : 0;
+	}
 	public function getTitleAttribute()
 	{
 		return $this->name;
