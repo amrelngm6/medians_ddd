@@ -22,6 +22,7 @@ class Category extends CustomController
 		'parent',
 		'icon',
 		'bg',
+		'video_url',
 		'status',
 	];
 
