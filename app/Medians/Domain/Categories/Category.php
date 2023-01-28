@@ -68,7 +68,7 @@ class Category extends CustomController
 
 	public function quiz()
 	{
-		return $this->HasOne(Quiz::class, 'category_id', 'id');
+		return $this->HasOne(Quiz::class, 'category_id', 'id')->with('options');
 	}
 
 }
