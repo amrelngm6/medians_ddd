@@ -230,8 +230,7 @@ class APIController
 
 	public function section($id)
 	{
-
-		$data = Quiz::byCategory($id);
+		$data = Category::byModel(Quiz::class, $id);
 
 		return json_encode($data);
 	}

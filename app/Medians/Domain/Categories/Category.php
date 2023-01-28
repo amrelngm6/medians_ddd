@@ -4,6 +4,8 @@ namespace Medians\Domain\Categories;
 
 use Shared\dbaser\CustomController;
 
+use Medians\Domain\Quizzes\Quiz;
+
 
 class Category extends CustomController
 {
@@ -57,8 +59,16 @@ class Category extends CustomController
 
 	public static function byModel($Model, $parent = 0)
 	{
-		return Category::where('model', $Model)->where('parent', $parent)->where('status', '1')->get();
+		return Category::where('model', $Model)
+		->where('parent', $parent)
+		->where('status', '1')
+		->with('quizzes')
+		->get();
 	}
 
+	public function quizzes()
+	{
+		return $this->HasMany(Quiz::class, 'category_id', 'id');
+	}
 
 }
