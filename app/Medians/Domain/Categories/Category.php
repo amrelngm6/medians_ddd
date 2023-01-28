@@ -25,7 +25,7 @@ class Category extends CustomController
 		'status',
 	];
 
-	public $appends = ['title', 'sub_title', 'picture', 'section_bg', 'quiz_id'];
+	public $appends = ['title', 'sub_title', 'picture', 'section_bg', 'quiz_id', 'video_type'];
 
 	/**
 	 * Disable create & update times fields
@@ -34,6 +34,10 @@ class Category extends CustomController
 
 
 
+	public function getVideoTypeAttribute()
+	{
+		return !empty($this->is_video) ? true : false;
+	}
 	public function getQuizIdAttribute()
 	{
 		return isset($this->quiz->id) ? $this->quiz->id : 0;
