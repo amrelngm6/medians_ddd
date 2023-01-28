@@ -210,7 +210,7 @@ class APIController
 	public function quiz($id)
 	{
 
-		return quiz::byCategory($id);
+		return quiz::with('options')->find($id);
 		// return [
 		// 	'id' => (Int) $id, 
 		// 	'title'=>'Çfarë duhet të bëjë Klejdi?',
