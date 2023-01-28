@@ -62,13 +62,13 @@ class Category extends CustomController
 		return Category::where('model', $Model)
 		->where('parent', $parent)
 		->where('status', '1')
-		->with('quizzes')
+		->with('quiz')
 		->get();
 	}
 
-	public function quizzes()
+	public function quiz()
 	{
-		return $this->HasMany(Quiz::class, 'category_id', 'id');
+		return $this->HasOne(Quiz::class, 'category_id', 'id');
 	}
 
 }
