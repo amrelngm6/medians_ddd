@@ -15,6 +15,7 @@ class Quiz extends CustomController
 
 	public $fillable = [
 		'title',
+		'sub_title',
 		'pciture',
 		'category_id',
 		'video_bg',
@@ -23,10 +24,13 @@ class Quiz extends CustomController
 		'options_img',
 		'quote_title',
 		'quote_text',
+		'quote_video_url',
 		'next_id',
 		'status',
 	];
 
+	
+	
 	/**
 	 * Disable create & update times fields
 	 */ 
