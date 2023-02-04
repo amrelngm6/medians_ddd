@@ -6,11 +6,12 @@ $ffmpeg = 'E:\Development\path\ffmpeg\bin\ffmpeg.exe';
 
 
 
-foreach (glob('./*.png') as $value) {
-      $file_path = str_replace('./', '', $value);
-      $newFile = str_replace('./', 'tmp/', $value);
+foreach (glob('../quiz-section*.png') as $value) {
+      $file_path = str_replace('../', '', $value);
+      $newFile = str_replace('../', 'tmp/', $value);
 
-      shell_exec($ffmpeg.' -i '.$file_path.' -vf scale=350:-1 '.$newFile.' ');
+      shell_exec($ffmpeg.' -i '.$value.' -vf scale=250:-1 '.$newFile.' ');
+      // shell_exec($ffmpeg.' -i '.$file_path.' -vf scale=350:-1 '.$newFile.' ');
 }
 
 
