@@ -18,6 +18,8 @@ class ProductController
 	function __construct($app)
 	{
 
+		$this->app = $app;
+
 		$this->repo = new ProductsRepository($app);
 	}
 
@@ -29,12 +31,50 @@ class ProductController
 	 * @param \Twig\Environment $twig
 	 * 
 	 */ 
-	public function index($request, $app) 
+	public function index($request) 
 	{
 		return render('views/admin/products/products.html.twig', [
 	        'title' => __('Products list'),
-	        'app' => $app,
+	        'app' => $this->app,
 	        'products' => $this->repo->get($request),
+	        'typesList' => $this->repo->getModel()->categoriesList(),
+	        'stock' => new StockController(null),
+	    ]);
+	}
+
+	/**
+	 * Admin index items
+	 * 
+	 * @param Silex\Application $app
+	 * @param \Twig\Environment $twig
+	 * 
+	 */ 
+	public function stock_alert($request) 
+	{
+
+		return render('views/admin/products/products.html.twig', [
+	        'title' => __('Stock alert products'),
+	        'app' => $this->app,
+	        'products' => $this->repo->getByStock((Int) $this->app->Settings['stock_alert']),
+	        'typesList' => $this->repo->getModel()->categoriesList(),
+	        'stock' => new StockController(null),
+	    ]);
+	}
+
+	/**
+	 * Admin index items
+	 * 
+	 * @param Silex\Application $app
+	 * @param \Twig\Environment $twig
+	 * 
+	 */ 
+	public function stock_out($request) 
+	{
+
+		return render('views/admin/products/products.html.twig', [
+	        'title' => __('Stock out products'),
+	        'app' => $this->app,
+	        'products' => $this->repo->getByStockOut(),
 	        'typesList' => $this->repo->getModel()->categoriesList(),
 	        'stock' => new StockController(null),
 	    ]);

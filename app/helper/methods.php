@@ -55,6 +55,8 @@ function getMenuList()
             [
                 array('title'=>__('Products list'),  'icon'=>'fa-dashboard', 'link'=>'products/index'),
                 array('title'=>__('Stock log'),  'icon'=>'fa-dashboard', 'link'=>'stock/index'),
+                array('title'=>__('Stock alert products'),  'icon'=>'fa-dashboard', 'link'=>'products/stock_alert'),
+                array('title'=>__('Stock out products'),  'icon'=>'fa-dashboard', 'link'=>'products/stock_out'),
             ]
         ),
         array('title'=>__('Orders'),  'icon'=>'fa-files-o', 'link'=>'', 'sub'=>

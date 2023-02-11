@@ -25,6 +25,7 @@
         body label {
             font-weight: 600;
         }
+        .text-default{ text-align:  {{app.Settings['lang'] == 'arabic' ? 'right' : 'left'}} }
         body th, body td { text-align:center }
         .bg-orange{
   background: #fc5a03;
@@ -108,8 +109,10 @@
                         </span>
                         <span>{{app.auth.name}}</span>
                     </a>
-                    <ul class="py-4 px-2 w-full bg-white absolute top-14 left-0 hidden dropped1" style="z-index: 9999;">
-                        <li><a href="/logout">Logout </a>
+                    <ul class="py-4 px-2 w-full bg-white border border-gray-300 rounded  absolute top-14 left-1 hidden dropped1" style="z-index: 9999;">
+                        <li class="py-2 border-b border-gray-300"><a href="{{app.CONF.url}}users/edit/{{app.auth.id}}">{{lang.__('PROFILE')}} </a>
+                        <li class="py-2 border-b border-gray-300"><a href="{{app.CONF.url}}settings">{{lang.__('SETTING')}} </a>
+                        <li class="py-2"><a href="/logout">{{lang.__('LOGOUT')}} </a>
                     </ul>
                 </li>
             </ul>

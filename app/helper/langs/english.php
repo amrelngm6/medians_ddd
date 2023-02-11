@@ -906,6 +906,8 @@ class Langs
 			,'unpaid' => 'UnPaid'
 			,'completed' => 'Completed'
 			,'active' => 'Active'
+			,'Stock alert products' => 'Stock alert products'
+			,'Stock out products' => 'Stock out products'
 
 			,'COPYRIGHTS' => 'Copyrights are reserved'
 		);

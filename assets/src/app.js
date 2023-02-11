@@ -48,7 +48,8 @@ const VueApp = new Vue(
             date: '',
             activeModal:'',
             showModal:false,
-            showSide:false,
+            showSide:true,
+            showAddSide:false,
             showTab:true,
             activeTab:'step1',
         };

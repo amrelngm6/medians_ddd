@@ -247,6 +247,16 @@ if (isset($app->auth->id))
                 return (new apps\Products\ProductController($app))->edit($id, $request, $app);
             }
 
+            if ($action == 'stock_alert')
+            {
+                return (new apps\Products\ProductController($app))->stock_alert($request);
+            }
+
+            if ($action == 'stock_out')
+            {
+                return (new apps\Products\ProductController($app))->stock_out($request);
+            }
+
             return (new apps\Products\ProductController($app))->index($request, $app);
 
         } catch (Exception $e) {

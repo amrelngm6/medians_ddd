@@ -13,16 +13,16 @@
                         <div class="card-body pt-0">
                             <div class="settings-form">
                                 <input name="type" type="hidden" value="Settings.update">
-                                <label class="block py-5">
+                                <label class="block py-3">
                                     <span class="text-gray-700">{{lang.__('Sitename')}} <span class="star-red">*</span></span>
                                     <input name="params[settings][sitename]" type="text" class="h-10 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" required placeholder="{{lang.__('Sitename')}}" value="{{ app.Settings.sitename }}">
                                 </label>
-                                <label class="block py-5">
+                                <label class="block py-3">
                                     <span class="text-gray-700">{{lang.__('Currency')}} <span class="star-red">*</span></span>
                                     <input name="params[settings][currency]" type="text" class="h-10 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="{{lang.__('Currency')}}" required value="{{ app.Settings.currency }}">
                                 </label>
 
-                                <label class="block py-5">
+                                <label class="block py-3">
                                     <span class="text-gray-700">{{lang.__('Language')}} <span class="star-red">*</span></span>
                                     <select class="select h-10 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600 " name="params[settings][lang]">
                                         <option {% if app.Settings.lang == 'english' %} selected {% endif %} value="english">English</option>
@@ -94,11 +94,11 @@
                             <div class="settings-form">
                                 <div class="form-group">
                                     <label>{{lang.__('Invoice notes')}}  <span class="star-red">*</span></label>
-                                    <textarea name="params[settings][invoice_notes]" rows="4" class="mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="Enter Address Line 2" required >{{ app.Settings.invoice_notes }}</textarea>
+                                    <textarea name="params[settings][invoice_notes]" rows="4" class="mt-2 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="Enter Address Line 2" required >{{ app.Settings.invoice_notes }}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>{{lang.__('Invoice terms & conditions')}}  <span class="star-red">*</span></label>
-                                    <textarea name="params[settings][invoice_terms]" rows="4" class="mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="Enter Address Line 2" required >{{ app.Settings.invoice_terms }}</textarea>
+                                    <textarea name="params[settings][invoice_terms]" rows="4" class="mt-2 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="Enter Address Line 2" required >{{ app.Settings.invoice_terms }}</textarea>
                                 </div>
                             </div>
                         </div>

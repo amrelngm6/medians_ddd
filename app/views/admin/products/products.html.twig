@@ -4,31 +4,33 @@
         <div class="py-2 mt-1"></div>
         <!-- today tab 1 -->
         <!-- New releases -->
-        <div class="px-4 mb-6 py-4 rounded-lg shadow-lg bg-white dark:bg-gray-700 ">
-            <h1 class="font-bold text-lg ">{{title}}</h1>
-            <hr class="mt-2" />
+        <div class="px-4 mb-6 py-4 rounded-lg shadow-lg bg-white dark:bg-gray-700 flex w-full">
+            <h1 class="font-bold text-lg w-full">{{title}}</h1>
+            <a href="javascript:;" class="uppercase p-2 mx-2 text-center text-white w-32 rounded bg-gradient-purple hover:bg-red-800" @click="showAddSide = true;">{{lang.__('Add new')}}</a>
+
         </div>
-        <div class="row ">
-                <div class="col-md-8">
+            <hr class="mt-2" />
+        <div class="w-full flex gap gap-6">
+                <div class="w-full">
                     <div class="px-4 mb-6 py-4 rounded-lg shadow-lg bg-white dark:bg-gray-700 ">
                         <table class="table dark:text-gray-400 text-gray-800 border-separate space-y-6 text-sm w-full">
                             <thead class="dark:bg-gray-800 bg-white text-gray-500">
                                 <tr>
-                                    <th class="p-2">{{lang.__('Item')}}</th>
-                                    <th class="p-2 text-left">{{lang.__('Category')}}</th>
-                                    <th class="p-2 text-left">{{lang.__('Price')}}</th>
-                                    <th class="p-2 text-left">{{lang.__('stock')}}</th>
-                                    <th class="p-2 text-left">{{lang.__('Status')}}</th>
-                                    <th class="p-2 text-left">{{lang.__('Action')}}</th>
+                                    <th class="p-2 text-right px-4">{{lang.__('Item')}}</th>
+                                    <th class="p-2 text-center">{{lang.__('Category')}}</th>
+                                    <th class="p-2 text-center">{{lang.__('Price')}}</th>
+                                    <th class="p-2 text-center">{{lang.__('stock')}}</th>
+                                    <th class="p-2 text-center">{{lang.__('Status')}}</th>
+                                    <th class="p-2 text-center">{{lang.__('Action')}}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for product in products %}
                                 <tr class="dark:bg-gray-800">
                                     <td class="p-2">
-                                        <div class="flex align-items-center">
+                                        <div class="flex ">
                                             <img class="rounded-full h-12 w-12  object-cover" src="{{app.CONF.url}}assets/img/cup.jpg" alt="unsplash image">
-                                            <div class="ml-3">
+                                            <div class="ml-3 text-default">
                                                 <div class="font-medium">{{product.name}}</div>
                                                 <div class="text-gray-500 text-sm">{{product.description}}</div>
                                             </div>
@@ -60,12 +62,15 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3" v-if="showAddSide">
 
-                    <div class="px-4 mb-6 py-4 rounded-lg shadow-lg bg-white dark:bg-gray-700 ">
+                    <div class="mb-6 p-4 rounded-lg shadow-lg bg-white dark:bg-gray-700 ">
 
-                        <form action="/api/create" method="POST" data-refresh="1" id="add-device-form" class="action p-8 py-0 m-auto rounded-lg max-w-xl pb-10">
-                            <h1 class="m-auto max-w-xl text-2xl mb-10 text-center">{{lang.__('Add product')}}</h1>
+                        <form action="/api/create" method="POST" data-refresh="1" id="add-device-form" class="action  py-0 m-auto rounded-lg max-w-xl pb-10">
+                            <div class="w-full flex">
+                                <h1 class="w-full m-auto max-w-xl text-base mb-10 ">{{lang.__('Add product')}}</h1>
+                                <span class="cursor-pointer py-1 px-2" @click="showAddSide = false"><i class="fa fa-close"></i></span>
+                            </div>
                             <input name="type"  type="hidden" value="Product.create" > 
                             <input name="params[product][status]"  type="hidden" value="1" > 
                             <input name="params[product][name]" required="" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="{{lang.__('Product name')}}"> 

@@ -44,6 +44,28 @@ class ProductsRepository
 	}
 
 	/**
+	* Find items by stock alert 
+	* @param Int $limit
+	*/
+	public function getByStock(Int $limit) 
+	{
+		return Product::with('category')
+		->where('stock', '<=', $limit)
+		->where('provider_id', $this->app->provider->id)->get();
+	}
+
+	/**
+	* Find items by stock alert 
+	* @param Int $limit
+	*/
+	public function getByStockOut() 
+	{
+		return Product::with('category')
+		->where('stock', '<', 1)
+		->where('provider_id', $this->app->provider->id)->get();
+	}
+
+	/**
 	 * Find items by `params` 
 	*/
 	public function getItems($params = null) 

@@ -986,7 +986,8 @@ class Langs
 		,'completed' => 'مكتمل'
 		,'active' => 'نشط'
 		,'unpaid' => 'غير مدفوع'
-		,'' => ''
+		,'Stock alert products' => 'منتجات  أوشكت على النفاذ'
+		,'Stock out products' => 'منتجات   نفذت من المخزون'
 
 		,'COPYRIGHTS' => 'Copyrights are reserved'
 		);

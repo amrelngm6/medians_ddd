@@ -10,10 +10,11 @@
                 <div class="w- relative" style="z-index:9">
                     <date-picker @change="openPageByDate('{{ app.request.uri }}', $event)" placeholder="{{startdate}} - {{enddate}}" range format="YYYY-MM-DD"></date-picker>
                 </div>
+                <a href="javascript:;" class="uppercase p-2 mx-2 text-center text-white w-32 rounded bg-gradient-purple hover:bg-red-800" @click="showAddSide = true;">{{lang.__('Add new')}}</a>
             </div>
         </div>
-        <div class="row ">
-                <div class="col-md-8">
+        <div class="flex w-full gap gap-6">
+                <div class="w-full">
                     <div class="px-4 mb-6 py-4 rounded-lg shadow-lg bg-white dark:bg-gray-700 ">
                         <table class="table dark:text-gray-400 text-gray-800 border-separate space-y-6 text-sm w-full">
                             <thead class="dark:bg-gray-800 bg-white text-gray-500">
@@ -64,12 +65,16 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-md-4">
 
-                    <div class="px-4 mb-6 py-4 rounded-lg shadow-lg bg-white dark:bg-gray-700 ">
+                <div class="col-md-3" v-if="showAddSide">
 
-                        <form action="/api/create" method="POST" data-refresh="1" id="add-device-form" class="action p-8 py-0 m-auto rounded-lg max-w-xl pb-10">
-                            <h1 class="m-auto max-w-xl text-2xl mb-10 text-center">{{lang.__('Add new')}}</h1>
+                    <div class="mb-6 p-4 rounded-lg shadow-lg bg-white dark:bg-gray-700 ">
+
+                        <form action="/api/create" method="POST" data-refresh="1" id="add-device-form" class="action  py-0 m-auto rounded-lg max-w-xl pb-10">
+                            <div class="w-full flex">
+                                <h1 class="w-full m-auto max-w-xl text-base mb-10 ">{{lang.__('Add new')}}</h1>
+                                <span class="cursor-pointer py-1 px-2" @click="showAddSide = false"><i class="fa fa-close"></i></span>
+                            </div>
                             <input type="hidden" name="type" value="Stock.create" > 
                             <input type="hidden" name="params[stock][type]" value="add" > 
 
