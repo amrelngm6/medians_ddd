@@ -50,6 +50,7 @@ const VueApp = new Vue(
             showModal:false,
             showSide:true,
             showAddSide:false,
+            showEditSide:false,
             showTab:true,
             activeTab:'step1',
         };

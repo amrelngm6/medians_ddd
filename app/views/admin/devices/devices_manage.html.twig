@@ -1,53 +1,59 @@
 {% include 'views/admin/includes/header.html.twig' %}
-
-
-<div class=" w-full overflow-y-auto h-full">
-
-    <div class="w-full">
-
-
-        <div class="py-2 mt-1"></div>
+    <!-- main -->
+    <main style="" class=" flex-1 overflow-x-hidden overflow-y-auto px-2 ">
         <!-- today tab 1 -->
         <!-- New releases -->
-        <div class="px-4 mb-6 py-4 rounded-lg shadow-lg bg-white dark:bg-gray-700 ">
-            
-            <div class="w-full flex">
-                <h1 class="w-full font-bold text-lg ">{{title}}</h1>
-                <a href="#!" class="ToggleItem float-right border-gray-400 bordered border  px-2 text-center py-1 w-32"  data-toggle-target=".main-sidebar" data-toggle-class="activate">{{lang.__('Add new')}}</a>
-            </div>
+        <div class="px-4 mb-6 py-4 rounded-lg shadow-lg bg-white dark:bg-gray-700 flex w-full">
+            <h1 class="font-bold text-lg w-full">{{title}}</h1>
+            <a href="javascript:;" class="uppercase p-2 mx-2 text-center text-white w-32 rounded bg-gradient-purple hover:bg-red-800" @click="showAddSide = true;showEditSide = false; ">{{lang.__('Add new')}}</a>
 
-            <hr class="mt-2" />
-            <div class="row ">
+        </div>
+        <hr class="mt-2" />
 
-            {% for device in devicesList %}
-		        <div class="col-6 col-sm-4 col-lg-2 {% if device.status == 0 %} opacity-50 {% endif %} ">
-                    <div class="album  transform transition duration-400 hover:scale-105">
-                        <div class="album__cover {% if device.playing %} active  {% endif %} ">
-                            <img src="{{app.CONF.url}}assets/img/ps.png" alt="">
-                                <a data-ajax="true" href="{{app.CONF.url}}devices/edit/{{device.id}}">
-                                <svg class="{% if device.playing %} loading_arrow {% endif %}" width="50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                    <path  d="M437.02,74.98C388.667,26.629,324.38,0,256,0S123.333,26.629,74.98,74.98C26.629,123.333,0,187.62,0,256s26.629,132.667,74.98,181.02C123.333,485.371,187.62,512,256,512c46.813,0,92.617-12.758,132.462-36.893c9.447-5.724,12.467-18.022,6.744-27.469c-5.724-9.449-18.023-12.467-27.469-6.744C334.144,461.244,295.505,472,256,472c-119.103,0-216-96.897-216-216S136.897,40,256,40s216,96.897,216,216c0,42.589-12.665,84.044-36.626,119.884c-6.139,9.182-3.672,21.603,5.51,27.742c9.184,6.141,21.604,3.672,27.742-5.51C497.002,355.674,512,306.53,512,256C512,187.62,485.371,123.333,437.02,74.98z"/>
-                                </svg>
-                            </a>
-                        </div>
-                        <div class="album__title">
-                            <h4><a data-ajax="true" href="{{app.CONF.url}}device/{{device.id}}" class="text-sm text-red-600 font-bold">{{device.title}}</a></h4>
-                            <span>{{device.playing_time}}{{device.category.title}} </span>
+        <div class="w-full flex gap gap-6">
+            <div class="w-full">
+                    
+                <div class="row ">
+
+                {% for device in devicesList %}
+                    <div class="col-6 col-sm-4 col-lg-2 {% if device.status == 0 %} opacity-50 {% endif %} ">
+                        <div class="album  transform transition duration-400 hover:scale-105">
+                            <div class="album__cover {% if device.playing %} active  {% endif %} ">
+                                <img src="{{app.CONF.url}}assets/img/ps.png" alt="">
+                                    <!-- <a > -->
+                                    <a @click="showEditSide = true; showAddSide = false" data-ajax="true" href="{{app.CONF.url}}devices/edit/{{device.id}}" >
+                                    <svg class="{% if device.playing %} loading_arrow {% endif %}" width="50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                        <path  d="M437.02,74.98C388.667,26.629,324.38,0,256,0S123.333,26.629,74.98,74.98C26.629,123.333,0,187.62,0,256s26.629,132.667,74.98,181.02C123.333,485.371,187.62,512,256,512c46.813,0,92.617-12.758,132.462-36.893c9.447-5.724,12.467-18.022,6.744-27.469c-5.724-9.449-18.023-12.467-27.469-6.744C334.144,461.244,295.505,472,256,472c-119.103,0-216-96.897-216-216S136.897,40,256,40s216,96.897,216,216c0,42.589-12.665,84.044-36.626,119.884c-6.139,9.182-3.672,21.603,5.51,27.742c9.184,6.141,21.604,3.672,27.742-5.51C497.002,355.674,512,306.53,512,256C512,187.62,485.371,123.333,437.02,74.98z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="album__title">
+                                <h4><a data-ajax="true" href="{{app.CONF.url}}device/{{device.id}}" class="text-sm text-red-600 font-bold">{{device.title}}</a></h4>
+                                <span>{{device.playing_time}}{{device.category.title}} </span>
+                            </div>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
-			    {% endfor %}
+
+            </div>
+            <div class="col-md-3" v-if="showAddSide && !showEditSide">
+
+                {% include 'views/admin/forms/add_device.html.twig' %}
+
+            </div>
+            <div class="col-md-3 mb-6 p-4 rounded-lg shadow-lg bg-white dark:bg-gray-700 "  v-if="showEditSide && !showAddSide ">
+                <div class="w-full flex">
+                    <h1 class="w-full m-auto max-w-xl text-base mb-10 " v-text="'{{lang.__('Edit device')}}'"></h1>
+                    <span class="cursor-pointer py-1 px-2" @click="showEditSide = false"><i class="fa fa-close"></i></span>
+                </div>
+                <div id="main-forms-container"></div>
             </div>
         </div>
-        <!-- END New releases -->
-
-
-                                <!-- end of main -->
-        <div id="main-forms-container">
-        {% include 'views/admin/forms/add_device.html.twig' %}
-        </div>
     </div>
-</div>
+        <!-- END New releases -->
+    </main>
+
 
 
 {% include 'views/admin/includes/footer.html.twig' %}

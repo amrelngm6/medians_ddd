@@ -29,6 +29,8 @@
                 </div>
             </div>
         </div>
+        
+        <div v-if="showCartBg" @click="hidePopup" class="fixed h-full w-full top-0 left-0 bg-gray-800" style="opacity: .6; z-index:9"></div>
 
         <side_cart ref="side_cart" currency="EGP" :cart_items="[]"></side_cart>
 
@@ -59,7 +61,7 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
             var t = this;
 
             return {
-                
+                showCartBg: false,
                 showActiveBooking: false,
                 showBooking: false,
                 confirm: false,
@@ -196,6 +198,7 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
 
             addToCart(activeItem)
             {
+                console.log(this.$parent)
                 let item = {};
                 if (activeItem)
                 {
@@ -210,8 +213,9 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
                 }
                 this.$refs.side_cart.showCart = true
                 this.$refs.side_cart.addToCart(item);
-
-                this.hidePopup();
+                this.$parent.showSide = false;
+                this.showCartBg = true;
+                this.hidePopup(false);
             },
             addTime(time)
             {
@@ -315,7 +319,7 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
 
                 return (Number(price) * Number(this.activeItem.duration_hours)).toFixed(2) ;
             },
-            hidePopup()
+            hidePopup(reload = true)
             {
                 this.showPopup = false;
                 this.showUpdate = false;
@@ -323,8 +327,11 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
                 this.showNewEvent = false;
                 this.showBooking = false;
                 this.showActiveBooking = false;
-                this.$refs.side_cart.showCart = false
-                this.reloadEvents()
+                if (reload){
+                    this.showCartBg = false;
+                    this.$refs.side_cart.showCart = false;
+                    this.reloadEvents();
+                }
 
             },
             /**
