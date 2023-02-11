@@ -19,6 +19,16 @@ class OrdersRepository
 		$this->app = $app;
 	}
 
+	/**
+	 * Generate code for Provider
+	 * 
+	 */ 
+	public function generateCode($providerId)
+	{
+		$check = Order::where('provider_id', $providerId)->get()->last();
+		$number = isset($check->id) ? (round($check->id) + 1) : 1;
+		return ($number > 100)  ? ('I-000'. $number) : ('I-0000'. $number) ;
+	} 
 
 	/**
 	* Find item by `id` 
@@ -32,9 +42,10 @@ class OrdersRepository
 	/**
 	 * Find by code
 	 */  
-	public function code($code)
+	public function code($code, $providerId = 0)
 	{
 		return Order::with('items', 'order_devices')
+		->where('provider_id', $providerId)
 		->where('code', $code)->first();
 	} 
 	

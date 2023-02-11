@@ -8,7 +8,7 @@ use Medians\Application\Calculator\Calculator;
 use Medians\Application\Prices\Prices;
 use Medians\Application\Discounts\Discount;
 
-use Medians\Domain\Orders\Order;
+use Medians\Domain\Orders\Tax;
 
 class OrderController
 {
@@ -62,25 +62,35 @@ class OrderController
 	 * 
 	 */ 
 	public function show($code, $request, $app) 
-	{
+	{	
+
+		$order = $this->repo->code($code, $app->provider->id);
+
 	    return render('views/admin/orders/order.html.twig', [
 	        'title' => __('Invoice'),
 	        'app' => $app,
-	        'order' => $this->repo->code($code),
+	        'order' => $order,
 	        // 'qrcode' => $qrcode,
 	    ]);
 
 	}
 
 
+	/**
+	 * Calc tax
+	 */
+	public function calculateTax($app, $amount)
+	{
+		return new Tax($app->Settings['tax'], $amount);
 
+	}  
 
 	/**
 	* Genrate unique code 
 	*/
-	public function genrateCode() : String
+	public function genrateCode($providerId) : String
 	{
-		return time().rand(9,99);
+		return $this->repo->generateCode($providerId);
 	}
 
 
@@ -98,15 +108,17 @@ class OrderController
 				$cost += $value->subtotal;
 			}
 
+			$this->subtotal = $this->getSubTotal($params);
+
 			$data = [];
 			$data['provider_id'] = $app->provider->id;
 			$data['customer_id'] = '0';
-			$data['tax'] = '0';
+			$data['tax'] = $this->calculateTax($app, $this->subtotal)->tax_amount();
 			$data['discount'] = '0';
 			$data['discount_code'] = '';
-			$data['code'] = $this->genrateCode();
-			$data['subtotal'] = $this->getSubTotal($params);
-			$data['total_cost'] = $this->getSubTotal($params) ;
+			$data['code'] = $this->genrateCode($app->provider->id);
+			$data['subtotal'] = $this->subtotal;
+			$data['total_cost'] = $this->calculateTax($app, $this->subtotal)->total_cost();
 			$data['date'] = date('Y-m-d');
 			$data['created_by'] = $app->auth->id;
 			$data['status'] = 'paid';

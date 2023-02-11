@@ -901,6 +901,11 @@ class Langs
 			,'SELECT_TIME_AND_DATE' => 'Please select day and time for the booking.'
 			,'SELECT_DATE' => 'Please select day of the booking.'
 			,'SERVICE' => 'Service'
+			,'show_invoice' => 'Show invoice'
+			,'paid' => 'Paid'
+			,'unpaid' => 'UnPaid'
+			,'completed' => 'Completed'
+			,'active' => 'Active'
 
 			,'COPYRIGHTS' => 'Copyrights are reserved'
 		);
@@ -962,6 +967,12 @@ class Langs
 		$data['confirm_complete_booking'] = Langs::__('Are your sure you want to finish this booking');
 		$data['confirm'] = Langs::__('confirm');
 		$data['confirmation'] = Langs::__('confirmation');
+		$data['show_invoice'] = Langs::__('show_invoice');
+		$data['paid'] = Langs::__('paid');
+		$data['completed'] = Langs::__('completed');
+		$data['active'] = Langs::__('active');
+		$data['unpaid'] = Langs::__('unpaid');
+		$data['add_new'] = Langs::__('add new');
 
 		return $data;
 	}

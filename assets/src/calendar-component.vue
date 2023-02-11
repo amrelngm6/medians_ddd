@@ -210,6 +210,8 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
                 }
                 this.$refs.side_cart.showCart = true
                 this.$refs.side_cart.addToCart(item);
+
+                this.hidePopup();
             },
             addTime(time)
             {

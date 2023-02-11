@@ -47,6 +47,11 @@
                                     <input name="params[settings][stock_alert]" type="number" class="h-10 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="{{lang.__('Stock alert')}}" required value="{{ app.Settings.stock_alert }}">
                                 </label>
 
+                                <label class="block py-5">
+                                    <span class="text-gray-700"> {{lang.__('tax')}}  ( % ) </span>
+                                    <input name="params[settings][tax]" type="number" max="99" min="0" class="h-10 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="{{lang.__('tax')}}" required value="{{ app.Settings.tax }}">
+                                </label>
+
                             </div>
                         </div>
                     </div>

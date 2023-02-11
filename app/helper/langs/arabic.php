@@ -886,7 +886,7 @@ class Langs
 		,'DEVICES' => 'الأجهزة'
 		,'DEVICE' => 'الجهاز'
 		,'PAYMENTS' => 'المدفوعات'
-		,'CALENDAR' => 'التقويم'
+		,'CALENDAR' => 'تقويم الحجوزات'
 		,'ALL_BOOKINGS' => 'جميع الحجوزات'
 		,'ACTIVE_BOOKINGS' => 'حجوزات نشطة'
 		,'COMPLETED_BOOKINGS' => 'حجوزات مكتملة'
@@ -981,6 +981,11 @@ class Langs
 		,'Are your sure you want to finish this booking' => 'هل أنت متاكد من إكتمال الحجز'
 		,'order created' => 'تم تأكيد الطلب'
 		,'Show orders' => 'عرض الفواتير'
+		,'show_invoice' => 'عرض الفاتورة'
+		,'paid' => 'مدفوع'
+		,'completed' => 'مكتمل'
+		,'active' => 'نشط'
+		,'unpaid' => 'غير مدفوع'
 		,'' => ''
 
 		,'COPYRIGHTS' => 'Copyrights are reserved'
@@ -1041,6 +1046,12 @@ class Langs
 		$data['confirm_complete_booking'] = Langs::__('Are your sure you want to finish this booking');
 		$data['confirm'] = Langs::__('confirm');
 		$data['confirmation'] = Langs::__('confirmation');
+		$data['show_invoice'] = Langs::__('show_invoice');
+		$data['paid'] = Langs::__('paid');
+		$data['completed'] = Langs::__('completed');
+		$data['active'] = Langs::__('active');
+		$data['unpaid'] = Langs::__('unpaid');
+		$data['add_new'] = Langs::__('add new');
 
 		return $data;
 	}

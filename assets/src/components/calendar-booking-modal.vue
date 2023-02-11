@@ -5,15 +5,15 @@
 
             <div class="top-20 relative mx-auto w-full bg-white p-6 rounded-lg overflow-y-auto" style="max-width: 600px; " v-if="showPopup" >
 
-                <div class="w-full  mt-2 mb-4" style="max-height: 500px;" >
+                <div class="w-full  mt-2 mb-4 pt-2 pb-6" style="max-height: 500px;" >
 
                     <div v-if="activeItem.status == 'paid'"  class="bg-red-200 rounded-md py-2 px-4" role="alert">
-                        <strong v-text="__('alert')"></strong> <span v-text="__('order_status_is')"></span> {{activeItem.status}}. <a target="_blank" href="javascript:;" @click="openURL('/orders/show/'+activeItem.order_code, '_blank')" ><b>Show invoice</b></a>
+                        <strong v-text="__('alert')"></strong> <span v-text="__('order_status_is')"></span> <b class="font-semibold" v-text="__(activeItem.status)"></b>. <a target="_blank" href="javascript:;" @click="openURL('/orders/show/'+activeItem.order_code, '_blank')" ><b v-text="__('show_invoice')"></b></a>
                         <button @click="$parent.hidePopup" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
 
                     <div v-if="activeItem.status == 'completed'"  class="bg-yellow-200 rounded-md py-2 px-4" role="alert">
-                        <strong v-text="__('alert')"></strong> <span v-text="__('order_status_is')"></span> {{activeItem.status}}.
+                        <strong v-text="__('alert')"></strong> <span v-text="__('order_status_is')"></span> <b class="font-semibold" v-text="__(activeItem.status)"></b>.
                         <button @click="$parent.hidePopup" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
 
@@ -95,7 +95,7 @@
                         </span>
                     </div>
 
-                    <div class="w-full flex gap-6 my-2 text-gray-600" v-if="!activeItem.order_code && activeItem.status == 'completed'">
+                    <div class="w-full flex gap-6 my-2 text-gray-600 pb-6" v-if="!activeItem.order_code && activeItem.status == 'completed'">
                         <label @click="showPopup = false;$parent.addToCart(activeItem); " class="cursor-pointer py-2 w-full mx-2 rounded-2xl text-center font-semibold bg-purple-600 text-white" >
                             <span  v-text="__('pay')" ></span>
                         </label>
