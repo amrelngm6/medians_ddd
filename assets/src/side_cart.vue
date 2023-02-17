@@ -56,7 +56,7 @@
                                 <span class="w-full" v-text="__('subtotal')"></span>
                                 <span class="flex w-full text-right text-lg gap gap-1 text-red-400">
                                     <span v-text="subtotal()"></span>
-                                    <span v-text="currency"></span>
+                                    <span v-text="setting.currency"></span>
                                 </span>
                             </div>
                             <div class="flex font-semibold justify-between py-6 text-sm uppercase">
@@ -159,6 +159,14 @@ export default
             }
 
             return this;
+        },    
+        total()
+        {
+            return (this.subtotal() + this.tax()).toFixed(2);
+        },  
+        tax()
+        {
+            return (this.subtotal() * ( Number(this.setting.tax) / 100 )).toFixed(2);
         },    
         subtotal()
         {
