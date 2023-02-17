@@ -999,12 +999,13 @@ class Langs
 		}, $LANG_ARRAY, array_keys($LANG_ARRAY)), 'value', 'key');
 	}
 
+
 	public static function __($langkey)
 	{
-		$LANG_ARRAY = Langs::get();
+		$LANG_ARRAY = array_change_key_case(Langs::get(), CASE_LOWER);
 
-	    $key = strtoupper(str_replace([' ', '/', '&', '?','؟' , '@', '#', '$', '%', '(', ')', '-', '='], '_', $langkey)) ;
-
+	    $key = strtolower(str_replace([' ', '/', '&', '?','؟' , '@', '#', '$', '%', '(', ')', '-', '='], '_', $langkey)) ;
+		
 	    return isset($LANG_ARRAY[$key]) ? $LANG_ARRAY[$key] : $langkey;
 	} 
 

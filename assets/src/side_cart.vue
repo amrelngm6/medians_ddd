@@ -24,7 +24,7 @@
                                         <span class="text-xs text-gray-400 " v-if="item.game" v-text="item.game.name"></span>
                                         <span class="text-xs text-red-400" @click="removeFromCart(item)" v-text="__('remove')"></span>
                                     </span>
-                                    <span class="font-semibold text-sm"><span v-text="item.subtotal"></span> <small class="text-xs" v-text="currency"></small> <br /> <span class="text-xs text-gray-400" v-text="item.duration_time"></span></span>
+                                    <span class="font-semibold text-sm"><span v-text="item.subtotal"></span> <small v-if="setting" class="text-xs" v-text="setting.currency"></small> <br /> <span class="text-xs text-gray-400" v-text="item.duration_time"></span></span>
                                 </div>
                                 <div v-for="(product, i) in item.products" class="w-full block" :key="i" >
                                     <div  class="flex justify-between mt-10 mb-5" v-if="product && item && item.products" >
@@ -33,7 +33,7 @@
                                             <span class="text-xs text-gray-400 " v-if="product.qty" v-text="'X '+product.qty"></span>
                                             <!-- <span class="text-xs text-red-400" @click="removeProduct(product, i)">Remove</span> -->
                                         </span>
-                                        <span class="font-semibold text-sm"><span v-text="product.price"></span> <small class="text-xs" v-text="currency"></small> </span>
+                                        <span class="font-semibold text-sm"><span v-text="product.price"></span> <small v-if="setting" class="text-xs" v-text="setting.currency"></small> </span>
                                     </div>
                                 </div>
                             </div>
@@ -53,9 +53,23 @@
                         </div>
                         <div class="border-t mt-8 w-full">
                             <div class="flex font-semibold justify-between py-6 text-sm uppercase">
-                                <span class="w-full" v-text="__('total_amount')"></span>
+                                <span class="w-full" v-text="__('subtotal')"></span>
                                 <span class="flex w-full text-right text-lg gap gap-1 text-red-400">
                                     <span v-text="subtotal()"></span>
+                                    <span v-text="currency"></span>
+                                </span>
+                            </div>
+                            <div class="flex font-semibold justify-between py-6 text-sm uppercase">
+                                <span class="w-full" v-text="__('tax')"></span>
+                                <span class="flex w-full text-right text-lg gap gap-1 text-red-400">
+                                    <span v-text="tax()"></span>
+                                    <span v-text="currency"></span>
+                                </span>
+                            </div>
+                            <div class="flex font-semibold justify-between py-6 text-sm uppercase">
+                                <span class="w-full" v-text="__('total_amount')"></span>
+                                <span class="flex w-full text-right text-lg gap gap-1 text-red-400">
+                                    <span v-text="total()"></span>
                                     <span v-text="currency"></span>
                                 </span>
                             </div>
@@ -86,7 +100,7 @@ export default
         }
     },
     props: [
-        'settings',
+        'setting',
         'currency',
         'cart_items'
     ],
