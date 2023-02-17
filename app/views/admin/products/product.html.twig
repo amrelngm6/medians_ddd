@@ -48,7 +48,7 @@
                         </div>
 
                         <label class="inline-flex items-center mt-3">
-                            <input name="params[product][status]" type="checkbox" class="form-checkbox h-5 w-5 text-orange-600" {% if product.status %} checked  {% endif %}><span class="ml-2 text-gray-700">publish</span>
+                            <input name="params[product][status]" type="checkbox" class="form-checkbox h-5 w-5 text-orange-600" {% if product.status %} checked  {% endif %}><span class="ml-2 text-gray-700">{{__('PUBLISH')}}</span>
                         </label>
                         
                         <button class="uppercase h-12 mt-3 text-white w-full rounded bg-red-700 hover:bg-red-800">{{lang.__('Save')}}</button>
