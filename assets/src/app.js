@@ -163,7 +163,7 @@ const VueApp = new Vue(
         },
         __(i)
         {
-            return this.__langs[i];
+            return this.$data.__langs[i];
         }
     }
 });

@@ -3,7 +3,6 @@
         <div v-if="products && products.length && activeItem && activeItem.status != 'paid'" class=" pb-4">
             <span class="text-red-600 text-md font-semibold w-full block my-4 cursor-pointer py-2 px-4 rounded-lg border border-gray-200" @click="viwMoreProducts()" v-text="__('add_products')"></span>
             <div v-if="showMoreProducts">
-
                 <div v-for="(product, index) in products" :key="index" class="">
                     <div v-if="product" class="font-semibold w-full flex gap-4 py-2 border-b border-gray-200">
                         <label class="w-full text-purple-600" v-text="product.name"></label>
