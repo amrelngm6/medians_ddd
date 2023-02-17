@@ -54,23 +54,23 @@
                         <div class="border-t mt-8 w-full">
                             <div class="flex font-semibold justify-between py-6 text-sm uppercase">
                                 <span class="w-full" v-text="__('subtotal')"></span>
-                                <span class="flex w-full text-right text-lg gap gap-1 text-red-400">
+                                <span class="flex w-full text-right text-md gap gap-1 ">
                                     <span v-text="subtotal()"></span>
                                     <span v-text="setting.currency"></span>
                                 </span>
                             </div>
                             <div class="flex font-semibold justify-between py-6 text-sm uppercase">
                                 <span class="w-full" v-text="__('tax')"></span>
-                                <span class="flex w-full text-right text-lg gap gap-1 text-red-400">
+                                <span class="flex w-full text-right text-md gap gap-1 text-red-400">
                                     <span v-text="tax()"></span>
-                                    <span v-text="currency"></span>
+                                    <span v-text="setting.currency"></span>
                                 </span>
                             </div>
                             <div class="flex font-semibold justify-between py-6 text-sm uppercase">
                                 <span class="w-full" v-text="__('total_amount')"></span>
                                 <span class="flex w-full text-right text-lg gap gap-1 text-red-400">
                                     <span v-text="total()"></span>
-                                    <span v-text="currency"></span>
+                                    <span v-text="setting.currency"></span>
                                 </span>
                             </div>
                             <button class="bg-gradient-primary font-semibold hover:bg-purple-600 py-3 text-sm text-white uppercase w-32 mx-auto block rounded-lg my-6 " @click="checkout" v-text="__('checkout')"></button>
