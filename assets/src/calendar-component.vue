@@ -182,7 +182,7 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
             lang_str: String,
             startTime: String,
             products: Array,
-            settings: Array,
+            settings: [Array, Object],
         },
         
         mounted() {
