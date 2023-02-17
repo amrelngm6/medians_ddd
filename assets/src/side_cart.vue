@@ -162,11 +162,15 @@ export default
         },    
         total()
         {
-            return (this.subtotal() + this.tax()).toFixed(2);
+            let tax = Number(this.tax());
+            let subtotal = Number(this.subtotal());
+
+            return (subtotal + tax).toFixed(2);
         },  
         tax()
         {
-            return (this.subtotal() * ( Number(this.setting.tax) / 100 )).toFixed(2);
+            let subtotal = Number(this.subtotal());
+            return (subtotal * ( Number(this.setting.tax) / 100 )).toFixed(2);
         },    
         subtotal()
         {

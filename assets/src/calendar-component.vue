@@ -32,7 +32,7 @@
         
         <div v-if="showCartBg" @click="hidePopup" class="fixed h-full w-full top-0 left-0 bg-gray-800" style="opacity: .6; z-index:9"></div>
 
-        <side_cart ref="side_cart" :setting="settings"  :cart_items="[]"></side_cart>
+        <side_cart ref="side_cart" :setting="settings" :currency="settings.currency"  :cart_items="[]"></side_cart>
 
         <FullCalendar :options="calendarOptions" ref="calendar" class="h-full"></FullCalendar>
 
