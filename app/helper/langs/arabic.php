@@ -1025,6 +1025,7 @@ class Langs
 		$data['apply'] = Langs::__('apply');
 		$data['subtotal'] = Langs::__('Subtotal');
 		$data['total_amount'] = Langs::__('TOTAL');
+		$data['tax'] = Langs::__('Tax');
 		$data['game'] = Langs::__('Game');
 		$data['order_summary'] = Langs::__('Order Summary');
 		$data['start_playing'] = Langs::__('Start Playing');
