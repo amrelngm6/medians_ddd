@@ -17,7 +17,7 @@
                     <div class="mx-auto w-full">
                         <h1 class="font-semibold text-2xl border-b py-8" v-text="__('order_summary')"></h1>
                         <div v-if="Items" class="w-full">
-                            <div v-for="(item, i) in Items" class="w-full block" v-if="item" >
+                            <div v-for="(item, i) in Items" class="w-full block" :key="i" >
                                 <div  class="flex justify-between mt-10 mb-5" v-if="item" >
                                     <span class="font-semibold text-sm" v-if="item.device"> 
                                         <span v-text="item.device.name"></span><br /> 
@@ -26,8 +26,8 @@
                                     </span>
                                     <span class="font-semibold text-sm"><span v-text="item.subtotal"></span> <small class="text-xs" v-text="currency"></small> <br /> <span class="text-xs text-gray-400" v-text="item.duration_time"></span></span>
                                 </div>
-                                <div v-for="product in item.products" class="w-full block" v-if="item && item.products" >
-                                    <div  class="flex justify-between mt-10 mb-5" v-if="product" >
+                                <div v-for="(product, i) in item.products" class="w-full block" :key="i" >
+                                    <div  class="flex justify-between mt-10 mb-5" v-if="product && item && item.products" >
                                         <span class="font-semibold text-sm" > 
                                             <span v-text="product.product.name"></span><br /> 
                                             <span class="text-xs text-gray-400 " v-if="product.qty" v-text="'X '+product.qty"></span>

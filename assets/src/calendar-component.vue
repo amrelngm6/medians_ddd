@@ -32,7 +32,7 @@
         
         <div v-if="showCartBg" @click="hidePopup" class="fixed h-full w-full top-0 left-0 bg-gray-800" style="opacity: .6; z-index:9"></div>
 
-        <side_cart ref="side_cart" currency="EGP" :cart_items="[]"></side_cart>
+        <side_cart ref="side_cart" :settings="settings"  :currency="settings.currency" :cart_items="[]"></side_cart>
 
         <FullCalendar :options="calendarOptions" ref="calendar" class="h-full"></FullCalendar>
 
@@ -178,17 +178,11 @@ import resourceTimeGridDay from '@fullcalendar/resource-timegrid';
             };
         },
         props: {
-            sidebarLang: Object,
-            buttonsText: Object,
-            monthsNames: Array,
-            daysNames: Array,
-            daysOfWeek: Array,
-            availableDays: Array,
             title: String,
             lang_str: String,
             startTime: String,
             products: Array,
-            endTime: String,
+            settings: Array,
         },
         
         mounted() {
