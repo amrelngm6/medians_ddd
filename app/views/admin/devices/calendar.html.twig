@@ -4,7 +4,7 @@
         <div class="px-2">
             {% if devicesList|length > 0 %}
             <calendar_component 
-                :settings="{{app.Settings | json_decode}}"
+                :settings="{{app.Settings | json_encode}}"
                 :products="{{ products}}"  
                 title="{{title}}" 
                 start-time="{{ '' | date('H:i') }}" 
