@@ -339,6 +339,34 @@ if (isset($app->auth->id))
         }
     });
 
+    /**
+    * @return Providers
+    */
+    $app->match('/providers/{action?}/{id?}', function ($action, $id) use ($request, $app)  {
+        try {
+            
+            if ($action == 'create')
+            {
+                return (new apps\Providers\ProviderController($app))->create($request, $app);
+            }
+
+            if ($action == 'show')
+            {
+                return (new apps\Providers\ProviderController($app))->show($id, $request, $app);
+            }
+
+            if ($action == 'edit')
+            {
+                return (new apps\Providers\ProviderController($app))->edit($id, $request, $app);
+            }
+
+            return (new apps\Providers\ProviderController($app))->index($request, $app);
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    });
+
 
     /**
     * @return Contacts

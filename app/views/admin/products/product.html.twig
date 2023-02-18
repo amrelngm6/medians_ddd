@@ -27,12 +27,12 @@
                         </div>
 
                         <div class="w-full flex gap gap-2">
-                            <label class="w-40 mt-6  ">Tax</label>
+                            <label class="w-40 mt-6  ">{{lang.__('Tax')}}</label>
                             <input name="params[product][tax]" type="number" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" value="{{product.tax}}"> 
                         </div>
                         
                         <div class="w-full flex gap gap-2">
-                            <label class="w-40 mt-6 ">{{lang.__('duration')}}</label>
+                            <label class="w-40 mt-6 ">{{lang.__('desc')}}</label>
                             <textarea name="params[product][description]" required="" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Device description" >{{product.description}}</textarea> 
                         </div>
 
@@ -48,7 +48,7 @@
                         </div>
 
                         <label class="inline-flex items-center mt-3">
-                            <input name="params[product][status]" type="checkbox" class="form-checkbox h-5 w-5 text-orange-600" {% if product.status %} checked  {% endif %}><span class="ml-2 text-gray-700">{{__('PUBLISH')}}</span>
+                            <input name="params[product][status]" type="checkbox" class="form-checkbox h-5 w-5 text-orange-600" {% if product.status %} checked  {% endif %}><span class="ml-2 text-gray-700">{{lang.__('PUBLISH')}}</span>
                         </label>
                         
                         <button class="uppercase h-12 mt-3 text-white w-full rounded bg-red-700 hover:bg-red-800">{{lang.__('Save')}}</button>

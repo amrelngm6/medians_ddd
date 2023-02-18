@@ -9,6 +9,7 @@ use Medians\Domain\Providers\Provider;
 use Medians\Domain\Devices\Device;
 use Medians\Domain\Devices\OrderDevice;
 use Medians\Domain\Products\Product;
+use Medians\Domain\Users\User;
 
 class Order  extends CustomController
 {
@@ -81,6 +82,14 @@ class Order  extends CustomController
 	/**
 	 * Relations
 	 */
+	public function cashier()
+	{
+		return $this->hasOne(User::class, 'id', 'created_by');
+	}
+
+	/**
+	 * Relations
+	 */
 	public function items()
 	{
 		return $this->hasMany(OrderItem::class, 'order_code', 'code');
@@ -91,7 +100,7 @@ class Order  extends CustomController
 	 */
 	public function order_device()
 	{
-		return $this->hasOne(OrderDevice::class, 'order_code', 'code')->with('device')->with('game');
+		return $this->hasOne(OrderDevice::class, 'order_code', 'code');
 	}
 
 	/**

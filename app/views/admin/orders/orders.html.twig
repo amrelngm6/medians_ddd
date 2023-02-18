@@ -13,27 +13,31 @@
             </div>
         </div>
         <div class="row ">
-            <div class="col-md-8">
+            <div class="col-md-9">
                 <div class="px-4 mb-6 py-4 rounded-lg shadow-lg bg-white dark:bg-gray-700 ">
                     <table class="table dark:text-gray-400 text-gray-800 border-separate space-y-6 text-sm w-full">
                         <thead class="dark:bg-gray-800 bg-white text-gray-500">
                             <tr>
-                                <th class="p-2">{{lang.__('Device')}}</th>
-                                <th class="p-2 text-left">{{lang.__('Code')}}</th>
-                                <th class="p-2 text-left">{{lang.__('Cost')}}</th>
-                                <th class="p-2 text-left">{{lang.__('Time')}}</th>
-                                <th class="p-2 text-left">{{lang.__('Status')}}</th>
-                                <th class="p-2 text-left">{{lang.__('Action')}}</th>
+                                <th class="text-center">#</th>
+                                <th class="p-2 text-center">{{lang.__('Device')}}</th>
+                                <th class="p-2 text-center">{{lang.__('Code')}}</th>
+                                <th class="p-2 text-center">{{lang.__('Cost')}}</th>
+                                <th class="p-2 text-center">{{lang.__('Time')}}</th>
+                                <th class="p-2 text-center">{{lang.__('by')}}</th>
+                                <th class="p-2 text-center">{{lang.__('Status')}}</th>
+                                <th class="p-2 text-center">{{lang.__('Action')}}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for order in orders %}
                             <tr class="dark:bg-gray-800">
-                                <td class="p-2">
+                                <td class="text-center w-12">
+                                    <img class="rounded-full h-12 w-12  object-cover" src="{{app.CONF.url}}assets/img/ps.png" alt="unsplash image">
+                                </td>
+                                <td class="p-2 text-center">
                                     <div class="flex align-items-center">
-                                        <img class="rounded-full h-12 w-12  object-cover" src="{{app.CONF.url}}assets/img/ps.png" alt="unsplash image">
-                                        <div class="ml-3">
-                                            <div class="font-medium">{{order.device_order.device.title}}</div>
+                                        <div class="mx-auto ">
+                                            <div class="font-medium">{{order.order_device.device.title}}</div>
                                         </div>
                                     </div>
                                 </td>
@@ -48,9 +52,8 @@
                                         {{ order.created_at|date("m/d - H:i") }}
                                     </span>
                                 </td>
-                                <td class="p-2 px-1">
-                                    <span class="font-medium text-md">{{ order.status   }}</span>
-                                </td>
+                                <td class="p-2 px-1 font-medium text-md">{{ order.cashier.name }}</td>
+                                <td class="p-2 px-1 font-medium text-md">{{ order.status   }}</td>
                                 <td class="p-2 ">
                                     <a href="{{app.CONF.url}}orders/show/{{order.code}}" class="text-gray-400 hover:text-gray-100  mx-2">
                                         <i class="material-icons-outlined text-base">edit</i>
@@ -64,7 +67,7 @@
 
 
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
 
                 <div class="px-4 mb-6 py-4 rounded-lg shadow-lg bg-white dark:bg-gray-700 ">
                     <div id="jh-stats-positive" class="block justify-center px-4 py-4 bg-white border border-gray-300 rounded">

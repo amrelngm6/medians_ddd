@@ -85,10 +85,11 @@ class UserController
 	 */
 	public function edit($id, $request, $app)
 	{
+
 		return render('views/admin/users/create.html.twig', [
 	        'title' => __('Users'),
 	        'Model' => $this->repo->find($id),
-	        'app' => $app,
+	        'app' => $this->app,
 	    ]);
 	} 
 
@@ -105,8 +106,11 @@ class UserController
 
 		try {
 
-			if ($this->validate($params))
+			if ($this->validate($params)) 
 				return $this->validate($params);
+
+			if (isset($params['id'])) 
+				return __('ERR');
 
 			$params['role_id'] = !empty($params['role_id']) ? $params['role_id'] : 3;
 			$params['provider_id'] = isset($app->provider->id) ? $app->provider->id : 0;

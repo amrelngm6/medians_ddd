@@ -33,9 +33,9 @@ function render($path, $data)
 } 
 
 
-/*
-// Return 
-// List of side menu
+/**
+* Return 
+* List of side menu
 */
 function getMenuList()
 {
@@ -67,18 +67,14 @@ function getMenuList()
             ]
         ),
         array('title'=>__('Payments'),  'icon'=>'fa-money', 'link'=>'payments'),
-        // array('title'=>'Invoices',  'icon'=>'feather-user', 'link'=>'invoices'),
         array('title'=>__('Users'),  'icon'=>'fa-users', 'link'=>'', 'sub'=>
             [
-                // array('title'=>'Administrators',  'icon'=>'fa-dashboard', 'link'=>'users/admin'),
                 array('title'=>__('Users'),  'icon'=>'fa-dashboard', 'link'=>'users/'),
                 array('title'=>__('Managers'),  'icon'=>'fa-dashboard', 'link'=>'users/managers'),
             ]
         ),
 
 
-        // array('title'=>'Tasks',  'icon'=>'fa-dashboard', 'link'=>'tasks'),
-        // array('title'=>'Notifications',  'icon'=>'fa-bell-o', 'link'=>''),
 		array('title'=> __('Settings'),  'icon'=>'fa-cogs', 'link'=>'settings'),
 		array('title'=> __('Logout'),  'icon'=>'fa-sign-out', 'link'=>'logout'),
 	);
@@ -118,8 +114,8 @@ function Page403($twig, $app)
 
 
 /**
-* Handle routes response 
-* based on session & Permissions
+ * Handle routes response 
+ * based on session & Permissions
 */
 function response($response, $app, $twig=null)
 {
@@ -128,7 +124,12 @@ function response($response, $app, $twig=null)
 
 }
 
-
+/** 
+ * Filter language variable by code
+ * 
+ * @param String $langkey
+ * @return String 
+*/ 
 function __($langkey = null)
 {
     return Langs::__($langkey);

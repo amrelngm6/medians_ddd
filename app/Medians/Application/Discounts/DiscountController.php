@@ -8,42 +8,21 @@ class DiscountController
 {
 
 
-	function __construct()
+	function __construct($app)
 	{
-
-		$this->repo = new Repo\DiscountsRepository();
+		$this->app = $app;
+		$this->repo = new Repo\DiscountsRepository($app);
 	}
 
 
-	public function index($app)
+	public function index($request)
 	{
 	    return render('views/admin/discounts/discounts.html.twig', [
 	        'title' => 'Discounts list',
-	        'app' => $app,
-	        'discounts' => $this->getAll(100),
+	        'app' => $this->app,
+	        'discounts' => $this->repo->get(),
 	    ]);
 	} 
-
-
-	public function getItem($id = 0) 
-	{
-		return $this->repo->find($id);
-	}
-
-	public function getByCode($code) 
-	{
-		return $this->repo->getByCode($code);
-	}
-
-
-	public function getAll($limit = null) 
-	{
-		return $this->repo->getAll( $limit );
-	}
-
-
-
-
 
 
 	public function generateCode()
@@ -56,7 +35,7 @@ class DiscountController
 	public function validateCodeWithOrder($code, $OrderModel) 
 	{
 		
-		$codeObject = $this->getByCode($code);
+		$codeObject = $this->repo->getByCode($code);
 
 		if (empty($codeObject->publish))
 		{

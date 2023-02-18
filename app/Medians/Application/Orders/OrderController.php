@@ -70,7 +70,6 @@ class OrderController
 	        'title' => __('Invoice'),
 	        'app' => $app,
 	        'order' => $order,
-	        // 'qrcode' => $qrcode,
 	    ]);
 
 	}

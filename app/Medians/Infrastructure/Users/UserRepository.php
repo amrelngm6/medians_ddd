@@ -20,9 +20,14 @@ class UserRepository
 		return new User;
 	}
 
-	public function find($customerId)
+	public function find($id)
 	{
-		return User::with('Role')->with('provider')->find($customerId);
+		return User::with('Role')->with('provider')->find($id);
+	}
+
+	public function findItem($id)
+	{
+		return User::with('Role')->with('provider')->where('provider_id', $this->app->provider->id)->find($id);
 	}
 
 	public function checkDuplicate($param)
@@ -67,13 +72,16 @@ class UserRepository
 	*/
 	public function update($data) 
 	{
-		$Object = User::find($data['id']);
+		$Object = User::where('provider_id', $this->app->provider->id)->find($data['id']);
 		
-		// Return the FBUserInfo object with the new data
-    	$Object->update( (array) $data);
-    	
-    	$data['id'] = $Object->id;
-    	$this->checkUpdatePassword($data);
+		if ($Object)
+		{
+			// Return the FBUserInfo object with the new data
+	    	$Object->update( (array) $data);
+	    	
+	    	$data['id'] = $Object->id;
+	    	$this->checkUpdatePassword($data);
+		}
 
     	return $Object;	
 	}

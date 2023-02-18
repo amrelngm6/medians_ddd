@@ -515,7 +515,7 @@ class Langs
 			,'AGENT_EMPTY' => 'Company field is required'
 			,'DESK_EMPTY' => 'Desk location field is required'
 			,'PASSWORD_MATCHING_ERROR' => 'Password not matched'
-			,'WRONG_INFO' => 'You information is invalid'
+			,'WRONG_INFO' => 'Invalid information'
 			,'ERR' => 'Error'
 			,'ERR_EXT' => 'Error file extension not allowed'
 			,'CARDNUM_ERR' => 'Card number is invalid'
@@ -908,6 +908,7 @@ class Langs
 			,'active' => 'Active'
 			,'Stock alert products' => 'Stock alert products'
 			,'Stock out products' => 'Stock out products'
+			,'invoice_id' => 'Invoice id'
 
 			,'COPYRIGHTS' => 'Copyrights are reserved'
 		);
@@ -921,7 +922,8 @@ class Langs
 
 	public static function __($langkey)
 	{
-		$LANG_ARRAY = array_change_key_case(Langs::get(), CASE_LOWER);
+		// $LANG_ARRAY = array_change_key_case(Langs::get(), CASE_LOWER);
+		$LANG_ARRAY = Langs::get();
 
 	    $key = strtolower(str_replace([' ', '/', '&', '?','؟' , '@', '#', '$', '%', '(', ')', '-', '='], '_', $langkey)) ;
 		

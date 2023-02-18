@@ -9,14 +9,26 @@ class ProviderRepository
 {
 
 
+	public $app;
 
 
+	function __construct($app )
+	{
+		$this->app = $app;
+	}
 
-
-	public function getById($customerId)
+	public function get()
 	{
 
-		return Provider::where('id', $customerId)->first();
+		return Provider::get();
+
+	}
+
+
+	public function find($id)
+	{
+
+		return Provider::where('id', $id)->first();
 
 	}
 

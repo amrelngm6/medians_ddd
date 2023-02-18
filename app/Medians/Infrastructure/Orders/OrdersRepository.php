@@ -44,9 +44,14 @@ class OrdersRepository
 	 */  
 	public function code($code, $providerId = 0)
 	{
-		return Order::with('items', 'order_devices')
+		return Order::with('items')
+		->with(['order_device'=> function ($q)
+		{
+			return $q->with('device')->with('game');
+		}])
 		->where('provider_id', $providerId)
-		->where('code', $code)->first();
+		->where('code', $code)
+		->first();
 	} 
 	
 	/*
@@ -113,7 +118,11 @@ class OrdersRepository
 	public function getByDate($params )
 	{
 
-	  	$check = Order::where('provider_id' , $this->app->provider->id);
+	  	$check = Order::where('provider_id' , $this->app->provider->id)->with(['order_device'=> function ($q)
+		{
+			return $q->with('device')->with('game');
+		}])
+		->with('cashier');
 
 	  	if (!empty($params["created_by"]))
 	  	{
@@ -129,6 +138,7 @@ class OrdersRepository
 	  		$check = $check->whereBetween('date' , [$params['start'] , $params['end']]);
 	  	}
   		
+
   		return $check->orderBy('id', 'DESC');
 	}
 

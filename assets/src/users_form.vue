@@ -90,6 +90,7 @@ export default
     computed: {},
     data() {
         return {
+            pending: false,
             tabs: [
                 {title: 'Info', code: 'info'},
                 {title: 'Pictures', code: 'pictures'},
@@ -153,6 +154,11 @@ export default
         },
         submit() {
 
+            if (this.pending)
+                return null;
+
+
+            this.pending = true;
             const params = new URLSearchParams([]);
             let type = this.User.id ?  'update' : 'create';
             params.append('type', 'User.' + type);
@@ -170,6 +176,7 @@ export default
             params.append('params[user][active]', this.User.active ? this.User.active : 0);
             this.handleRequest(params, '/api/'+type).then(data => { 
                 this.$alert(data.result);
+                this.pending = false;
             });
         },
         async handleRequest(params, url = '/') {

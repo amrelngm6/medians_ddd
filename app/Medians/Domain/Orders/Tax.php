@@ -37,12 +37,12 @@ class Tax
 
 	public function tax_amount()
 	{
-		return round($this->tax_amount);
+		return round($this->tax_amount, 2);
 	}
 
 	public function total_cost()
 	{
-		return round(round($this->tax_amount) + round($this->amount) );
+		return round(round($this->tax_amount, 2) + round($this->amount, 2), 2 );
 	}
 
 
