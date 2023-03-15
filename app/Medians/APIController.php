@@ -256,13 +256,13 @@ class APIController
 	{
 		$data = Category::byModel(Quiz::class, $id);
 
-		return json_encode($data);
+		echo json_encode($data);
 	}
 
 	public function sections()
 	{
 		$data = Category::byModel(Quiz::class);
 
-		return json_encode($data);
+		echo json_encode($data);
 	}
 }
