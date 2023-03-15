@@ -5,6 +5,7 @@ namespace Medians\Categories\Domain;
 use Shared\dbaser\CustomController;
 
 use Medians\Devices\Domain\Device;
+use Medians\Quizzes\Domain\Quiz;
 use Medians\Products\Domain\Product;
 
 class Category extends CustomController
@@ -22,6 +23,8 @@ class Category extends CustomController
 		'status',
 	];
 
+	public $appends = ['title', 'sub_title', 'picture', 'section_bg', 'quiz_id', 'video_type'];
+
 
 	/**
 	 * Disable create & update times fields
@@ -29,16 +32,50 @@ class Category extends CustomController
 	public $timestamps = false;
 
 
+	public function getVideoTypeAttribute()
+	{
+		return !empty($this->is_video) ? true : false;
+	}
+	public function getQuizIdAttribute()
+	{
+		return isset($this->quiz->id) ? $this->quiz->id : 0;
+	}
+	public function getTitleAttribute()
+	{
+		return $this->name;
+	}
+	public function getSubTitleAttribute()
+	{
+		return $this->code;
+	}
+	public function getPictureAttribute()
+	{
+		return $this->icon;
+	}
+	public function getSectionBgAttribute()
+	{
+		return $this->bg;
+	}
+
+
 	public function getFields()
 	{
 		return $this->fillable;
 	}
 
-	public static function byModel($Model)
+	public static function byModel($Model, $parent = 0)
 	{
-		return Category::where('model', $Model)->where('status', '!=', '')->get();
+		return Category::where('model', $Model)
+		->where('parent', $parent)
+		->where('status', '1')
+		->with('quiz')
+		->get();
 	}
 
+	public function quiz()
+	{
+		return $this->HasOne(Quiz::class, 'category_id', 'id')->with('options');
+	}
 
 
 	public function parent_category()
