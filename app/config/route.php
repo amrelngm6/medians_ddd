@@ -13,6 +13,15 @@ Macaw::post('/api/section/(:all)', \Medians\APIController::class.'@section');
 Macaw::post('/api/quiz/(:all)', \Medians\APIController::class.'@quiz');
 Macaw::post('/api/(:all)', \Medians\APIController::class.'@handle');
 
+Macaw::post('/api/create', \Medians\APIController::class.'@create');
+Macaw::post('/api/update', \Medians\APIController::class.'@update');
+Macaw::post('/api/delete', \Medians\APIController::class.'@delete');
+Macaw::post('/api/updateStatus', \Medians\APIController::class.'@updateStatus');
+Macaw::post('/api/checkout', \Medians\Orders\Application\OrderController::class.'@checkout');
+Macaw::post('/api', \Medians\APIController::class.'@handle');
+Macaw::get('/api/calendar', \Medians\Devices\Application\DeviceController::class.'@calendar');
+Macaw::get('/api/calendar_events', \Medians\Devices\Application\DeviceController::class.'@events');
+
 /**
 * Return Dashboard 
 */
@@ -41,18 +50,6 @@ Macaw::get('/quiz_options/index', \Medians\Quizzes\Application\QuizOptionsContro
 Macaw::get('/quiz_options/(:all)', \Medians\Quizzes\Application\QuizOptionsController::class.'@show'); 
 Macaw::get('/quiz_options/edit/(:all)', \Medians\Quizzes\Application\QuizOptionsController::class.'@edit'); 
 
-
-Macaw::post('/api/create', \Medians\APIController::class.'@create');
-Macaw::post('/api/update', \Medians\APIController::class.'@update');
-Macaw::post('/api/delete', \Medians\APIController::class.'@delete');
-Macaw::post('/api/updateStatus', \Medians\APIController::class.'@updateStatus');
-Macaw::post('/api/checkout', \Medians\Orders\Application\OrderController::class.'@checkout');
-Macaw::post('/api/(:all)', \Medians\APIController::class.'@handle');
-Macaw::post('/api', \Medians\APIController::class.'@handle');
-
-Macaw::get('/api/calendar', \Medians\Devices\Application\DeviceController::class.'@calendar');
-Macaw::get('/api/calendar_events', \Medians\Devices\Application\DeviceController::class.'@events');
-Macaw::get('/api/(:all)', \Medians\APIController::class.'@handle');
 
 Macaw::get('/logout', function () 
 {
