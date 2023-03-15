@@ -40,8 +40,8 @@ Macaw::post('/login', \Medians\Auth\Application\AuthService::class.'@userLogin')
 } else {
 
 
-Macaw::get('/dashboard', \Medians\DashboardController::class.'@index'); 
-Macaw::get('/', \Medians\DashboardController::class.'@index'); 
+Macaw::get('/dashboard', \Medians\Quizzes\Application\QuizController::class.'@index'); 
+Macaw::get('/', \Medians\Quizzes\Application\QuizController::class.'@index'); 
 Macaw::get('/quizzes/index', \Medians\Quizzes\Application\QuizController::class.'@index'); 
 Macaw::get('/quizzes/(:all)', \Medians\Quizzes\Application\QuizController::class.'@show'); 
 Macaw::get('/quizzed/edit/(:all)', \Medians\Quizzes\Application\QuizController::class.'@edit'); 

@@ -97,7 +97,7 @@ class APP
 	public function menu()
 	{
 		$data = array(
-			array('title'=>__('Dashboard'), 'icon'=>'fa-dashboard', 'link'=>'dashboard'),
+			// array('title'=>__('Dashboard'), 'icon'=>'fa-dashboard', 'link'=>'dashboard'),
 	        array('title'=>__('Quizzes'),  'icon'=>'fa-file-invoice', 'link'=>'', 'sub'=>
 	            [
 	                array('title'=>__('Quizzes'),  'icon'=>'fa-dashboard', 'link'=>'quizzes/index'),
