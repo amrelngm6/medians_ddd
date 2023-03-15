@@ -11,6 +11,9 @@ use Medians\Devices\Infrastructure\DevicesRepository;
 use Medians\Products\Infrastructure\ProductsRepository;
 
 
+use Medians\Quizzes\Domain\Quiz;
+use Medians\Categories\Domain\Category;
+
 class APIController
 {
 
@@ -50,7 +53,7 @@ class APIController
 			case 'quiz':
 				return json_encode($this->quiz($type));
 				break;
-				
+
 			case 'User':
 				$controller = new UserRepository();
 				break;
@@ -257,7 +260,7 @@ class APIController
 	public function quiz($id)
 	{
 
-		return quiz::with('options')->find($id);
+		return Quiz::with('options')->find($id);
 	}
 
 	public function section($id)
