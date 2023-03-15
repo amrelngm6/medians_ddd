@@ -7,6 +7,10 @@ use Medians\DashboardController;
 $app = new \config\APP;
 
 
+Macaw::post('/api/home', \Medians\APIController::class.'@home');
+Macaw::post('/api/sections', \Medians\APIController::class.'@sections');
+Macaw::post('/api/section/(:all)', \Medians\APIController::class.'@section');
+Macaw::post('/api/quiz/(:all)', \Medians\APIController::class.'@quiz');
 Macaw::post('/api/(:all)', \Medians\APIController::class.'@handle');
 
 /**

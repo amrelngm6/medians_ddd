@@ -42,17 +42,6 @@ class APIController
 		$return = [];
 		switch ($this->app->request()->get('model')) 
 		{
-			case 'home':
-				return $this->home();
-			case 'sections':
-				return $this->sections();
-				break;
-			case 'section':
-				return $this->section($type);
-				break;
-			case 'quiz':
-				return json_encode($this->quiz($type));
-				break;
 
 			case 'User':
 				$controller = new UserRepository();
