@@ -243,13 +243,13 @@ class APIController
 			['id' => 3, 'title'=>'Hole 2','sub_title'=>'Hola 3','picture'=>'uploads/images/quiz-3.png']
 		];
 
-		return json_encode($data);
+		echo json_encode($data);
 	}
 
 	public function quiz($id)
 	{
 
-		return Quiz::with('options')->find($id);
+		echo json_encode(Quiz::with('options')->find($id));
 	}
 
 	public function section($id)

@@ -7,11 +7,10 @@ use Medians\DashboardController;
 $app = new \config\APP;
 
 
-Macaw::post('/api/home', \Medians\APIController::class.'@home');
-Macaw::post('/api/sections', \Medians\APIController::class.'@sections');
-Macaw::post('/api/section/(:all)', \Medians\APIController::class.'@section');
-Macaw::post('/api/quiz/(:all)', \Medians\APIController::class.'@quiz');
-Macaw::post('/api/(:all)', \Medians\APIController::class.'@handle');
+Macaw::get('/api/home', \Medians\APIController::class.'@home');
+Macaw::get('/api/sections', \Medians\APIController::class.'@sections');
+Macaw::get('/api/section/(:all)', \Medians\APIController::class.'@section');
+Macaw::get('/api/quiz/(:all)', \Medians\APIController::class.'@quiz');
 
 Macaw::post('/api/create', \Medians\APIController::class.'@create');
 Macaw::post('/api/update', \Medians\APIController::class.'@update');
@@ -21,6 +20,7 @@ Macaw::post('/api/checkout', \Medians\Orders\Application\OrderController::class.
 Macaw::post('/api', \Medians\APIController::class.'@handle');
 Macaw::get('/api/calendar', \Medians\Devices\Application\DeviceController::class.'@calendar');
 Macaw::get('/api/calendar_events', \Medians\Devices\Application\DeviceController::class.'@events');
+Macaw::post('/api/(:all)', \Medians\APIController::class.'@handle');
 
 /**
 * Return Dashboard 
