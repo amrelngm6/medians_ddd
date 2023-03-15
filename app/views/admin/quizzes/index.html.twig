@@ -30,7 +30,7 @@
                                 {% if quiz.category_id == type.id %}
                                 <div class="col-6 col-sm-4 col-lg-3  ">
                                     <div class="album  transform transition duration-400 hover:scale-105">
-                                        <div class="album__cover  ">
+                                        <div class="album__cover bg-white ">
                                             <img src="{{app.CONF.url}}{{quiz.options_img}}" alt="">
                                                 <!-- <a > -->
                                                 <a onClick="jQuery('#main-container').animate({ scrollTop: 0 }, 'slow'); " @click="activeItem = null; showEditSide = true; showAddSide = false; activeItem = {{quiz}}; " href="javascript:;"  >
