@@ -39,7 +39,7 @@
                                     <div class="col-6 col-lg-8 pt-20 ">        
                                         {% for option in optionsList %}
                                         {% if option.quiz_id == quiz.id %}
-                                        <h4 class="p-4 rounded-lg shadow-lg bg-white dark:bg-gray-700 my-4"><a onClick="jQuery('#main-container').animate({ scrollTop: 0 }, 'slow'); " @click="activeItem = null; showEditSide = true; showAddSide = false; activeItem = {{option}}; " href="javascript:;" class="font-bold text-lg {{option.is_correct ? 'text-green-600' : ''}}">{{option.text}}</a></h4>
+                                        <h4 class="p-4 rounded-lg shadow-lg bg-white dark:bg-gray-700 my-4"><a onClick="jQuery('#main-container').animate({ scrollTop: 0 }, 'slow'); alert('{{quiz.options_style}}')" @click="activeItem = null; showEditSide = true; showAddSide = false; activeItem = {{option}};  " href="javascript:;" class="font-bold text-lg {{option.is_correct ? 'text-green-600' : ''}}">{{option.text}}</a></h4>
                                         {% endif %}
                                         {% endfor %}
                                     </div>
