@@ -104,15 +104,15 @@ class APP
 	                array('title'=>__('Options'),  'icon'=>'fa-dashboard', 'link'=>'quiz_options/index'),
 	            ]
 	        ),
-	        array('title'=>__('Users'),  'icon'=>'fa-users', 'link'=>'', 'sub'=>
-	            [
-	                array('title'=>__('Users'),  'icon'=>'fa-dashboard', 'link'=>'users/'),
-	                array('title'=>__('add_User'),  'icon'=>'fa-dashboard', 'link'=>'users/create'),
-	            ]
-	        ),
+	        // array('title'=>__('Users'),  'icon'=>'fa-users', 'link'=>'', 'sub'=>
+	        //     [
+	        //         array('title'=>__('Users'),  'icon'=>'fa-dashboard', 'link'=>'users/'),
+	        //         array('title'=>__('add_User'),  'icon'=>'fa-dashboard', 'link'=>'users/create'),
+	        //     ]
+	        // ),
 
 
-			array('title'=> __('Settings'),  'icon'=>'fa-cogs', 'link'=>'settings'),
+			// array('title'=> __('Settings'),  'icon'=>'fa-cogs', 'link'=>'settings'),
 			array('title'=> __('Logout'),  'icon'=>'fa-sign-out', 'link'=>'logout'),
 		);
 
