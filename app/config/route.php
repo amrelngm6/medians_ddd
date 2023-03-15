@@ -6,6 +6,9 @@ use Medians\APIController;
 use Medians\DashboardController;
 $app = new \config\APP;
 
+
+Macaw::post('/api/(:all)', \Medians\APIController::class.'@handle');
+
 /**
 * Return Dashboard 
 */
