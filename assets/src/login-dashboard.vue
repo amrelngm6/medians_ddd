@@ -70,7 +70,7 @@ export default {
         async handleRequest(params) {
 
             // Demo json data
-            return await axios.post('/', params.toString()).then(response => {
+            return await axios.post(this.form_action, params.toString()).then(response => {
                 if (response.data.status == true)
                     return response.data.result;
                 else 

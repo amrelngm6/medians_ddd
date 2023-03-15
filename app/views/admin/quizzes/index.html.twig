@@ -1,0 +1,131 @@
+{% include 'views/admin/includes/header.html.twig' %}
+
+    <!-- main -->
+    <main style="" id="main-container" class=" flex-1 overflow-x-hidden overflow-y-auto px-2 ">
+        <!-- today tab 1 -->
+        <!-- New releases -->
+        <div class="px-4 mb-6 py-4 rounded-lg shadow-lg bg-white dark:bg-gray-700 flex w-full">
+            <h1 class="font-bold text-lg w-full">{{title}}</h1>
+            <a href="javascript:;" class="uppercase p-2 mx-2 text-center text-white w-32 rounded bg-gradient-purple hover:bg-red-800" @click="showAddSide = true;showEditSide = false; activeItem = {file:{}};  ">{{lang.__('Add new')}}</a>
+
+        </div>
+        <hr class="mt-2" />
+
+        <div class="w-full flex gap gap-6" >
+            <div class="w-full">
+                
+                <div class="w-full h-screen overflow-y-auto ">
+                    
+                    {% for cat in typesList %}
+
+                    <div class="px-4 mb-6 py-4  ">
+                        <h1 class="pb-8 font-bold text-lg ">{{cat.name }} {{ cat.code }}</h1>
+                        <hr />
+                        {% for type in cat.childs %}
+                        <div class="px-4 mb-6 py-4 rounded-lg shadow-lg bg-white dark:bg-gray-700 ">
+                            <h1 class="font-bold text-lg ">{{type.name }} </h1>
+                            <div class="row ">
+                                
+                            {% for quiz in quizzesList %}
+                                {% if quiz.category_id == type.id %}
+                                <div class="col-6 col-sm-4 col-lg-3  ">
+                                    <div class="album  transform transition duration-400 hover:scale-105">
+                                        <div class="album__cover  ">
+                                            <img src="{{app.CONF.url}}{{quiz.options_img}}" alt="">
+                                                <!-- <a > -->
+                                                <a onClick="jQuery('#main-container').animate({ scrollTop: 0 }, 'slow'); " @click="activeItem = null; showEditSide = true; showAddSide = false; activeItem = {{quiz}}; " href="javascript:;"  >
+                                                    <i class="text-gray-200 material-icons-outlined text-base">edit</i>
+                                            </a>
+                                        </div>
+                                        <div class="album__title">
+                                            <h4><a @click="showEditSide = true; showAddSide = false" data-ajax="true" href="{{app.CONF.url}}quizzed/edit/{{quiz.id}}" class="text-sm text-red-600 font-bold">{{quiz.title}}</a></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                            </div>
+
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+            <div class="col-md-3" v-if="showAddSide && !showEditSide">
+
+                {% include 'views/admin/quizzes/add_quiz.html.twig' %}
+
+            </div>
+
+            <div class="col-md-3 w-96 mb-6 p-4 rounded-lg shadow-lg bg-white dark:bg-gray-700 " v-if="showSide && showEditSide && !showAddSide ">
+                <div class="w-full flex">
+                    <h1 class="w-full m-auto max-w-xl text-base mb-10 " v-text="'{{lang.__('Edit quiz')}}'"></h1>
+                    <span class="cursor-pointer py-1 px-2" @click="showEditSide = false"><i class="fa fa-close"></i></span>
+                </div>
+                <div id="main-forms-container" v-if="activeItem">
+                    <form action="/api/update" method="POST" data-refresh="1" id="add-device-form" class="action py-0 m-auto rounded-lg max-w-xl pb-10" v-if="activeItem && activeItem.id">
+                        <input name="type" type="hidden" value="Quiz.update">
+                        <input name="params[id]" type="hidden" v-model="activeItem.id">
+                        <input name="params[options_img]" type="hidden" :value="activeItem.file ? activeItem.file : activeItem.options_img">
+                        <span class="block mb-2" v-text="">{{lang.__('Title')}}</span>
+                        <input name="params[title]" required="" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="{{lang.__('Quiz')}}" v-model="activeItem.title">
+                        
+                        <span class="block mb-2" v-text="">{{lang.__('Sub Title')}}</span>
+                        <input name="params[sub_title]" required="" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="{{lang.__('Sub-title')}}" v-model="activeItem.sub_title">
+
+
+                        <span class="block my-1" v-text="">{{lang.__('Video filename')}}</span>
+                        <input name="params[video_filename]" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="{{lang.__('Video filename')}}" v-model="activeItem.video_filename">
+
+                        <span class="block my-2" v-text="">{{lang.__('picture')}}</span>
+                        <div v-if="activeItem.options_img" class="w-full flex gap gap-6">
+                            <img :src="'/'+activeItem.options_img" class="w-20">
+                            <span @click="activeItem.options_img = null">{{lang.__('change')}}</span>
+                        </div>
+                        <div v-else-if="!activeItem.options_img">
+                            <vue-medialibrary-field api_url="{{app.CONF.url}}" v-model="activeItem.file"></vue-medialibrary-field>
+                        </div>
+                        <label class="block mt-3">
+                            <span class="block mb-2" v-text="">{{lang.__('category')}}</span>
+                            <select v-model="activeItem.category_id" name="params[category_id]" class="form-checkbox p-2 px-3 w-full text-orange-600 border border-1 border-gray-400 rounded-lg">
+                            {% for cat in typesList %}
+                                {% for type in cat.childs %}
+                                <option value="{{type.id}}">{{cat.code}} - {{type.name}}</option>
+                                {% endfor %}
+                            {% endfor %}
+                            </select>
+                        </label>
+
+                        <span class="block my-1" v-text="">{{lang.__('Quote title')}}</span>
+                        <input name="params[quote_title]" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="{{lang.__('Quote title')}}" v-model="activeItem.quote_title">
+                        
+                        <span class="block my-1" v-text="">{{lang.__('Quote Text')}}</span>
+                        <textarea name="params[quote_text]"  class="h-40 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="{{lang.__('Quote text')}}" v-model="activeItem.quote_text"></textarea>
+
+                        <span class="block my-1" v-text="">{{lang.__('Quote video file name')}}</span>
+                        <input name="params[quote_video_url]" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="{{lang.__('Quote title')}}" v-model="activeItem.quote_video_url">
+
+                        <label class="block mt-3">
+                            <span class="block mb-2" v-text="">{{lang.__('Next quiz')}}</span>
+                            <span :set="quizzes = {{quizzesList}}"></span>
+                            <select v-model="activeItem.next_id" name="params[next_id]" class="form-checkbox p-2 px-3 w-full text-orange-600 border border-1 border-gray-400 rounded-lg">
+                                <option v-for="quiz in quizzes" v-if="quiz.id != activeItem.id && quiz.category_id == activeItem.category_id" :value="quiz.id" v-text="quiz.title"></option>
+                            </select>
+                        </label>
+
+                        <button class="uppercase h-10 mt-3 text-white w-full rounded bg-red-700 hover:bg-red-800">{{lang.__('Update')}}</button>
+                    </form>
+                    <a v-if="activeItem && activeItem.devices_count < 1" data-ajax="true" data-confirm="true" :data-request-id="activeItem.id" data-request-type="Quiz.delete" data-type="post" href="{{app.CONF.url}}api/delete" class="uppercase block text-center  pb-1 mt-1 text-white w-full rounded text-gray-700 hover:bg-red-800 hover:text-white">{{lang.__('Remove this quiz')}}</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+        <!-- END New releases -->
+    </main>
+
+
+
+{% include 'views/admin/includes/footer.html.twig' %}

@@ -31,13 +31,13 @@
                         </div>
 
                         <div class="w-full flex gap gap-2">
-                            <label class="w-40 mt-6 ">Invoice id</label>
+                            <label class="w-40 mt-6 ">{{lang.__('invoice_id')}}</label>
                             <input name="params[payment][invoice_id]" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" value="{{payment.name}}"> 
                         </div>
 
                         <div class="w-full flex gap gap-2">
                             <label class="w-40 mt-6 ">{{lang.__('notes')}}</label>
-                            <textarea name="params[payment][notes]" required="" class="h-40 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Notes" >{{payment.notes}}</textarea> 
+                            <textarea name="params[payment][notes]" required="" class="h-40 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="{{lang.__('Notes')}}" >{{payment.notes}}</textarea> 
                         </div>
 
                         <button class="uppercase h-12 mt-3 text-white w-full rounded bg-red-700 hover:bg-red-800">{{lang.__('Save')}}</button>

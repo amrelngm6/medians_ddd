@@ -14,25 +14,15 @@
             </div>
             <div v-else-if="file" class="media-library-field__selected">
                 <div class="media-library-field__selected__inner">
-                    <div class="media-library-field__selected__inner__img" v-if="file.collection_name == 'images'" @click="showManager = true">
-                        <div class="media-library-field__selected__inner__img__frame">
-                            <div class="media-library-field__selected__inner__img__frame__image" :style="`background-image: url('${file.data_url}');`"></div>
-                        </div>
-
-                        <div class="media-library-field__selected__inner__img__edit">
-                            <span>Edit</span>
-                        </div>
-                    </div>
-                    <div class="w-full flex gap gap-6">
+                    <div class="w-full">
                         <div>
-                            <img :src="file.data_url" style="width: auto; height: auto; max-width: 180px;">
+                            <img :src="file" style="width: auto; height: auto; max-width: 180px;">
                         </div>
-                        <div>
-                            <span class="media-library-field__selected__inner__details__name">{{ file.file_name }}</span>
-                            <span class="media-library-field__selected__inner__details__dimensions" v-if="file.collection_name == 'images'">Dimensions: {{ file.image.width }} × {{ file.image.height }}</span>
-                            <span class="media-library-field__selected__inner__details__edit" @click="showManager = true">Edit info</span>
-
-                            <div style="display: flex;  margin: 2rem -0.5rem 0 -0.5rem;">
+                        <div class="block w-full">
+                            <div class="w-full flex" style="  margin: 2rem -0.5rem 0 -0.5rem;">
+                                <div style="flex-grow: 1; padding: 0 0.5rem;">
+                                    <span class="media-library-field__selected__inner__details__button font-semibold" @click="showManager = true">Edit</span>
+                                </div>
                                 <div style="flex-grow: 1; padding: 0 0.5rem;">
                                     <a :href="file.download_url" class="media-library-field__selected__inner__details__button">Download</a>
                                 </div>
@@ -80,7 +70,7 @@
                 required: false
             },
             value: {
-                type: Object,
+                type: Object|String,
                 required: false,
                 default: () => ({
                 })
@@ -113,8 +103,8 @@
 
         mounted() {
             this.content = this.value ? this.value : this.content;
-            if (this.content && this.content.file_name) {
-                this.file = this.value;
+            if (this.content ) {
+                // this.file = this.content;
             } else {
                 this.content = null;
             }
@@ -124,10 +114,11 @@
         methods: {
 
             insert(value) {
+
                 this.loading = false;
                 this.showManager = false;
                 
-                this.file = value;
+                this.file = value.file_name;
                 this.content = value.file_name;
 
                 this.change();
@@ -145,7 +136,7 @@
 
         watch: {
             value() {
-                if (typeof this.file.id == 'undefined') {
+                if (typeof this.file == 'undefined') {
                     this.loading = true;
                 }
             }

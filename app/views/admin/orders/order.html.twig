@@ -9,31 +9,25 @@
             <div class="card invoice-info-card  mx-auto col-md-10">
                 <div class="card-body">
                     <div class="invoice-item invoice-item-one">
+                        <div>
+                        </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="invoice-logo">
+                               <div class="invoice-logo mx-auto text-center">
                                     <img src="{{app.CONF.url ? app.CONF.url : '/'}}assets/img/Logo.png" alt="logo">
-                                </div>
-                                <div class="invoice-head">
-                                    <h2 >{{title}}</h2>
-                                    <p>{{lang.__('Invoice Number')}} : {{order.code}}</p>
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="invoice-info">
-                                    <strong class="customer-text-one">{{lang.__('Invoice From')}}</strong>
-                                    <h6 class="invoice-name">{{app.Settings.sitename}}</h6>
-                                    <p class="invoice-details">
-                                        {{app.Settings.address}}<br>
-                                        {{app.Settings.city}} - {{app.Settings.country}}
-                                    </p>
+                                <div class="invoice-head">
+                                    <h2 class="text-lg">{{title}}</h2>
+                                    <p class="text-sm">{{lang.__('Invoice Number')}} : {{order.code}}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="invoice-item invoice-item-two">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-6 ">
                                 <div class="invoice-info">
                                     <strong class="customer-text-one">{{lang.__('Billed to')}}</strong>
                                     <h6 class="invoice-name">{{order.customer.name ? order.customer.name : 'Guest'}}</h6>
@@ -41,12 +35,21 @@
                                         {{order.customer.phone}} <br>
                                     </p>
                                 </div>
+
+                                <div class="invoice-info invoice-info text-default ">
+                                    <strong class="customer-text-one">{{lang.__('Payment Details')}}</strong>
+                                    <p class=" text-default">
+                                        {{lang.__('Payment method')}}: <b class="text-red-500">{{order.payment_method}}</b>
+                                    </p>
+                                </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="invoice-info invoice-info2">
-                                    <strong class="customer-text-one">{{lang.__('Payment Details')}}</strong>
-                                    <p class="invoice-details">
-                                        {{lang.__('Payment method')}}: <b class="text-red-500">{{order.payment_method}}</b>
+                                <div class="invoice-info ">
+                                    <strong class="customer-text-one">{{lang.__('Invoice From')}}</strong>
+                                    <h6 class="invoice-name">{{app.Settings.sitename}}</h6>
+                                    <p class="text-default">
+                                        {{app.Settings.address}}<br>
+                                        {{app.Settings.city}} - {{app.Settings.country}}
                                     </p>
                                 </div>
                             </div>
@@ -61,12 +64,12 @@
                             </div>
                             <div class="col-lg-4 col-md-4">
                                 <div class="invoice-issues-date">
-                                    <p>{{lang.__('Status')}} : {{order.status}}</p>
+                                    <p>{{lang.__('Status')}} : {{lang.__(order.status)}}</p>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-4">
                                 <div class="invoice-issues-date">
-                                    <p>{{lang.__('Subtotal')}} : {{order.subtotal}}{{app.currency}} </p>
+                                    <p>{{lang.__('Subtotal')}} : {{order.subtotal}}{{app.Settings['currency']}} </p>
                                 </div>
                             </div>
                         </div>
@@ -90,9 +93,9 @@
                                             <tr>
                                                 <td>{{orderdevice.device.name}}</td>
                                                 <td>{{lang.__('Booking')}}</td>
-                                                <td>{{orderdevice.device_cost}} {{app.currency}}</td>
+                                                <td>{{orderdevice.device_cost}} {{app.Settings['currency']}}</td>
                                                 <td>{{orderdevice.duration_hours}}</td>
-                                                <td class="text-end">{{orderdevice.subtotal}} {{app.currency}}</td>
+                                                <td class="text-end">{{orderdevice.subtotal}} {{app.Settings['currency']}}</td>
                                             </tr>
 
                                             {% if orderdevice.products %}
@@ -100,9 +103,9 @@
                                                 <tr>
                                                     <td>{{device_product.product.name}}</td>
                                                     <td>{{lang.__('Product')}}</td>
-                                                    <td>{{device_product.price}} {{app.currency}}</td>
+                                                    <td>{{device_product.price}} {{app.Settings['currency']}}</td>
                                                     <td>{{device_product.qty}}</td>
-                                                    <td class="text-end">{{device_product.subtotal}} {{app.currency}}</td>
+                                                    <td class="text-end">{{device_product.subtotal}} {{app.Settings['currency']}}</td>
                                                 </tr>
                                                 {% endfor %}
 
@@ -129,13 +132,13 @@
                         <div class="col-lg-6 col-md-6">
                             <div class="invoice-total-card">
                                 <div class="invoice-total-box">
-                                    <div class="invoice-total-inner">
-                                        <p class="mb-0">{{lang.__('Sub total')}} <span>{{order.subtotal}} {{app.currency}}</span></p>
-                                        <p>{{lang.__('Tax') }}<span>{{order.tax}} {{app.currency}}</span></p>
-                                        <p>{{lang.__('Discount')}} <span>{{order.discount}} {{app.currency}}</span></p>
+                                    <div class="invoice-total-inner w-full">
+                                        <p class="mb-0 w-full flex gap gap-6"> <span class="w-full">{{lang.__('Sub total')}} </span><span class="w-40 text-center">{{order.subtotal}} {{app.Settings['currency']}}</span></p>
+                                        <p class="w-full flex "><span class="w-full">{{lang.__('Tax') }}</span><span class="w-40 text-center">{{order.tax}} {{app.Settings['currency']}}</span></p>
+                                        <p class="w-full flex "><span class="w-full">{{lang.__('Discount')}}</span> <span class="w-40 text-center">{{order.discount}} {{app.Settings['currency']}}</span></p>
                                     </div>
                                     <div class="invoice-total-footer">
-                                        <h4>{{lang.__('Total Amount')}} <span>{{order.total_cost}} {{app.currency}}</span></h4>
+                                        <h4 class="w-full flex "><span class="w-full">{{lang.__('Total Amount')}}</span> <span class="w-40 text-center">{{order.total_cost}} {{app.Settings['currency']}}</span></h4>
                                     </div>
                                 </div>
                             </div>

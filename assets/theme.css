@@ -1048,6 +1048,11 @@ table.dataTable thead>tr>td.sorting {
 	background: linear-gradient(to right, #8a56e6 0, #6f3cca 100%);
 }
 
+.bg-gradient-purple.active {
+	transition: all .5s ease-in-out;
+	background: linear-gradient(to right, rgba(138, 86, 230, .7) 0, rgba(111, 60, 202, .7) 100%);
+}
+
 
 /*-----------------
   5. Animation
@@ -1664,7 +1669,7 @@ table.dataTable thead>tr>td.sorting {
 	box-shadow: 0px 0px 20px 2px #eaeaea;
 	margin-top: 0;
 	transition: all 0.2s ease-in-out 0s;
-	width: 230px;
+	width: 265px;
 	z-index: 1001;
 }
 
@@ -1694,11 +1699,12 @@ table.dataTable thead>tr>td.sorting {
 .sidebar-menu li a {
 	color: #6f6b6b;
 	display: block;
-	font-size: 15px;
+	font-size: 14px;
 	height: auto;
-	padding: 0 20px;
+	padding: 0 15px;
 }
 
+.sidebar-menu li a.active,
 .sidebar-menu li a:hover {
 	background-color: #9a55ff;
 	color: #fff;
@@ -1742,7 +1748,6 @@ table.dataTable thead>tr>td.sorting {
 .sidebar-menu ul ul a.active {
 	background-color: #9a55ff;
 	color: #fff;
-	text-decoration: underline;
 }
 
 .mobile-user-menu {
@@ -1917,7 +1922,7 @@ table.dataTable thead>tr>td.sorting {
 }
 
 .sidebar-menu>ul>li>a {
-	padding: 8px 15px;
+	padding: 8px 5px;
 	align-items: center;
 	display: flex;
 	justify-content: flex-start;

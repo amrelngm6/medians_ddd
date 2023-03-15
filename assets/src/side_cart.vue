@@ -4,9 +4,9 @@
         <div v-if="showCart && Items && Items.length ">
             
             <div v-if="showLoader">
-                
+                 
             </div>
-            <div v-if="!showLoader" class="pt-20 fixed right-0 top-0 bg-white p-6 h-screen overflow-y-auto w-96 max-w-full" style="z-index:9; max-height: 100vh; ">
+            <div v-if="!showLoader" id="side-cart-container" class="pt-20 fixed right-0 top-0 bg-white p-6 h-screen overflow-y-auto w-96 max-w-full" style="z-index:9; max-height: 100vh;" >
             <!-- <div v-if="Items && !showLoader"> -->
                 
                 <div class="modal-header" v-if="Items">
@@ -17,23 +17,25 @@
                     <div class="mx-auto w-full">
                         <h1 class="font-semibold text-2xl border-b py-8" v-text="__('order_summary')"></h1>
                         <div v-if="Items" class="w-full">
-                            <div v-for="(item, i) in Items" class="w-full block" v-if="item" >
+                            <div v-for="(item, i) in Items" class="w-full block" :key="i" >
                                 <div  class="flex justify-between mt-10 mb-5" v-if="item" >
                                     <span class="font-semibold text-sm" v-if="item.device"> 
                                         <span v-text="item.device.name"></span><br /> 
                                         <span class="text-xs text-gray-400 " v-if="item.game" v-text="item.game.name"></span>
                                         <span class="text-xs text-red-400" @click="removeFromCart(item)" v-text="__('remove')"></span>
                                     </span>
-                                    <span class="font-semibold text-sm"><span v-text="item.subtotal"></span> <small class="text-xs" v-text="currency"></small> <br /> <span class="text-xs text-gray-400" v-text="item.duration_time"></span></span>
+                                    <span style="direction:ltr;" class="font-semibold text-sm"><span v-text="item.subtotal"></span> <small v-if="setting" class="text-xs" v-text="setting.currency"></small> <br /> <span class="text-xs text-gray-400" v-text="item.duration_time"></span></span>
                                 </div>
-                                <div v-for="product in item.products" class="w-full block" v-if="item && item.products" >
-                                    <div  class="flex justify-between mt-10 mb-5" v-if="product" >
-                                        <span class="font-semibold text-sm" > 
-                                            <span v-text="product.product.name"></span><br /> 
-                                            <span class="text-xs text-gray-400 " v-if="product.qty" v-text="'X '+product.qty"></span>
-                                            <!-- <span class="text-xs text-red-400" @click="removeProduct(product, i)">Remove</span> -->
-                                        </span>
-                                        <span class="font-semibold text-sm"><span v-text="product.price"></span> <small class="text-xs" v-text="currency"></small> </span>
+                                <div v-if="item && item.products">
+                                    
+                                    <div v-for="(product, i) in item.products" class="w-full block" :key="i" >
+                                        <div  class="flex justify-between mt-10 mb-5" v-if="product && item && item.products" >
+                                            <span class="font-semibold text-sm" > 
+                                                <span v-text="product.product.name"></span><br /> 
+                                                <span class="text-xs text-gray-400 " v-if="product.qty" v-text="'X '+product.qty"></span>
+                                            </span>
+                                            <span class="font-semibold text-sm"><span v-text="product.price"></span> <small v-if="setting" class="text-xs" v-text="setting.currency"></small> </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -53,10 +55,24 @@
                         </div>
                         <div class="border-t mt-8 w-full">
                             <div class="flex font-semibold justify-between py-6 text-sm uppercase">
+                                <span class="w-full" v-text="__('subtotal')"></span>
+                                <span class="flex w-full text-right text-md gap gap-1 ">
+                                    <span v-text="subtotal()"></span>
+                                    <span v-text="setting.currency"></span>
+                                </span>
+                            </div>
+                            <div class="flex font-semibold justify-between py-6 text-sm uppercase">
+                                <span class="w-full" v-text="__('tax')"></span>
+                                <span class="flex w-full text-right text-md gap gap-1 text-red-400">
+                                    <span v-text="tax()"></span>
+                                    <span v-text="setting.currency"></span>
+                                </span>
+                            </div>
+                            <div class="flex font-semibold justify-between py-6 text-sm uppercase">
                                 <span class="w-full" v-text="__('total_amount')"></span>
                                 <span class="flex w-full text-right text-lg gap gap-1 text-red-400">
-                                    <span v-text="subtotal()"></span>
-                                    <span v-text="currency"></span>
+                                    <span v-text="total()"></span>
+                                    <span v-text="setting.currency"></span>
                                 </span>
                             </div>
                             <button class="bg-gradient-primary font-semibold hover:bg-purple-600 py-3 text-sm text-white uppercase w-32 mx-auto block rounded-lg my-6 " @click="checkout" v-text="__('checkout')"></button>
@@ -82,10 +98,11 @@ export default
             Items: [],
             sub_total:0,
             showLoader: false,
-            showCart: false
+            showCart: true
         }
     },
     props: [
+        'setting',
         'currency',
         'cart_items'
     ],
@@ -128,7 +145,6 @@ export default
          */
         addToCart(item)
         {
-            console.log(item)
             this.checkDuplicate(item);
             this.subtotal()
         } ,
@@ -145,22 +161,33 @@ export default
 
             return this;
         },    
+        total()
+        {
+            let tax = Number(this.tax());
+            let subtotal = Number(this.subtotal());
+
+            return (subtotal + tax).toFixed(2);
+        },  
+        tax()
+        {
+            let subtotal = Number(this.subtotal());
+            return this.setting.tax > 0  ? (subtotal * ( Number(this.setting.tax) / 100 )).toFixed(2) : 0;
+        },    
         subtotal()
         {
             this.sub_total = 0;
             for (var i = this.Items.length - 1; i >= 0; i--) {
-                this.sub_total = this.Items[i] ?  (Number(this.sub_total) + Number(this.Items[i].subtotal)) : 0 
 
+                this.sub_total += this.Items[i] && this.Items[i].subtotal ?  Number(this.Items[i].subtotal) : 0 
                 if (this.Items[i] && this.Items[i].products && this.Items[i].products.length > 0)
                 {
                     for (var p = this.Items[i].products.length - 1; p >= 0; p--) 
                     {
-                        this.sub_total = this.Items[i].products[p] ? 
-                        (Number(this.sub_total) + Number(this.Items[i].products[p].price)) 
-                        : this.sub_total; 
+                        this.sub_total += this.Items[i].products[p] ? 
+                        Number(this.Items[i].products[p].price)
+                        : 0; 
                     }
                 }
-
             }
             return this.sub_total.toFixed(2)
         },
@@ -176,35 +203,11 @@ export default
                 this.$alert(response)
                 this.Items = []
                 this.$parent.reloadEvents()
+                this.$parent.hidePopup()
             });
 
         },
 
-        query(id)
-        {
-
-            const params = new URLSearchParams([]);
-            params.append('type', 'OrderDevice');
-            params.append('model', 'OrderDevice');
-            params.append('id',  id);
-            this.showPopup = false
-            this.handleRequest(params, '/api').then(response => {
-                this.addToCart(response)
-                this.showPopup = true
-            })
-            this.showPopup = true
-        },
-        removeProduct(product, i = 0)
-        {
-            this.showLoader = true;
-            const params = new URLSearchParams([]);
-            params.append('type', 'OrderDevice.removeProduct');
-            params.append('params[product]', JSON.stringify(product));
-            this.handleRequest(params, '/api/delete').then(response => {
-                this.showLoader = false;
-                this.query(this.Items[i].id, i)
-            })
-        },
         async handleRequest(params, url = '/api') {
 
             // Demo json data
@@ -238,3 +241,10 @@ export default
     }
 };
 </script>
+<style lang="css">
+    .rtl #side-cart-container
+    {
+        right: auto;
+        left:0;
+    }
+</style>

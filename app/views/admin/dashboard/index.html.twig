@@ -1,12 +1,12 @@
 {% if app.auth.id > 0 %}
 {% include 'views/admin/includes/header.html.twig' %}
-<div class="w-full overflow-y-auto" >
+<div class="w-full overflow-y-auto overflow-x-hidden px-2" >
     <div class="mb-6">
         <div class="row pt-2">
             <div class="col-md-3">
                 <div class="card bg-gradient-danger card-img-holder text-white h-100">
                     <div class="card-body">
-                        <img src="/uploads/img/circle.png" class="card-img-absolute" alt="circle-image">
+                        <img src="/assets/img/circle.png" class="card-img-absolute" alt="circle-image">
                         <h4 class="font-weight-normal mb-3">{{ lang.__('Active bookings') }}</h4>
                         <span class="text-2xl">{{active_order_devices_count}}</span>
                     </div>
@@ -15,7 +15,7 @@
             <div class="col-md-3">
                 <div class="card bg-gradient-info card-img-holder text-white h-100">
                     <div class="card-body">
-                        <img src="/uploads/img/circle.png" class="card-img-absolute" alt="circle-image">
+                        <img src="/assets/img/circle.png" class="card-img-absolute" alt="circle-image">
                         <h4 class="font-weight-normal mb-3">{{lang.__('Today Bookings')}}  </h4>
                         <span class="text-2xl">{{today_order_devices_count}}</span>
                     </div>
@@ -24,7 +24,7 @@
             <div class="col-md-3">
                 <div class="card bg-gradient-success card-img-holder text-white h-100">
                     <div class="card-body">
-                        <img src="/uploads/img/circle.png" class="card-img-absolute" alt="circle-image">
+                        <img src="/assets/img/circle.png" class="card-img-absolute" alt="circle-image">
                         <h4 class="font-weight-normal mb-3">{{lang.__('Today Sold products')}}</h4>
                         <span class="text-2xl">{{today_order_products_count ? today_order_products_count : 0}}</span>
                     </div>
@@ -33,7 +33,7 @@
             <div class="col-md-3">
                 <div class="card bg-gradient-danger card-img-holder text-white h-100">
                     <div class="card-body">
-                        <img src="/uploads/img/circle.png" class="card-img-absolute" alt="circle-image">
+                        <img src="/assets/img/circle.png" class="card-img-absolute" alt="circle-image">
                         <h4 class="font-weight-normal mb-3">{{lang.__('Today Revenue')}}</h4>
                         <span class="text-2xl">{{today_revenue}}</span>
                     </div>
@@ -124,6 +124,7 @@
                                 <th>{{lang.__('Name')}}</th>
                                 <th>{{lang.__('Price')}}</th>
                                 <th>{{lang.__('Date')}}</th>
+                                <th>{{lang.__('Invoice')}}</th>
                                 <th>{{lang.__('By')}}</th>
                             </tr>
                         </thead>
@@ -136,6 +137,7 @@
                                 </td>
                                 <td class="text-red-500">{{item.product.price}} {{app.currency}}</td>
                                 <td>{{item.created_at | date('Y-m-d H:i a')}}</td>
+                                <td><a target="_blank" href="/orders/show/{{item.invoice.code}}">{{item.invoice.code}}</a></td>
                                 <td>{{item.user.name}}</td>
                             </tr>
                             {% endfor %}

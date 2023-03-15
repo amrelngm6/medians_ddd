@@ -13,51 +13,6 @@
     <!-- External Theem  -->
     <link rel="stylesheet" type="text/css" href="{{app.CONF.url ? app.CONF.url : '/'}}assets/theme.min.css">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp|Cairo:wght@300;500;700;900">
-    <style>
-        body span,
-        body div,
-        body tr, body td, body th,
-        body h1,  body h2, body h4, body h5,
-        body a,
-        body p {
-            font-family: 'Cairo' !important;
-        }
-        body label {
-            font-weight: 600;
-        }
-        body th, body td { text-align:center }
-        .bg-orange{
-  background: #fc5a03;
-}
-.text-orange{
-  color: #fc5a03;
-}
-.border-orange{
-  border-color: #fc5a03;
-}
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-   --tw-divide-opacity: 1;
-  border-color: rgba(209, 213, 219, var(--tw-divide-opacity));
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-   --tw-divide-opacity: 1;
-  border-color: rgba(209, 213, 219, var(--tw-divide-opacity));
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-   --tw-divide-opacity: 1;
-  border-color: rgba(209, 213, 219, var(--tw-divide-opacity));
-}
-
-    </style>
     <script type="text/javascript">
         var site_url = '{{app.CONF.url ? app.CONF.url : "/"}}';
     </script>
@@ -65,7 +20,7 @@
 </head>
 
 <body>
-    <div class=" " style="direction: {{lang.__('DIR')}}">
+    <div class="{{ lang.__('DIR') }}" style="direction: {{lang.__('DIR')}}">
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
         <!-- component -->
         {% if app.auth.id %}
@@ -75,7 +30,7 @@
                     <div class="inline-flex mx-4">
                         <!-- Logo -->
                         <div class="mx-auto h-16  py-2 w-auto ">
-                            <img style="max-height: 100%" src="{{app.CONF.url ? app.CONF.url : '/'}}assets/img/Logo.png" height="40">
+                            <img style="max-height: 100%" src="{{app.CONF.url ? app.CONF.url : '/'}}{{app.Settings.logo ? app.Settings.logo : 'assets/img/logo.png'}}" height="40">
                             <!--end logo -->
                         </div>
                     </div>
@@ -108,8 +63,10 @@
                         </span>
                         <span>{{app.auth.name}}</span>
                     </a>
-                    <ul class="py-4 px-2 w-full bg-white absolute top-14 left-0 hidden dropped1" style="z-index: 9999;">
-                        <li><a href="/logout">Logout </a>
+                    <ul class="py-4 px-2 w-full bg-white border border-gray-300 rounded  absolute top-14 left-1 hidden dropped1" style="z-index: 9999;">
+                        <li class="py-2 border-b border-gray-300"><a href="{{app.CONF.url}}users/edit/{{app.auth.id}}">{{lang.__('PROFILE')}} </a>
+                        <li class="py-2 border-b border-gray-300"><a href="{{app.CONF.url}}settings">{{lang.__('SETTING')}} </a>
+                        <li class="py-2"><a href="/logout">{{lang.__('LOGOUT')}} </a>
                     </ul>
                 </li>
             </ul>
@@ -118,9 +75,9 @@
 
         <div class="w-full " id="app">
 
-            <a  href="javascript:;" class="w-6 text-lg fixed top-4 right-4 block" style="z-index:99999" @click="showSide = !showSide"><i class="fa fa-bars"></i></a>
+            <a  href="javascript:;" class="mainmenu-close w-6 text-lg absolute top-4 right-4 block" style="z-index:99999" @click="showSide = !showSide"><i class="fa fa-bars"></i></a>
 
-            <span :set="__langs = {{lang.vueLang()|json_encode}}"></span>
+            <span :set="langs = {{lang.vueLang()|json_encode}}"></span>
     
             <div class="relative modal right fade w-full h-full top-0 " id="modal-details" style="position:fixed; background: rgba(0, 0, 0, .4);" v-if="showModal" >
                 <div class="modal-dialog bg-white" role="document">
@@ -148,7 +105,7 @@
                                 <li class="nav-item nav-profile">
                                     <a href="#" class="nav-link">
                                         <div class="nav-profile-image">
-                                            <img src="/uploads/img/property17.jpg" alt="profile">
+                                            <img src="{{app.auth.photo()}}" alt="profile">
                                         </div>
                                         <div class="nav-profile-text d-flex flex-column">
                                             <span class="font-weight-bold mb-2">{{app.auth.name}}</span>
@@ -158,7 +115,7 @@
                                     </a>
                                 </li>
                             </ul>
-                            <side-menu :same-page="false" url="{{app.CONF.url ? app.CONF.url : '/'}}" :menus="{{app.menuList|json_encode}}"></side-menu>
+                            <side-menu samepage="{{app.request().requestUri}}" url="{{app.CONF.url ? app.CONF.url : '/'}}" :menus="{{app.menu()|json_encode}}"></side-menu>
                         </div>
                     </div>
                 </div>

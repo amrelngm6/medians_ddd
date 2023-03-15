@@ -2,7 +2,7 @@
     <div class="block w-full overflow-x-auto">
         
 
-        <div class="w-full  lg:flex gap gap-6"  v-if="User">
+        <div class="w-full  lg:flex gap gap-6"  v-if="activeItem">
             <div class="w-full">
                 <div class="card flex-fill">
                     <div class="card-header">
@@ -12,22 +12,35 @@
                         <div class="gap gap-6 w-full flex py-2">
                             <label class="w-full col-form-label">First name</label>
                             <div class="w-full">
-                                <input type="text" required class="h-auto py-1 w-full form-control border rounded-lg border-gray-200 px-2" v-model="User.first_name">
+                                <input type="text" required class="h-auto py-1 w-full form-control border rounded-lg border-gray-200 px-2" v-model="activeItem.first_name">
                             </div>
                         </div>
 
                         <div class="gap gap-6 w-full flex py-2">
                             <label class="w-full col-form-label">Last name</label>
                             <div class="w-full">
-                                <input type="text" required class="h-auto py-1 w-full form-control border rounded-lg border-gray-200 px-2" v-model="User.last_name">
+                                <input type="text" required class="h-auto py-1 w-full form-control border rounded-lg border-gray-200 px-2" v-model="activeItem.last_name">
                             </div>
                         </div>
                         <div class="gap gap-6 w-full flex py-2">
                             <label class="w-full col-form-label">Phone</label>
                             <div class="w-full">
-                                <input type="tel" required class="h-auto py-1 w-full form-control border rounded-lg border-gray-200 px-2" v-model="User.phone">
+                                <input type="tel" required class="h-auto py-1 w-full form-control border rounded-lg border-gray-200 px-2" v-model="activeItem.phone">
                             </div>
                         </div>
+
+                        <div class="gap gap-6 w-full flex py-2">
+                            <label class="w-full col-form-label">Picture</label>
+                            <div v-if="activeItem.profile_image" class="w-full flex gap gap-6">
+                                <img :src="activeItem.profile_image" class="w-20" >
+                                <span @click="activeItem.profile_image = null">change</span>
+                            </div>
+                            <div class="w-full" v-else-if="!activeItem.profile_image">
+                                <vue-medialibrary-field api_url="/" v-model="activeItem.file" ></vue-medialibrary-field>
+                            </div>
+                        </div>
+
+
 
                     </div>
                 </div>
@@ -46,20 +59,20 @@
                         <div class="gap gap-6 w-full flex py-2">
                             <label class="w-full col-form-label">Email</label>
                             <div class="w-full">
-                                <input type="email" class="h-auto py-1 w-full form-control border rounded-lg border-gray-200 px-2" v-model="User.email">
+                                <input type="email" class="h-auto py-1 w-full form-control border rounded-lg border-gray-200 px-2" v-model="activeItem.email">
                             </div>
                         </div>
 
                         <div class="gap gap-6 w-full flex py-2">
                             <label class="w-full col-form-label">Password</label>
                             <div class="w-full">
-                                <input type="password" class="h-auto py-1 w-full form-control border rounded-lg border-gray-200 px-2" v-model="User.password">
+                                <input type="password" class="h-auto py-1 w-full form-control border rounded-lg border-gray-200 px-2" v-model="activeItem.password">
                             </div>
                         </div>
                         <div class="gap gap-6 w-full flex py-2">
                             <label class="w-full col-form-label">Status</label>
                             <div class="w-full">
-                                <select class="h-auto py-1 w-full form-control border rounded-lg border-gray-200 px-2" v-model="User.active">
+                                <select class="h-auto py-1 w-full form-control border rounded-lg border-gray-200 px-2" v-model="activeItem.active">
                                     <option value="1">Active</option>
                                     <option value="0">In-Active</option>
                                 </select>
@@ -90,6 +103,8 @@ export default
     computed: {},
     data() {
         return {
+
+            pending: false,
             tabs: [
                 {title: 'Info', code: 'info'},
                 {title: 'Pictures', code: 'pictures'},
@@ -99,7 +114,7 @@ export default
             currentTab:'info',
 
             file: null,
-            User: {id:0, first_name:'', last_name:'',email:'',phone:'',password:'',files:[]},
+            activeItem: {id:0, first_name:'', last_name:'',email:'',phone:'',password:'',files:[]},
             showList: true,
         }
     },
@@ -109,7 +124,7 @@ export default
 
         if (this.user)
         {
-            this.User = this.user;
+            this.activeItem = this.user;
         }
 
     },
@@ -123,18 +138,18 @@ export default
         addFile()
         {
             this.showList = false;
-            this.User.files.push({});
+            this.activeItem.files.push({});
             this.showList = true;
             return this;
         },
         filterFiles()
         {
-            this.User.files = this.User.files.filter(file => file);        
+            this.activeItem.files = this.activeItem.files.filter(file => file);        
             return this;
         },
         pushToFiles(i, item)
         {
-            this.User.files.push(item);        
+            this.activeItem.files.push(item);        
 
             return this;
         },
@@ -153,23 +168,34 @@ export default
         },
         submit() {
 
+            if (this.pending)
+                return null;
+
+
+            this.pending = true;
             const params = new URLSearchParams([]);
-            let type = this.User.id ?  'update' : 'create';
+            let type = this.activeItem.id ?  'update' : 'create';
             params.append('type', 'User.' + type);
-            if (this.User.id)
+            if (this.activeItem.id)
             {
-                params.append('params[user][id]', this.User.id);
+                params.append('params[user][id]', this.activeItem.id);
             }
 
-            params.append('params[user][first_name]', this.User.first_name ? this.User.first_name : '');
-            params.append('params[user][last_name]', this.User.last_name ? this.User.last_name : '');
-            params.append('params[user][password]', this.User.password ? this.User.password : '');
-            params.append('params[user][phone]', this.User.phone ? this.User.phone : '');
-            params.append('params[user][email]', this.User.email ? this.User.email : '');
-            params.append('params[user][role_id]', this.User.role_id ? this.User.role_id : this.role_id);
-            params.append('params[user][active]', this.User.active ? this.User.active : 0);
+            params.append('params[user][first_name]', this.activeItem.first_name ? this.activeItem.first_name : '');
+            params.append('params[user][last_name]', this.activeItem.last_name ? this.activeItem.last_name : '');
+            params.append('params[user][password]', this.activeItem.password ? this.activeItem.password : '');
+            params.append('params[user][phone]', this.activeItem.phone ? this.activeItem.phone : '');
+            params.append('params[user][email]', this.activeItem.email ? this.activeItem.email : '');
+            params.append('params[user][role_id]', this.activeItem.role_id ? this.activeItem.role_id : this.role_id);
+            params.append('params[user][active]', this.activeItem.active ? this.activeItem.active : 0);
+            params.append('params[user][profile_image]', this.activeItem.file ? this.activeItem.file : this.activeItem.profile_image);
             this.handleRequest(params, '/api/'+type).then(data => { 
-                this.$alert(data.result);
+                this.$alert(data.result ? data.result : data.error);
+                if (data.reload)
+                {
+                    window.location.reload();
+                }
+                this.pending = false;
             });
         },
         async handleRequest(params, url = '/') {

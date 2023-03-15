@@ -2,75 +2,74 @@
 <div class=" w-full overflow-y-auto h-full">
     <div class="w-full">
         <div class="px-2">
+
             {% if devicesList|length > 0 %}
-            <calendar_component :products="{{ products}}" title="{{title}}" start-time="{{ '' | date('H:i') }}" lang_str="en">
-            </calendar_component>
-            {% else %}
-            <div class="card" style="direction:ltr;">
-                <form action="/api/create" method="POST" id="start-form" class="w-full ajax-form">
-                    <div class="card-body">
-                        <div class="cd-horizontal-timeline loaded">
-                            <div class="timeline">
-                                <div class="events-wrapper">
-                                    <div class="events" style="width: 1800px;">
-                                        <ol>
-                                            <li><a href="#0" @click="setTab('step1')" :class="(activeTab == 'step1') ? 'selected' : ''"  style="left: 100px; z-index: 9">{{lang.__('first Step')}}</a></li>
-                                            <li><a href="#0" :class="(activeTab == 'step2') ? 'selected' : ''" style="left: 30%;">{{lang.__('second Step')}}</a></li>
-                                        </ol>
-                                        <span class="filling-line" aria-hidden="true" style="transform: scaleX(0.0802734);"></span>
-                                    </div>
-                                </div>
-                                <ul class="cd-timeline-navigation">
-                                    <li><a href="#0" class="prev inactive">Prev</a></li>
-                                    <li><a href="#0" class="next">Next</a></li>
-                                </ul>
-                            </div>
-                            <div class="events-content" >
-                                <ol    style="direction:rtl;">
-                                    <li  :class="(activeTab == 'step1') ? 'selected' : ''">
-                                        <h3><small>{{lang.__(('First step'))}}</small></h3>
-                                        <div class="m-t-40">
-                                            <div action="/api/create" method="POST" data-refresh="1" id="add-device-form" class="action p-8 py-0 m-auto rounded-lg max-w-xl pb-10">
-                                                <h1 class="m-auto max-w-xl text-2xl mb-10 text-center">{{lang.__('add device')}}</h1>
-                                                <input name="type" type="hidden" value="Device.create" > 
-                                                <input name="params[device][status]"  type="hidden" value="1" > 
-                                                <label class="block pt-5">{{lang.__('device name')}}</label>
-                                                <input name="params[device][title]" required="" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Device Title" value="First device"> 
+            <calendar
+            ref="calendar"
+            :settings="{{app.Settings | json_encode}}"
+            :devices="{{devicesList|json_encode}}"
+            ></calendar>
 
 
-                                                <label class="block pt-5">{{lang.__('type')}}</label>
-                                                <select name="params[device][type]" required="" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="">
-                                                {% for type in typesList %}
-                                                <option value="{{type.id}}">{{type.name}}</option>
-                                                {% endfor %}
-                                                </select>
-                                                
-                                                <button type="button"  @click="setTab('step2')" class="uppercase h-12 mt-3 text-white w-full rounded bg-red-700 hover:bg-red-800">{{lang.__('next')}}</button>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li  :class="(activeTab == 'step2') ? 'selected' : ''">
-                                        <h3> <small>{{lang.__('second step')}}</small></h3>
-                                        <div class="m-t-40">
-                                            
-                                            <label class="block pt-5">{{lang.__('Single price')}}</label>
-                                            <input name="params[device][prices][single_price]" type="number" class="h-12 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="Single price" value="{{device.price.single_price}}" required>
+<!-- 
+            <portal to="sidecart-event-details" class="slotable">
+                <div slot-scope="activeItem" >
+                    <side_cart  ref="side_cart" :setting="{{app.Settings|json_encode}}" currency="{{app.Settings['currency']}}"></side_cart>
+                </div>
+            </portal>
 
-                                            <label class="block pt-5">{{lang.__('Multi price')}}</label>
-                                            <input name="params[device][prices][multi_price]" type="number" class="h-12 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="Multi price" value="{{device.price.multi_price}}" required>
+            <portal to="completed-event-details" class="slotable">
+                <div slot-scope="activeItem" >
+                    <calendar_modal :modal="activeItem"></calendar_modal>
+                </div>
+            </portal>
 
-                                            <button type="submit"  class="uppercase h-12 mt-3 text-white w-full rounded bg-red-700 hover:bg-red-800">{{lang.__('save')}}</button>
+            <portal to="active-event-details" class="slotable">
+                <div slot-scope="activeItem" >
+                    <calendar_active_item :modal="activeItem"></calendar_active_item>
+                </div>
+            </portal>
 
-                                        </div>
-                                    </li>
-                                </ol>
-                            </div>
+            <portal to="new-event-details" class="slotable">
+                <div slot-scope="activeItem" >
+                    <calendar_new_item :modal="activeItem" :games="activeItem && activeItem.device ? activeItem.device.games : []"></calendar_new_item>
+                </div>
+            </portal>
+ -->
+
+            <portal to="event-details" class="slotable">
+                <div slot-scope="information" >
+                    <slot name="created-card" :event_information="information">
+
+                        <div class="absolute top-4 right-2 flex gap gap-2 font-semibold text-xs">
+                            <span v-text="information.start_time"></span>
+                            <span v-text="information.end_time"></span>
                         </div>
-                    </div>
-                </form>
-            </div>
-        {{lang.__('Please add your devices first')}}
-        {% endif %}
+                        <div  >
+                            <span class="w-full block pb-2 text-left" style="direction: ltr;">
+                                <img v-if="information.game" :src="information.game.picture" class="rounded-full w-8 h-8 mb-2" />
+                                <span class='font-xxs font-semibold text-left w-full' v-text="information.title"></span>
+                            </span>
+
+                        </div>
+
+                    </slot>
+                </div>
+            </portal>
+
+            <portal to="event-popup-form" class="slotable">
+                <div slot-scope="information" class="created-event">
+                    <slot name="created-card" :event_information="information">
+                        <h4 style="margin-bottom: 5px">{{ information.title }}</h4>
+                    </slot>
+                </div>
+            </portal>
+
+            {% elseif typesList|length > 0 %}
+            {% include 'views/admin/devices/get_started.html.twig' %}
+            {% else %}
+            {% include 'views/admin/devices/get_started_types.html.twig' %}
+            {% endif %}
         </div>
     </div>
 </div>

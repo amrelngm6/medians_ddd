@@ -1,5 +1,6 @@
 <template>
     <div class="media-library">
+        <span class="fixed top-0 left-0 w-full h-full" @click="alert(1)" style="z-index: 0;"></span>
         <div class="media-library__inner">
             <header class="media-library__header">
                 Media Library
@@ -57,7 +58,7 @@
                         <div class="media-library__manager__content__images__inner">
                             <div class="media-library__manager__upload" v-if="toggles.upload">
                                 <div class="media-library__manager__upload__zone">
-                                    <button class="media-library__manager__upload__zone__button" @click="$refs.file.click()">Add new</button>
+                                    <a href="javascript:;"  class="media-library__manager__upload__zone__button" @click="$refs.file.click()">Add new</a>
                                     <input name="files[]" type="file" multiple="true" ref="file" @change="uploadFilesByButton"/>
                                     <span class="media-library__manager__upload__zone__text">or drop new files here</span>
                                 </div>
@@ -148,7 +149,7 @@
                                 </div>
                             </div> -->
                             <div class="media-library__manager__content__info__section" style="display: flex; margin: 0 -0.5rem;" v-if="selectable">
-                                <button @click="select(openFile)" class="media-library__manager__content__info__button media-library__manager__content__info__button--success">Insert</button>
+                                <a href="javascript:;" @click="select(openFile)" class="media-library__manager__content__info__button media-library__manager__content__info__button--success">Insert</a>
                             </div>
                         </div>
                     </div>
@@ -298,7 +299,9 @@
 
             select(file) {
 
-                this.$parent.$parent.filterFiles().addFile();
+                this.$parent.$parent.showSide = false;
+                this.$parent.$parent.activeItem.file = file.file_name;
+                this.$parent.$parent.showSide = true;
             
                 this.$emit('select', file);
             },
@@ -526,9 +529,14 @@
             },
 
             deleteSelected() {
+
                 this.loading.info = true;
+
+                const params = new URLSearchParams([]);
                 
-                return axios.post(this.url("/media-library-api/delete"), { items: this.store[this.type].selected })
+                params.append('file_name', JSON.stringify(this.openFile));
+
+                return axios.post(this.url("/media-library-api/delete"), params.toString())
                     .then(response => {
                         this.loading.info = false;
                         this.getAllMedia()

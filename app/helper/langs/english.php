@@ -264,8 +264,8 @@ class Langs
 			,'SUCC_PURCHASE' => 'You have successfully confirmed the booking, and the transaction is successfully proceed.'
 			,'NO_ITEM_DOWNLOAD' => 'You have no items to download.'
 			,'LOG_FIRST' => 'Please login First'
-			,'LOG_AS_USER_FIRST' => 'Please login First as <a href="'.$CONF['url'].'login">Member</a>'
-			,'LOG_AS_PROVIDER_FIRST' => 'Please login First as Provider'
+			,'LOG_AS_USER_FIRST' => 'Please login First as <a href="/login">Member</a>'
+			,'LOG_AS_PROVIDER_FIRST' => 'Please login First as Branch'
 			,'NO_LIKES' => "No Likes here yet"
 			,'NO_COMMENTS' => "No comments here"
 			,'DIS_COMMENTS' => "Comments disabled by administrator"
@@ -417,9 +417,9 @@ class Langs
 			,'CLASSES' => 'Classes'
 			,'NUMBER' => 'Number'
 			,'GENDER' => 'Gender'
-			,'PROVIDER' => 'Provider'
-			,'PROVIDERS' => 'Providers'
-			,'OUR_PROVIDERS' => 'Our Providers'
+			,'PROVIDER' => 'Branch'
+			,'PROVIDERS' => 'Branches'
+			,'OUR_PROVIDERS' => 'Our Branches'
 			,'START_DATE' => 'Start date'
 			,'MOBILE' => 'Mobile'
 			,'PLUGINS' => 'Plugins'
@@ -515,7 +515,7 @@ class Langs
 			,'AGENT_EMPTY' => 'Company field is required'
 			,'DESK_EMPTY' => 'Desk location field is required'
 			,'PASSWORD_MATCHING_ERROR' => 'Password not matched'
-			,'WRONG_INFO' => 'You information is invalid'
+			,'WRONG_INFO' => 'Invalid information'
 			,'ERR' => 'Error'
 			,'ERR_EXT' => 'Error file extension not allowed'
 			,'CARDNUM_ERR' => 'Card number is invalid'
@@ -689,7 +689,7 @@ class Langs
 			,'SHARE' => 'Share'
 			,'LOOK_FOR' => 'Look for'
 			,'LOOKING_FOR' => 'Looking for'
-			,'PROVIDER_ACCOUNT' => 'provider account'
+			,'PROVIDER_ACCOUNT' => 'branch account'
 			,'FIELD_REQUIRED' => 'Fields is required'
 			,'REVIEWS' => 'Reviews'
 			,'REVIEWS_LIST' => 'Reviews list'
@@ -707,7 +707,7 @@ class Langs
 			,'VIEW_ON_MAP' => 'View on Map'
 			,'VIEW_ON_MAP' => 'View on Map'
 			,'LOGIN_DISABLED' => 'Customers login is disabled this time.'
-			,'PROVIDERS_LOGIN_DISABLED' => 'Providers login is disabled this time.'
+			,'PROVIDERS_LOGIN_DISABLED' => 'Branches login is disabled this time.'
 
 
 			,'ADD_TO_WISHLIST' => 'Add to wishlist'
@@ -901,10 +901,19 @@ class Langs
 			,'SELECT_TIME_AND_DATE' => 'Please select day and time for the booking.'
 			,'SELECT_DATE' => 'Please select day of the booking.'
 			,'SERVICE' => 'Service'
+			,'show_invoice' => 'Show invoice'
+			,'paid' => 'Paid'
+			,'unpaid' => 'UnPaid'
+			,'completed' => 'Completed'
+			,'active' => 'Active'
+			,'Stock alert products' => 'Stock alert products'
+			,'Stock out products' => 'Stock out products'
+			,'invoice_id' => 'Invoice id'
 
 			,'COPYRIGHTS' => 'Copyrights are reserved'
 		);
 	
+
 
 		return array_column(array_map(function($q, $key){
 			$key = strtoupper(str_replace([' ', '/', '&', '?','؟' , '@', '#', '$', '%', '(', ')', '-', '='], '_', $key)) ;
@@ -912,16 +921,16 @@ class Langs
 		}, $LANG_ARRAY, array_keys($LANG_ARRAY)), 'value', 'key');
 	}
 
+
 	public static function __($langkey)
 	{
-		$LANG_ARRAY = Langs::get();
+		$LANG_ARRAY = array_change_key_case(Langs::get(), CASE_LOWER);
+		// $LANG_ARRAY = Langs::get();
 
-	    $key = strtoupper(str_replace([' ', '/', '&', '?','؟' , '@', '#', '$', '%', '(', ')', '-', '='], '_', $langkey)) ;
+	    $key = strtolower(str_replace([' ', '/', '&', '?','؟' , '@', '#', '$', '%', '(', ')', '-', '='], '_', $langkey)) ;
 
-	    return isset($LANG_ARRAY[$key]) ? $LANG_ARRAY[$key] : $langkey;
+	    return isset($LANG_ARRAY[$key]) ? $LANG_ARRAY[$key] : ucfirst(str_replace('_', ' ', $langkey));
 	} 
-
-
 
 	public static function vueLang()
 	{
@@ -939,6 +948,7 @@ class Langs
 		$data['apply'] = Langs::__('apply');
 		$data['subtotal'] = Langs::__('Subtotal');
 		$data['total_amount'] = Langs::__('TOTAL');
+		$data['tax'] = Langs::__('Tax');
 		$data['game'] = Langs::__('Game');
 		$data['order_summary'] = Langs::__('Order Summary');
 		$data['start_playing'] = Langs::__('Start Playing');
@@ -962,9 +972,16 @@ class Langs
 		$data['confirm_complete_booking'] = Langs::__('Are your sure you want to finish this booking');
 		$data['confirm'] = Langs::__('confirm');
 		$data['confirmation'] = Langs::__('confirmation');
+		$data['show_invoice'] = Langs::__('show_invoice');
+		$data['paid'] = Langs::__('paid');
+		$data['completed'] = Langs::__('completed');
+		$data['active'] = Langs::__('active');
+		$data['unpaid'] = Langs::__('unpaid');
+		$data['add_new'] = Langs::__('add new');
+		$data['cancel'] = Langs::__('CANCEL');
+		$data['this_is_canceled_event'] = Langs::__('This is canceled event');
 
 		return $data;
 	}
-
 }
 

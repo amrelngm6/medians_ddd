@@ -37,35 +37,34 @@ class Langs
 		,'ENTER_FULLNAME' => 'الاسم بالكامل'
 		,'USERNAME' => 'اسم المستخدم'
 		,'EMAIL' => 'البريد الالكتروني'
-		,'NO_SPACE' => 'Without spaces'
+		,'NO_SPACE' => 'بدون مسافات'
 		,'ENTER_GENDER' => 'النوع'
 		,'MALE' => 'ذكر'
 		,'FEMALE' => 'انثي'
 		,'REMEMBER' => 'تذكرني'
 		,'PROFILE_INFO' => 'الصفحة الشخصية'
-		,'CART' => 'Your Cart'
+		,'CART' => 'السلة'
 		,'WISHLIST' => 'Your Wishlist'
-		,'ORDERS' => 'Your Orders'
-		,'ORDERS' => 'Your Orders'
+		,'ORDERS' => 'الفواتير'
 		,'POST' => 'Post'
 		,'COMMENT_HERE' => 'اترك تعليقك هنا'
-		,'COMMENTS_POSTED' => 'Comments posted'
+		,'COMMENTS_POSTED' => 'تم إرسال التعليق'
 		,'WRITE_COMMENT' => 'اكتب تعليقك'
-		,'MY_ACCOUNT' => 'My account'
-		,'MY_ORDERS' => 'My Orders '
+		,'MY_ACCOUNT' => 'حسابي'
+		,'MY_ORDERS' => 'فواتيري '
 		,'CART' => 'السلة'
 		,'CHECKOUT' => 'إرسال الطلب'
 		,'MY_WISHLIST' => 'My Wishlist'
-		,'SHOP_CART' => 'Shopping cart'
-		,'NO_CART' => 'You have no items in your shopping cart'
+		,'SHOP_CART' => 'سلة التسوق'
+		,'NO_CART' => 'لا يوجد عناصر فى سلة التسوق'
 		,'TOTAL' => 'الاجمالى'
 		,'SUB_TOTAL' => 'المبلغ الإجالمي'
 		,'PRODUCT' => 'المنتج'
 		,'PRODUCTS' => 'المنتجات'
-		,'PLACE_ORDER' => 'Place Order'
-		,'UR_ORDER' => 'Your Order'
+		,'PLACE_ORDER' => 'إرسال الطلب'
+		,'UR_ORDER' => 'طلبك'
 		,'BILL_INFO' => 'بيانات الدفع'
-		,'PROCEED_CHECKOUT' => 'Proceed to checkout'
+		,'PROCEED_CHECKOUT' => 'الانتقال الى الدفع'
 		,'PAYMENT' => 'الدفع'
 		,'PRICE' => 'السعر'
 		,'OPTIONS' => 'Options'
@@ -100,11 +99,11 @@ class Langs
 		,'YES' => 'نعم'
 		,'NO' => 'لا'
 		,'NO_HERE' => 'Non'
-		,'YET' => 'Yet'
-		,'MESSAGES_LIST' => 'Messages list'
+		,'YET' => 'بعد'
+		,'MESSAGES_LIST' => 'قائمة الرسائل'
 		,'SEND' => 'Send'
 		,'UPDATE' => 'تعديل'
-		,'EDIT' => 'Edit'
+		,'EDIT' => 'تعديل'
 		,'EDIT_MEDIA' => 'Edit media'
 		,'PR_VISITS' => 'Profile visits'
 		,'FOLLOWERS' => 'Followers'
@@ -126,8 +125,8 @@ class Langs
 		,'PROGRESS' => 'Progress'
 		,'ITEMS' => 'Items'
 		,'ITEM' => 'Item'
-		,'TITLE' => 'Title'
-		,'DESC' => 'Description'
+		,'TITLE' => 'العنوان'
+		,'DESC' => 'الوصف'
 		,'LENGTH' => 'Length'
 		,'PLAY' => 'Play'
 		,'PLAYS' => 'Views'
@@ -167,8 +166,8 @@ class Langs
 		,'VIDEO_ID' => 'Video ID'
 		,'TRACK_TITLE' => 'Enter track title'
 		,'LIKES' => 'Likes'
-		,'COMMENTS' => 'Comments'
-		,'SEARCH' => 'Search'
+		,'COMMENTS' => 'التعليقات'
+		,'SEARCH' => 'بحث'
 		,'TAGS' => 'Tags'
 		,'MEDIA_COVER' => 'Media Cover'
 		,'MAIN_FILE' => 'Main File'
@@ -243,7 +242,8 @@ class Langs
 		,'SUCC_PURCHASE' => 'تم الدفع بنجاح. تم التاكيد على طلبك.'
 		,'NO_ITEM_DOWNLOAD' => 'You have no items to download.'
 		,'LOG_FIRST' => 'يرجى تسجيل الدخول اولا'
-		,'LOG_AS_PROVIDER_FIRST' => 'Please login First as Provider'
+		,'LOG_AS_USER_FIRST' => 'يرجى  <a href="/login">تسجيل الدخول</a> اولا'
+		,'LOG_AS_PROVIDER_FIRST' => 'Please login First as Branch'
 		,'NO_LIKES' => "No Likes here yet"
 		,'NO_COMMENTS' => "No comments here"
 		,'DIS_COMMENTS' => "Comments disabled by administrator"
@@ -282,17 +282,17 @@ class Langs
 		,'BEATS' => 'Beats'
 		,'TOP_BEATS' => 'Top Beats'
 
-		,'COMPANY' => 'Company'
+		,'COMPANY' => 'الشركة'
 		,'USERPOSITION' => 'User position'
 		,'FAMILY' => 'Family'
 		,'AWARDS' => 'Awards'
-		,'WEBSITE' => 'Website'
+		,'WEBSITE' => 'الموقع الالكتروني'
 		,'BUSINESS_EMAIL' => 'Business email'
 
 		,'PRIVATE_ACOUNT_DETAILS' => 'Private account details'
 		,'PUBLIC_PROFILE_DETAILS' => 'Public profile details'
 
-		,'ORDER_BY' => 'Order by'
+		,'ORDER_BY' => 'عرض حسب '
 		,'USER_TYPE' => 'User type'
 		,'PRODUCER' => 'Producer'
 		,'MOODS' => 'Moods'
@@ -304,21 +304,21 @@ class Langs
 		,'ADD_STATION' => 'Add new station'
 		,'STATION_COVER' => 'Station cover'
 		,'STATION_TITLE' => 'Station title'
-		,'BROWSE' => 'Browse'
+		,'BROWSE' => 'تصفح'
 		,'BROWSE_FILTER' => 'Browse filters'
-		,'SELECT' => '-- Select --'
-		,'SELECT_CATS' => 'Category'
+		,'SELECT' => '-- إختر --'
+		,'SELECT_CATS' => 'القسم'
 		,'SELECT_MOODS' => 'Mood'
 		,'MOST_POP' => 'Most Popular'
 		,'MOST_PLY' => 'Most Plays'
 		,'MOST_SELL' => 'Top sellers'
 		,'ADD_WITHIN' => 'Added within'
 		,'BPM' => 'BPM'
-		,'TODAY' => 'Today'
-		,'THIS_WEEK' => 'This week'
-		,'THIS_MONTH' => 'This month'
-		,'THIS_YEAR' => 'This year'
-		,'ALL_TIME' => 'All time'
+		,'TODAY' => 'اليوم'
+		,'THIS_WEEK' => 'هذا الإسبوع'
+		,'THIS_MONTH' => 'هذا الشهر'
+		,'THIS_YEAR' => 'هذا العام'
+		,'ALL_TIME' => 'كل الأوقات'
 		,'BPM_DESC' => 'Beats per minute'
 		,'MY_BEATS' => 'My beats'
 		,'SELL_BEATS' => 'Sell beats'
@@ -368,15 +368,17 @@ class Langs
 		,'FAILED' => 'فشلت العملية'
 		,'DASHBOARD' => 'لوحة الإدارة'
 		,'SETTING' => 'الاعدادات'
-		,'ADD_NEW' => 'Add new'
+		,'ADD_NEW' => 'إضافة جديد'
+		,'ADD_NEW_category' => 'إضافة قسم جديد'
+		,'ADD_NEW_game' => 'إضافة  لعبة  جديد'
 		,'FULLNAME_EMPTY' => 'يرجى ادخال الاسم'
-		,'EMAIL_FOUND' => 'Email address already found'
-		,'EMAIL_EMPTY' => 'Email field is required'
-		,'NAME_FOUND' => 'Username field already found'
-		,'NAME_EMPTY' => 'Username field is required'
-		,'PASSWORD_SHORT' => 'Password is too short, Min characters '
+		,'EMAIL_FOUND' => 'هذا البريد موجود بالفعل '
+		,'EMAIL_EMPTY' => 'البريد الالكتروني مطلوب'
+		,'NAME_FOUND' => 'الإسم موجود بالفعل'
+		,'NAME_EMPTY' => 'الإسم مطلوب'
+		,'PASSWORD_SHORT' => 'كلمة المرور قصيرة, الحد الأدني  '
 		,'PASSWORD_EMPTY' => 'Password missed, Min characters '
-		,'PUBLISH' => 'Publish'
+		,'PUBLISH' => 'نشط'
 		,'ACTION' => 'Action'
 		,'TEACHERS' => 'Teachers'
 		,'TEACHER' => 'Teacher'
@@ -386,7 +388,7 @@ class Langs
 		,'PHONE' => 'الهاتف'
 		,'ROLE' => 'Role'
 		,'CLASSES' => 'Classes'
-		,'NUMBER' => 'Number'
+		,'NUMBER' => 'رقم'
 		,'GENDER' => 'النوع'
 		,'PROVIDER' => 'مزود الخدمة'
 		,'PROVIDERS' => 'مزودي الخدمة'
@@ -394,7 +396,7 @@ class Langs
 		,'START_DATE' => 'Start date'
 		,'MOBILE' => 'الموبايل'
 		,'PLUGINS' => 'Plugins'
-		,'CHECK' => 'Check'
+		,'CHECK' => 'مراجعة'
 		,'HOOKS' => 'Hooks'
 		,'SUBMIT' => 'تنفيذ'
 		,'CHOOSE' => 'اختر'
@@ -425,23 +427,23 @@ class Langs
 		,'READMORE' => 'المزيد'
 		,'LATEST_POSTS' => 'Latest posts'
 		,'REL_POSTS' => 'Related posts'
-		,'REL_ITEMS' => 'Related items'
+		,'REL_ITEMS' => 'العناصر المرتبطة'
 
 		,'BRANCH' => 'الفرع '
 		,'BRANCHES' => 'الفروع'
 		,'BRANCHES_LIST' => 'Branches LIST'
 		,'BRANCHES_AND_LOCATIONS' => 'Branches & Locations'
-		,'COMMENTS_ALLOW' => 'Allow Comments'
-		,'COMMENTS_COUNT' => 'Comments count'
+		,'COMMENTS_ALLOW' => 'السماح بالتعليقات'
+		,'COMMENTS_COUNT' => 'عدد التعليقات'
 		,'TEMPLATE' => 'Template'
 		,'LAYOUT' => 'Layout'
-		,'LANGS' => 'Languages'
+		,'LANGS' => 'اللغات'
 		,'CON_TRANS' => 'Content translation'
 		,'TAG_TITLE' => 'Tag title'
 		,'TAG_DESC' => 'Tag describtion'
 		,'TAG_KEYWORDS' => 'Tag keywords'
-		,'CONTENT' => 'Content'
-		,'SHORT' => 'Short brief'
+		,'CONTENT' => 'المحتوى'
+		,'SHORT' => 'الملخص'
 		,'SPECIALS' => 'Specials'
 		,'GO_BACK' => 'العودة'
 		,'ERR_INPUT_TITLE' => 'يرجى اضافة العنوان اولا.'
@@ -475,7 +477,7 @@ class Langs
 		,'TYPE' => 'النوع'
 		,'PENDING' => 'Pending'
 		,'INVOICE' => 'فاتورة'
-		,'TERMS_CONDS' => 'Terms & Conditions'
+		,'TERMS_CONDS' => 'شروط الإستخدام'
 		,'CUSTOMER_INFO' => 'Customer info'
 		,'ORDERS' => 'الفواتير'
 		,'ORDER' => 'الفاتورة'
@@ -490,7 +492,7 @@ class Langs
 		,'AGENT_EMPTY' => 'Company field is required'
 		,'DESK_EMPTY' => 'Desk location field is required'
 		,'PASSWORD_MATCHING_ERROR' => 'Password not matched'
-		,'WRONG_INFO' => 'You information is invalid'
+		,'WRONG_INFO' => 'البيانات غير سليمة'
 		,'ERR' => 'خطأ'
 		,'ERR_EXT' => 'Error file extension not allowed'
 		,'CARDNUM_ERR' => 'Card number is invalid'
@@ -569,27 +571,28 @@ class Langs
 		,'PAGE_TITLE' => 'Title of the page'
 		,'COMPLETE_ACC' => 'Complete account'
 		,'COM_DELETED' => 'Comment deleted'
-		,'ADD_UR_COMMENT' => 'Add your comment...'
-		,'REPLY' => 'Reply'
+		,'deleted' => 'تم الحذف بنجاح'
+		,'ADD_UR_COMMENT' => 'أضف تعليقك...'
+		,'ADD_USER' => 'إضافة مستخدم '
+		,'REPLY' => 'رد'
 		,'COMMENTED_UR' => ' commented on your '
 		,'LIKED_UR' => ' liked your '
 		,'MENTIONED_UR' => ' mentioned you at '
 		,'TAGGED_UR' => ' tagged you at '
 		,'SHARED_UR' => ' shared your '
 		,'WANT_JOIN_UR' => ' want to join your '
-		,'REPORT' => 'Report'
+		,'REPORT' => 'تقرير'
 		,'ADD_PHOTO' => 'ADD PHOTO'
 		,'ADD_PHOTOS' => 'ADD PHOTOS'
 		,'ADD_VIDEO' => 'ADD VIDEO'
 		,'ADD_VIDEOS' => 'ADD VIDEOS'
 		,'CHAT_NOW' => 'Chat now'
 		,'CONFIRM' => 'تأكيد الحجز'
-		,'ADD' => 'Add'
+		,'ADD' => 'إضافة'
 		,'POST_STATU' => 'Post Status'
 		,'CREATE_EVENTS' => 'Create event'
 		,'CREATE_PAGES' => 'Create page'
 		,'CREATE_ITEMS' => 'Create items'
-
 		,'EDIT_PAGE' => 'Edit page'
 		,'TOTAL_LIKES' => 'Total likes'
 		,'MYSOCIAL_PAGES' => 'My social pages'
@@ -597,8 +600,6 @@ class Langs
 		,'REC' => 'rec'
 		,'HOTEL' => 'hotel'
 		,'ROLL' => 'roll'
-
-
 		,'MAP_VIEW_NOTE' => 'Find by location'
 		,'LIST_VIEW' => 'List view'
 		,'GRID_VIEW' => 'Grid view'
@@ -618,21 +619,21 @@ class Langs
 		,'CURRENCY_TAG' => 'Default Currency symbol'
 		,'OPTIONS_TYPE' => 'Options type'
 		,'OPTION_TYPE' => 'Option type'
-
-		,'COUPONS' => 'Coupons'
-		,'COUPON' => 'Coupon'
-		,'COUPON_DUPLICATED' => 'This code already found'
-		,'MIN_ORDER_COST' => 'Order minimum cost'
-		,'ERR_MIN_ORDER' => 'Error! Order minimum cost is '
-		,'ERR_EXPIRED' => 'Error! not avaialbe anymore '
-		,'VALUE' => 'Value'
+		,'COUPONS' => 'كوبونات الخصم'
+		,'COUPON' => 'الكوبون'
+		,'COUPON_DUPLICATED' => 'هذا الكود موجود من قبل'
+		,'MIN_ORDER_COST' => 'الحد الأدني لتطبيق الخصم'
+		,'ERR_MIN_ORDER' => 'حطأ! الحد الأدني لتطبيق الخصم هو  '
+		,'ERR_EXPIRED' => 'خطأ! لم يعد متاح '
+		,'VALUE' => 'القيمة'
 		,'CUSTOMER_USAGE_LIMIT' => 'Usage limit (Per User)'
 		,'USAGE_LIMIT' => 'Usage limit (Orders max number)'
-		,'COMMISSION' => 'Commission'
-		,'END_DATE' => 'End date'
-		,'START_DATE' => 'Start date'
+		,'COMMISSION' => 'نسبة الخصم'
+		,'END_DATE' => 'تاريخ الإنتهاء'
+		,'START_DATE' => 'تاريخ البدء'
+		,'END_TIME' => 'وقت الإنتهاء'
+		,'START_TIME' => 'وقت   البدء'
 		,'ITEMS_PER_CAT' => 'Items per category page'
-
 		,'UNIT_WHOLESALE_PRICE' => 'Unit Wholesale Price'
 		,'CUR_STOCK' => 'Current stock'
 		,'SENDER_EMAIL' => 'Default send email'
@@ -656,7 +657,7 @@ class Langs
 		,'BOOKING_ID' => 'رقم الحجز '
 		,'BOOKING_INFO' => 'بيانات الحجز'
 		,'BOOKING_THANKS' => 'شكرا لاختيارك احد عروض  '
-		,'BOOKING' => 'الحجوزات'
+		,'BOOKINGS' => 'الحجوزات'
 		,'BOOKING_PAGE' => 'صفحة الحجز'
 		,'BOOKING_DATE' => 'موعد الحجز'
 		,'BOOK_NOW' => 'احجز الان'
@@ -681,7 +682,7 @@ class Langs
 		,'BRANCHES_NOTES_INSERT' => 'Zoom-in the Map and click on location to confirm to add the branch'
 		,'BRANCHES_NOTES_DELETE' => 'Right click on the current location to delete.'
 		,'LOGIN_DISABLED' => 'Customers login is disabled this time.'
-		,'PROVIDERS_LOGIN_DISABLED' => 'Providers login is disabled this time.'
+		,'PROVIDERS_LOGIN_DISABLED' => 'Branches login is disabled this time.'
 
 
 
@@ -885,7 +886,7 @@ class Langs
 		,'DEVICES' => 'الأجهزة'
 		,'DEVICE' => 'الجهاز'
 		,'PAYMENTS' => 'المدفوعات'
-		,'CALENDAR' => 'التقويم'
+		,'CALENDAR' => 'تقويم الحجوزات'
 		,'ALL_BOOKINGS' => 'جميع الحجوزات'
 		,'ACTIVE_BOOKINGS' => 'حجوزات نشطة'
 		,'COMPLETED_BOOKINGS' => 'حجوزات مكتملة'
@@ -905,6 +906,7 @@ class Langs
 		,'Latest paid Bookings' => 'احدث الحجوزات مدفوعة'
 		,'Latest sold products' => 'احدث المنتجات المباعة'
 		,'game' => 'اللعبة'
+		,'games' => 'الألعاب'
 		,'duration' => 'المدة'
 		,'date' => 'التاريخ'
 		,'by' => 'بواسطة'
@@ -921,7 +923,6 @@ class Langs
 		,'Terms and Conditions' => 'شروط الاستخدام'
 		,'Total Amount' => 'القيمة الإجمالية'
 		,'Tax' => 'الضريبة'
-		,'Start time' => 'تاريخ البدء'
 		,'Orders list' => 'قائمة الفواتير'
 		,'Time' => 'الوقت'
 		,'actions' => 'تفاصيل'
@@ -955,7 +956,6 @@ class Langs
 		,'Password required' => 'كلمة المور مطلوبة'
 		,'Email required' => 'البريد الإلكتروني مطلوب'
 		,'Name required' => 'الإسم مطلوب'
-		,'END_TIME' => 'تاريخ الانتهاء'
 		,'remove' => 'حذف'
 		,'PROMO CODE' => 'كود الخصم'
 		,'APPLY' => 'تطبيق'
@@ -975,13 +975,37 @@ class Langs
 		,'add device' => 'إضافة جهاز'
 		,'First step' => 'الخطوة الأولي'
 		,'Second step' => 'الخطوة الثانية'
+		,'third Step' => 'الخطوة  الثالثة'
 		,'Alert' => 'تنبيه'
 		,'order_status_is' => 'حالة هذا الطلب'
 		,'Are your sure you want to finish this booking' => 'هل أنت متاكد من إكتمال الحجز'
 		,'order created' => 'تم تأكيد الطلب'
 		,'Show orders' => 'عرض الفواتير'
-		,'' => ''
-
+		,'show_invoice' => 'عرض الفاتورة'
+		,'paid' => 'مدفوع'
+		,'completed' => 'مكتمل'
+		,'active' => 'نشط'
+		,'unpaid' => 'غير مدفوع'
+		,'Created' => 'تم الإنشاء بنجاح'
+		,'Stock alert products' => 'منتجات  أوشكت على النفاذ'
+		,'Stock out products' => 'منتجات   نفذت من المخزون'
+		,'invoice_id' => 'رقم الفاتورة'
+		,'New Payment' => 'مدفوعات جديدة'
+		,'devices_categories' => 'أقسام الأجهزة'
+		,'edit_category' => 'تعديل القسم'
+		,'edit_game' => 'تعديل  اللعبة'
+		,'edit_product' => 'تعديل   المنتج'
+		,'Remove this category' => 'حذف هذا القسم'
+		,'Remove this game' => 'حذف  هذه اللعبة'
+		,'model_required' => 'الموديل مطلوب'
+		,'manage devices' => 'إدارة الأجهزة'
+		,'categories' => 'الأقسام'
+		,'connected_devices' => 'الأجهزة  المرتبطة'
+		,'related_items' => 'الأجهزة  المرتبطة'
+		,'CHECK_DATABASE_CONNECTION' => 'تأكد من بيانات قاعدة البيانات'
+		,'this user not found' => 'هذا المستخدم غير موجود'
+		,'This is canceled event' => 'هذا الحجز تم إلغاؤه'
+		,'Canceled bookings' => 'الحجوزات الملغاء'
 		,'COPYRIGHTS' => 'Copyrights are reserved'
 		);
 	
@@ -992,12 +1016,14 @@ class Langs
 		}, $LANG_ARRAY, array_keys($LANG_ARRAY)), 'value', 'key');
 	}
 
+
 	public static function __($langkey)
 	{
-		$LANG_ARRAY = Langs::get();
+		$LANG_ARRAY = array_change_key_case(Langs::get(), CASE_LOWER);
+		// $LANG_ARRAY = Langs::get();
 
-	    $key = strtoupper(str_replace([' ', '/', '&', '?','؟' , '@', '#', '$', '%', '(', ')', '-', '='], '_', $langkey)) ;
-
+	    $key = strtolower(str_replace([' ', '/', '&', '?','؟' , '@', '#', '$', '%', '(', ')', '-', '='], '_', $langkey)) ;
+		
 	    return isset($LANG_ARRAY[$key]) ? $LANG_ARRAY[$key] : $langkey;
 	} 
 
@@ -1005,8 +1031,8 @@ class Langs
 	{
 		$data = [];
 
-		$data['start'] = Langs::__('Start time');
-		$data['end'] = Langs::__('end time');
+		$data['start'] = Langs::__('START_TIME');
+		$data['end'] = Langs::__('END_TIME');
 		$data['date'] = Langs::__('date');
 		$data['pay'] = Langs::__('PAY_NOW');
 		$data['add_cart'] = Langs::__('ADD_CART');
@@ -1017,6 +1043,7 @@ class Langs
 		$data['apply'] = Langs::__('apply');
 		$data['subtotal'] = Langs::__('Subtotal');
 		$data['total_amount'] = Langs::__('TOTAL');
+		$data['tax'] = Langs::__('Tax');
 		$data['game'] = Langs::__('Game');
 		$data['order_summary'] = Langs::__('Order Summary');
 		$data['start_playing'] = Langs::__('Start Playing');
@@ -1040,6 +1067,14 @@ class Langs
 		$data['confirm_complete_booking'] = Langs::__('Are your sure you want to finish this booking');
 		$data['confirm'] = Langs::__('confirm');
 		$data['confirmation'] = Langs::__('confirmation');
+		$data['show_invoice'] = Langs::__('show_invoice');
+		$data['paid'] = Langs::__('paid');
+		$data['completed'] = Langs::__('completed');
+		$data['active'] = Langs::__('active');
+		$data['unpaid'] = Langs::__('unpaid');
+		$data['add_new'] = Langs::__('add new');
+		$data['cancel'] = Langs::__('CANCEL');
+		$data['this_is_canceled_event'] = Langs::__('This is canceled event');
 
 		return $data;
 	}

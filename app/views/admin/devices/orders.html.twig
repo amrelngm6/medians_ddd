@@ -21,20 +21,16 @@
         <a href="{{app.CONF.url}}devices/calendar" class="w-32 px-3 py-2 text-center rounded-lg bg-gradient-primary text-white">{{lang.__('Add new')}} </a>
     </div>
     <div class="w-full">
+
+        {% if events|length %}
         <div class="card mb-0">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-striped table-nowrap custom-table mb-0 datatable">
+                    <table class="table table-striped table-nowrap custom-table mb-0 datatable w-full">
                         <thead>
                             <tr>
-                                <th>
-                                    <label class="container-checkbox">
-                                        <input type="checkbox">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </th>
                                 <th class="w-10">ID</th>
-                                <th>{{lang.__('Device')}}/{{lang.__('Game')}}</th>
+                                <th class="text-default">{{lang.__('Device')}}/{{lang.__('Game')}}</th>
                                 <th>{{lang.__('Start time')}}</th>
                                 <th>{{lang.__('duration')}}</th>
                                 <th>{{lang.__('Status')}}</th>
@@ -46,14 +42,8 @@
                         <tbody>
                             {% for item in events %}
                             <tr class="text-center">
-                                <td class="checkBox">
-                                    <label class="container-checkbox">
-                                        <input type="checkbox">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </td>
                                 <td>{{item.id}}</td>
-                                <td><b>{{item.device.name}}</b> {% if item.game.name %}<span class="block w-full py-1 text-xs">{{item.game.name}}</span>{% endif %}</td>
+                                <td class="text-default"><b>{{item.device.name}}</b> {% if item.game.name %}<span class="block w-full py-1 text-xs">{{item.game.name}}</span>{% endif %}</td>
                                 <td>{{item.start_time|date('Y-m-d  H:ia')}}</td>
                                 <td>{{item.duration_time}}</td>
                                 <td>{{item.status}}</td>
@@ -69,6 +59,10 @@
                 </div>
             </div>
         </div>
+
+        {% else %}
+        {% include 'views/admin/includes/nodata.html.twig' %}
+        {% endif %}
     </div>
 </div>
 

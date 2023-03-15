@@ -1,40 +1,33 @@
 
+      <!-- Main player -->
 
-                        <!-- Main sidebar -->
-                        <div class="main-sidebar show activate p-6 shadow-lg  bg-white fixed rounded right-4 bottom-0 shadow-2xl  transform transition duration-400">
 
-                            <div class="relative overflow-y-auto h-auto" style="max-height: 90vh; overflow: auto;">
-                                <a href="#!" class="ToggleItem float-right" data-toggle-target=".main-sidebar" data-toggle-class="activate">X</a>
-                                <form action="/api/update" method="POST" data-refresh="1" id="add-device-form" class="action p-8 py-0 m-auto rounded-lg max-w-xl pb-10">
-                                    <h1 class="m-auto max-w-xl text-2xl mb-10 text-center">{{title}}</h1>
-                                    <input name="type"  type="hidden" value="Device.update" > 
-                                    <input name="params[device][id]"  type="hidden" value="{{device.id}}" > 
-                                    <input name="params[device][title]" required="" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Device Title" value="{{ device.title }}"> 
+                            <form action="/api/update" method="POST" data-refresh="1" id="add-device-form" class="action py-0 m-auto rounded-lg max-w-xl pb-10">
 
-                                    <select name="params[device][type]" required="" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="">
-                                    {% for type in typesList %}
-                                    <option {% if type.id == device.type %} selected="" {% endif %} value="{{type.id}}">{{type.name}}</option>
-                                    {% endfor %}
-                                    </select>
+                                <input name="type"  type="hidden" value="Device.update" > 
+                                <input name="params[device][id]"  type="hidden" value="{{device.id}}" > 
+                                <input name="params[device][title]" required="" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="Device Title" value="{{ device.title }}"> 
 
-                                    <label class="block pt-5">{{lang.__('Single price')}}</label>
-                                    <input name="params[device][prices][single_price]" type="number" class="h-12 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="Single price" value="{{device.price.single_price}}">
+                                <select name="params[device][type]" required="" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="">
+                                {% for type in typesList %}
+                                <option {% if type.id == device.type %} selected="" {% endif %} value="{{type.id}}">{{type.name}}</option>
+                                {% endfor %}
+                                </select>
 
-                                    <label class="block pt-5">{{lang.__('Multi price')}}</label>
-                                    <input name="params[device][prices][multi_price]" type="number" class="h-12 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="Multi price" value="{{device.price.multi_price}}">
+                                <label class="block pt-5">{{lang.__('Single price')}}</label>
+                                <input name="params[device][prices][single_price]" type="number" class="h-12 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="Single price" value="{{device.price.single_price}}">
 
-                                    <label class="inline-flex items-center mt-3">
-                                        <input name="params[device][status]" type="checkbox" class="form-checkbox h-5 w-5 text-orange-600" {% if device.status == 1 %} checked  {% endif %}><span class="ml-2 text-gray-700">{{lang.__('Status')}}</span>
-                                    </label>
-                                    
-                                    <button class="uppercase h-10 mt-3 text-white w-full rounded bg-red-700 hover:bg-red-800">{{lang.__('Update')}}</button>
-                                </form>
-                            
-                                <a data-ajax="true" data-confirm="true" data-request-id="{{device.id}}" data-request-type="delete_device" data-type="post" href="#!" class="uppercase block text-center  pb-1 mt-1 text-white w-full rounded text-gray-700 hover:bg-red-800 hover:text-white">{{lang.__('Remove this device')}}</a>
+                                <label class="block pt-5">{{lang.__('Multi price')}}</label>
+                                <input name="params[device][prices][multi_price]" type="number" class="h-12 mt-3 rounded w-full border px-3 text-gray-400  focus:border-blue-100 dark:bg-gray-800 dark:border-gray-600" placeholder="Multi price" value="{{device.price.multi_price}}">
 
-                            </div>
+                                <label class="inline-flex items-center mt-3">
+                                    <input name="params[device][status]" type="checkbox" class="form-checkbox h-5 w-5 text-orange-600" {% if device.status == 1 %} checked  {% endif %}><span class="ml-2 mx-2 text-gray-700">{{lang.__('Status')}}</span>
+                                </label>
+                                
+                                <button class="uppercase h-10 mt-3 text-white w-full rounded bg-red-700 hover:bg-red-800">{{lang.__('Update')}}</button>
+                            </form>
+                        
+                            <a data-ajax="true" data-confirm="true" data-request-id="{{device.id}}" data-request-type="delete_device" data-type="post" href="#!" class="uppercase block text-center  pb-1 mt-1 text-white w-full rounded text-gray-700 hover:bg-red-800 hover:text-white">{{lang.__('Remove this device')}}</a>
 
-                            <div class="p-8 py-2 shadow-2xl bg-white player-img text-center ">
-                            </div>
-                        </div>
+
                         <!-- End Main sidebar -->

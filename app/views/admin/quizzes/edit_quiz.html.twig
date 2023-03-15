@@ -1,0 +1,30 @@
+
+      <!-- Main player -->
+
+
+                            <form action="/api/update" method="POST" data-refresh="1" id="add-device-form" class="action py-0 m-auto rounded-lg max-w-xl pb-10">
+
+                                <input name="type"  type="hidden" value="Quiz.update" > 
+                                <input name="params[id]"  type="hidden" value="{{quiz.id}}" > 
+
+                                <input name="params[title]" required="" type="text" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="quiz Title" value="{{ quiz.title }}"> 
+
+                                <select name="params[type]" required="" class="h-12 mt-3 rounded w-full border px-3 text-gray-700  focus:border-blue-100 dark:bg-gray-800  dark:border-gray-600" placeholder="">
+                                {% for cat in typesList %}
+                                    {% for type in cat.childs %}
+                                    <option {% if type.id == quiz.category_id %} selected="" {% endif %} value="{{type.id}}">{{cat.code}} > {{type.name}}</option>
+                                    {% endfor %}
+                                {% endfor %}
+                                </select>
+
+                                <label class="inline-flex items-center mt-3">
+                                    <input name="params[status]" {% if quiz.status %} checked {% endif %} type="checkbox" class="form-checkbox h-5 w-5 text-orange-600" ><span class="ml-2 mx-2 text-gray-700">{{lang.__('Status')}}</span>
+                                </label>
+                                
+                                <button class="uppercase h-10 mt-3 text-white w-full rounded bg-red-700 hover:bg-red-800">{{lang.__('Update')}}</button>
+                            </form>
+                        
+                            <a data-ajax="true" data-confirm="true" data-request-id="{{quiz.id}}" data-request-type="delete_quiz" data-type="post" href="#!" class="uppercase block text-center  pb-1 mt-1 text-white w-full rounded text-gray-700 hover:bg-red-800 hover:text-white">{{lang.__('Remove this quiz')}}</a>
+
+
+                        <!-- End Main sidebar -->

@@ -78,8 +78,6 @@
                                     <h1 class="flex-auto text-md font-medium">Total cost: <span class="font-bold text-red-600">{{ device.currentOrder.totalCost + device.currentOrder.productsCost }}</span></h1>
 
                                 </div>
-                                <a href="{{app.CONF.url}}provider_area/order_product/{{device.id}}" class="uppercase block text-center pt-3 pb-3 my-10 text-red-600 w-full rounded bg-gray-200 hover:bg-gray-400 hover:text-white">Add drink</a>
-
                                 <a data-ajax="true" data-confirm="true" data-request-id="{{device.id}}" data-request-type="endDeviceOrder" data-type="post" href="#!" class="uppercase block text-center pt-3 pb-3 mt-3 text-white w-full rounded bg-red-800 hover:bg-red-400 hover:text-white">Finish</a>
 
                                 {% endif  %}

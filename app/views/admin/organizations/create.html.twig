@@ -1,9 +1,0 @@
-{% include 'views/admin/includes/header.html.twig' %}
-<div class=" w-full overflow-y-auto">
-	<organization_form
-	site_url="{{app.CONF.url}}"
-	:organization="{{ Model | json_encode }}"
-	:agents="{{ agents | json_encode }}"
-	></organization_form>
-</div>
-{% include 'views/admin/includes/footer.html.twig' %}

@@ -5,38 +5,75 @@
  | Import JS components.
 */
 
-const axios = require('axios').default;
-
+/**
+ * Vue JS
+*/
 import Vue from 'vue';
-import VueSimpleAlert from "vue-simple-alert";
+window.Vue = require('vue');
 
+/**
+ * Sweet alert
+ */ 
+import VueSimpleAlert from "vue-simple-alert";
+Vue.use(VueSimpleAlert);
+
+/** 
+ * Used for calendar Comonent
+ */ 
+import PortalVue from "portal-vue";
+Vue.use(PortalVue);
+
+
+/**
+ * Axios for http requests
+ */ 
+import axios from 'axios';
+Vue.prototype.$http = axios
+
+/**
+ * Custom component 
+ * for main calendar 
+ */ 
+import {MediansCalendar}  from 'medians-calendar';
+
+/**
+ * Date picker
+ */ 
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 
-window.Vue = require('vue');
-
-Vue.use(VueSimpleAlert);
+import moment from 'moment';
 
 
-Vue.component('date_picker', () => DatePicker);
-
+/**
+ * Calendar components
+ */ 
 Vue.component('calendar_products', () => import('./components/calendar-products-list.vue'));
 Vue.component('calendar_products_selected', () => import('./components/calendar-products-selected.vue'));
 Vue.component('calendar_active_item', () => import('./components/calendar-active-item.vue'));
+Vue.component('calendar_new_item', () => import('./components/calendar-new-item.vue'));
 Vue.component('calendar_modal', () => import('./components/calendar-booking-modal.vue'));
-Vue.component('calendar_component', () => import('./calendar-component.vue'));
+Vue.component('calendar_booking_confirm', () => import('./components/calendar-booking-confirm.vue'));
+Vue.component('calendar', () => import('./components/calendar.vue'));
 
+
+
+/**
+ * APP General components
+ */ 
+Vue.component('date_picker', () => DatePicker);
 Vue.component('login-dashboard', () => import('./login-dashboard.vue'));
 Vue.component('side-menu', () => import('./side-menu.vue'));
 Vue.component('side_cart', () => import('./side_cart.vue'));
 Vue.component('customers_form', () => import('./customers_form.vue'));
 Vue.component('users_form', () => import('./users_form.vue'));
-
-
 Vue.component('user_modal', () => import('./user_modal.vue'));
 Vue.component('forms', () => import('./forms.vue'));
 Vue.component('vue-medialibrary-manager', () => import('./components/Manager.vue'));
 Vue.component('vue-medialibrary-field', () => import('./components/Field.vue'));
+
+
+
 
 const VueApp = new Vue(
 {
@@ -44,18 +81,25 @@ const VueApp = new Vue(
 
     data() {
         return {
-            __langs:{},
+            langs:{},
             date: '',
+            activeItem:null,
             activeModal:'',
             showModal:false,
-            showSide:false,
+            showSide:true,
+            showAddSide:false,
+            showEditSide:false,
             showTab:true,
             activeTab:'step1',
+
         };
     },
 
     components: {
-        DatePicker
+        moment,
+        DatePicker,
+        axios,
+        MediansCalendar
     },
     beforeCreate: function() {
 
@@ -76,7 +120,11 @@ const VueApp = new Vue(
             setTimeout(function(){
                t.showTab = true; 
            }, 100)
-        } ,
+        },
+
+        /**
+         * Datepicker Change url handler 
+         */ 
         openPageByDate(url, event)
         {
 
@@ -89,6 +137,10 @@ const VueApp = new Vue(
 
             window.location.href = result;
         },
+
+        /**
+         * Display modal 
+         */ 
         viewModal(element, id)
         {
             jQuery('#modal-details').removeClass('hidden')
@@ -130,11 +182,22 @@ const VueApp = new Vue(
 
         },
 
+        setActiveItem(item)
+        {
+            this.activeItem = item;
+        },
         showSidebar()
         {
             this.showSide = !this.showSide;
         },  
 
+        
+        /**
+         * Handle POST request
+         * @params URLSearchParams()   
+         * @url String 
+         * and return its response
+         */
         async handleRequest(params, url = '/api') {
 
             // Demo json data
@@ -144,7 +207,12 @@ const VueApp = new Vue(
                     return response.data;
             });
         },
-    
+        
+        /**
+         * Handle Get request
+         * @url String 
+         * and return its response
+         */ 
         async handleGetRequest(url) {
 
             // Demo json data
@@ -152,16 +220,36 @@ const VueApp = new Vue(
             {
                 if (response.data)
                     return response.data;
+                else 
+                    return response;
             });
         },
 
+
+        /**
+         * Debug console.log 
+         * for Vue components
+         */ 
+        log(data)
+        {
+            console.log(data)
+        },
+
+        /**
+         * Used inside the twig files 
+         * To set the language array
+         */ 
         setLangs(langs)
         {
-            this.__langs = langs;
+            this.langs = langs;
         },
+
+        /**
+         * Translate function
+         */ 
         __(i)
         {
-            return this.__langs[i];
+            return this.langs[i];
         }
     }
 });
