@@ -36,7 +36,7 @@ class Category extends CustomController
 
 	public static function byModel($Model)
 	{
-		return Category::where('model', $Model)->where('status', 'on')->get();
+		return Category::where('model', $Model)->where('status', '!=', '')->get();
 	}
 
 

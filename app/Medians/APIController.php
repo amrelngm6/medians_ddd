@@ -262,7 +262,7 @@ class APIController
 	public function sections()
 	{
 		$data = Category::byModel(Quiz::class);
-
+		
 		echo json_encode($data);
 	}
 }
