@@ -39,17 +39,20 @@ class APIController
 		$return = [];
 		switch ($this->app->request()->get('model')) 
 		{
+			case 'home':
+				return $this->home();
+			case 'sections':
+				return $this->sections();
+				break;
+			case 'section':
+				return $this->section($type);
+				break;
+			case 'quiz':
+				return json_encode($this->quiz($type));
+				break;
+				
 			case 'User':
 				$controller = new UserRepository();
-				break;
-			case 'OrderDevice':
-				$controller = new OrderDevicesRepository();
-				break;
-			case 'Devices':
-				return json_encode((new DevicesRepository())->getApi());
-				break;
-			case 'Products':
-				$return = (new ProductsRepository())->getItems(['stock'=>true, 'status'=>true]);
 				break;
 			
 		}
@@ -239,4 +242,35 @@ class APIController
 		return response(json_encode($return));
 	} 
 
+
+	public function home()
+	{
+		$data = [
+			['id' => 1, 'title'=>'Hole 2','sub_title'=>'Hole 2','picture'=>'uploads/images/quiz-1.png'],
+			['id' => 2, 'title'=>'Hole 2','sub_title'=>'Hola 2','picture'=>'uploads/images/quiz-2.png'],
+			['id' => 3, 'title'=>'Hole 2','sub_title'=>'Hola 3','picture'=>'uploads/images/quiz-3.png']
+		];
+
+		return json_encode($data);
+	}
+
+	public function quiz($id)
+	{
+
+		return quiz::with('options')->find($id);
+	}
+
+	public function section($id)
+	{
+		$data = Category::byModel(Quiz::class, $id);
+
+		return json_encode($data);
+	}
+
+	public function sections()
+	{
+		$data = Category::byModel(Quiz::class);
+
+		return json_encode($data);
+	}
 }
